@@ -771,3 +771,446 @@ body.easter-333 .mcube-333 {
     animation: none;
   }
 }
+
+/* ================================================================
+   MODULE 1 — SOUFFLE & FRÉQUENCES
+   ================================================================ */
+
+/* ── Écran sans nav ───────────────────────────────────────────── */
+.screen.no-nav {
+  padding-bottom: 0;
+}
+
+/* ── En-tête compact ──────────────────────────────────────────── */
+.m1-header {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 52px 20px 10px;
+  gap: 10px;
+}
+
+.m1-module-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 7px;
+  flex: 1;
+}
+
+.m1-module-num {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.m1-dots {
+  display: flex;
+  gap: 7px;
+}
+
+.m1-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--text-faint);
+  transition: background 0.4s ease;
+}
+
+.m1-dot--active {
+  background: var(--gold);
+  box-shadow: 0 0 5px var(--gold-dim);
+}
+
+/* Timer */
+.m1-timer-ctrl {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.m1-timer-adj {
+  width: 27px;
+  height: 27px;
+  border: 1px solid var(--stroke-dim);
+  background: transparent;
+  color: var(--text-dim);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.25s, color 0.25s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.m1-timer-adj:hover {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+.m1-timer-display {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1rem;
+  font-weight: 300;
+  color: var(--text-dim);
+  min-width: 36px;
+  text-align: center;
+  letter-spacing: 0.06em;
+  transition: color 0.5s ease;
+}
+
+.m1-timer-display.urgent {
+  color: var(--gold);
+  animation: timer-urgent-pulse 1s ease-in-out infinite;
+}
+
+@keyframes timer-urgent-pulse {
+  0%,100% { opacity: 1; }
+  50%      { opacity: 0.6; }
+}
+
+/* ── Consigne overlay ─────────────────────────────────────────── */
+.m1-consigne {
+  position: absolute;
+  top: 90px;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  justify-content: center;
+  padding: 0 36px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.9s ease;
+}
+
+.m1-consigne.visible {
+  opacity: 1;
+}
+
+.m1-consigne-text {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.08rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--text);
+  text-align: center;
+  letter-spacing: 0.03em;
+  line-height: 1.65;
+  text-shadow: 0 0 20px var(--bg);
+}
+
+/* ── Zone centrale ────────────────────────────────────────────── */
+.m1-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  min-height: 0;
+  padding: 0 0 6px;
+}
+
+/* Halo coloré */
+.m1-breath-halo {
+  position: absolute;
+  width: min(72vmin, 310px);
+  height: min(72vmin, 310px);
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center,
+    rgba(175, 169, 236, 0.14) 0%, transparent 68%);
+  pointer-events: none;
+  z-index: 0;
+  transition: background 1.8s ease;
+}
+
+/* Graine de Vie */
+.m1-seed-wrap {
+  position: relative;
+  z-index: 1;
+  width: min(52vmin, 222px);
+  height: min(52vmin, 222px);
+  animation: seed-spin 100s linear infinite;
+  transform-origin: 50% 50%;
+  flex-shrink: 0;
+}
+
+#m1-seed-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Les cercles de la Graine de Vie */
+#m1-seed-svg .gdv-circles circle {
+  fill: none;
+  stroke: var(--gdv-stroke, #AFA9EC);
+  stroke-width: 1;
+  transition: stroke 1.4s ease;
+}
+
+@keyframes seed-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Phase label */
+.m1-phase-block {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  margin-top: 14px;
+  min-height: 72px;
+}
+
+.m1-phase-label {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.5rem;
+  font-weight: 300;
+  font-style: italic;
+  color: var(--breath-text, #AFA9EC);
+  letter-spacing: 0.1em;
+  transition: opacity 0.25s ease, color 1.4s ease;
+}
+
+.m1-phase-count {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 2.6rem;
+  font-weight: 300;
+  line-height: 1;
+  color: var(--breath-text, #AFA9EC);
+  transition: color 1.4s ease;
+}
+
+/* ── Patterns ─────────────────────────────────────────────────── */
+.m1-patterns {
+  flex-shrink: 0;
+  display: flex;
+  gap: 7px;
+  padding: 0 16px 9px;
+  justify-content: center;
+}
+
+.m1-pattern-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 7px 10px;
+  flex: 1;
+  max-width: 115px;
+  background: transparent;
+  border: 1px solid var(--stroke-dim);
+  color: var(--text-dim);
+  cursor: pointer;
+  border-radius: 0;
+  transition: border-color 0.3s, color 0.3s, background 0.3s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.m1-pattern-btn--active {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: var(--gold-glow);
+}
+
+.m1-pattern-name {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.66rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+
+.m1-pattern-detail {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.54rem;
+  letter-spacing: 0.12em;
+  opacity: 0.65;
+}
+
+/* ── Section audio ────────────────────────────────────────────── */
+.m1-audio-section {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  padding: 0 16px 9px;
+}
+
+/* Binauraux */
+.m1-binaural-row {
+  display: flex;
+  gap: 7px;
+}
+
+.m1-freq-btn {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  padding: 8px 4px;
+  background: transparent;
+  border: 1px solid var(--stroke-dim);
+  color: var(--text-dim);
+  cursor: pointer;
+  border-radius: 0;
+  transition: border-color 0.3s, color 0.3s, background 0.3s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.m1-freq-btn--active {
+  border-color: var(--violet);
+  color: var(--violet);
+  background: rgba(83, 74, 183, 0.09);
+}
+
+body.light-mode .m1-freq-btn--active {
+  border-color: var(--violet);
+  background: rgba(61, 53, 133, 0.07);
+}
+
+.m1-freq-hz {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.59rem;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.m1-freq-mood {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 0.72rem;
+  font-style: italic;
+  opacity: 0.72;
+}
+
+/* Ambiance */
+.m1-ambiance-row {
+  display: flex;
+  gap: 7px;
+}
+
+.m1-amb-btn {
+  flex: 1;
+  padding: 7px 4px;
+  background: transparent;
+  border: 1px solid var(--stroke-dim);
+  color: var(--text-dim);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.60rem;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 0;
+  transition: border-color 0.3s, color 0.3s, background 0.3s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.m1-amb-btn--active {
+  border-color: var(--teal);
+  color: var(--teal);
+  background: rgba(15, 110, 86, 0.09);
+}
+
+/* ── Pied de module ───────────────────────────────────────────── */
+.m1-footer {
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+  padding: 6px 24px 28px;
+}
+
+.m1-next-btn {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: transparent;
+  border: none;
+  color: var(--text-dim);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.70rem;
+  letter-spacing: 0.20em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 8px 14px;
+  transition: color 0.35s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.m1-next-btn:hover {
+  color: var(--gold);
+}
+
+.m1-next-arrow {
+  font-size: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.m1-next-btn:hover .m1-next-arrow {
+  transform: translateX(5px);
+}
+
+/* ── Toast casque ─────────────────────────────────────────────── */
+.m1-toast {
+  position: absolute;
+  bottom: 72px;
+  left: 50%;
+  transform: translateX(-50%) translateY(12px);
+  background: rgba(20, 18, 38, 0.94);
+  border: 1px solid var(--stroke-dim);
+  color: var(--text-dim);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  padding: 10px 20px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+  z-index: 30;
+  backdrop-filter: blur(8px);
+}
+
+.m1-toast.visible {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+body.light-mode .m1-toast {
+  background: rgba(245, 237, 214, 0.96);
+}
+
+/* ── Adaptation écrans petits ─────────────────────────────────── */
+@media (max-height: 680px) {
+  .m1-seed-wrap {
+    width: min(42vmin, 175px);
+    height: min(42vmin, 175px);
+  }
+  .m1-phase-count { font-size: 2rem; }
+  .m1-phase-label { font-size: 1.25rem; }
+  .m1-phase-block { margin-top: 8px; min-height: 58px; }
+  .m1-footer { padding-bottom: 16px; }
+}
+
+@media (max-height: 580px) {
+  .m1-header { padding-top: 36px; }
+  .m1-seed-wrap {
+    width: min(36vmin, 148px);
+    height: min(36vmin, 148px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .m1-seed-wrap { animation: none; }
+  .m1-phase-label { transition: none; }
+}

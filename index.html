@@ -88,34 +88,118 @@
   </section>
 
   <!-- ═══════════════════════════════════════════
-       ÉCRAN — RITUEL (placeholder)
+       ÉCRAN — MODULE 1 : SOUFFLE & FRÉQUENCES
   ═══════════════════════════════════════════ -->
-  <section id="screen-rituel" class="screen" aria-label="Rituel du matin">
-    <header class="screen-header">
-      <button class="btn-back" data-target="accueil" aria-label="Retour">
+  <section id="screen-rituel" class="screen no-nav" aria-label="Module 1 — Souffle et Fréquences">
+
+    <!-- En-tête compact -->
+    <header class="m1-header">
+      <button class="btn-back" data-target="accueil" aria-label="Quitter le rituel">
         <span class="back-arrow">←</span>
       </button>
-      <span class="screen-title">Rituel du matin</span>
-      <div class="screen-header-right"></div>
+      <div class="m1-module-info">
+        <span class="m1-module-num">1 / 6</span>
+        <div class="m1-dots" aria-hidden="true">
+          <span class="m1-dot m1-dot--active"></span>
+          <span class="m1-dot"></span>
+          <span class="m1-dot"></span>
+          <span class="m1-dot"></span>
+          <span class="m1-dot"></span>
+          <span class="m1-dot"></span>
+        </div>
+      </div>
+      <div class="m1-timer-ctrl">
+        <button class="m1-timer-adj" id="m1-timer-minus" aria-label="Réduire la durée">−</button>
+        <span class="m1-timer-display" id="m1-timer">2:00</span>
+        <button class="m1-timer-adj" id="m1-timer-plus" aria-label="Augmenter la durée">+</button>
+      </div>
     </header>
-    <div class="screen-placeholder">
-      <div class="placeholder-geom">
-        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <!-- Graine de Vie simplifiée -->
-          <g stroke="currentColor" fill="none" stroke-width="0.8" opacity="0.6">
-            <circle cx="40" cy="40" r="14"/>
-            <circle cx="54" cy="40" r="14"/>
-            <circle cx="47" cy="27.8" r="14"/>
-            <circle cx="33" cy="27.8" r="14"/>
-            <circle cx="26" cy="40" r="14"/>
-            <circle cx="33" cy="52.2" r="14"/>
-            <circle cx="47" cy="52.2" r="14"/>
-          </g>
+
+    <!-- Consigne — overlay au démarrage -->
+    <div class="m1-consigne" id="m1-consigne" aria-live="polite" aria-atomic="true">
+      <p class="m1-consigne-text" id="m1-consigne-text"></p>
+    </div>
+
+    <!-- Zone centrale : Graine de Vie + phase -->
+    <main class="m1-main">
+      <div class="m1-breath-halo" id="m1-halo" aria-hidden="true"></div>
+
+      <div class="m1-seed-wrap" aria-hidden="true">
+        <svg id="m1-seed-svg" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="seed-glow-f" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" id="seed-blur-el"/>
+              <feMerge>
+                <feMergeNode in="blur"/>
+                <feMergeNode in="SourceGraphic"/>
+              </feMerge>
+            </filter>
+          </defs>
+          <!-- Cercles générés par app.js -->
         </svg>
       </div>
-      <p class="placeholder-text">Le rituel arrive bientôt.</p>
-      <p class="placeholder-sub">Souffle · Mantra · Sombre · Magnétisme · Sort · Yi King</p>
+
+      <div class="m1-phase-block" aria-live="polite" aria-atomic="true">
+        <p class="m1-phase-label" id="m1-phase-label">Inspire</p>
+        <p class="m1-phase-count" id="m1-phase-count">5</p>
+      </div>
+    </main>
+
+    <!-- Patterns de respiration -->
+    <div class="m1-patterns" role="group" aria-label="Rythme de respiration">
+      <button class="m1-pattern-btn m1-pattern-btn--active" data-pattern="coherence" aria-pressed="true">
+        <span class="m1-pattern-name">Cohérence</span>
+        <span class="m1-pattern-detail">5 · 5</span>
+      </button>
+      <button class="m1-pattern-btn" data-pattern="carre" aria-pressed="false">
+        <span class="m1-pattern-name">Carré</span>
+        <span class="m1-pattern-detail">4 · 2 · 4 · 2</span>
+      </button>
+      <button class="m1-pattern-btn" data-pattern="relaxant" aria-pressed="false">
+        <span class="m1-pattern-name">Relaxant</span>
+        <span class="m1-pattern-detail">4 · 7 · 8</span>
+      </button>
     </div>
+
+    <!-- Contrôles audio -->
+    <div class="m1-audio-section">
+      <!-- Binauraux -->
+      <div class="m1-binaural-row" role="group" aria-label="Fréquence binaural">
+        <button class="m1-freq-btn m1-freq-btn--active" data-freq="theta" aria-pressed="true">
+          <span class="m1-freq-hz">Theta 6Hz</span>
+          <span class="m1-freq-mood">Ouverture</span>
+        </button>
+        <button class="m1-freq-btn" data-freq="alpha" aria-pressed="false">
+          <span class="m1-freq-hz">Alpha 10Hz</span>
+          <span class="m1-freq-mood">Focus calme</span>
+        </button>
+        <button class="m1-freq-btn" data-freq="gamma" aria-pressed="false">
+          <span class="m1-freq-hz">Gamma 40Hz</span>
+          <span class="m1-freq-mood">Énergie</span>
+        </button>
+      </div>
+      <!-- Sons ambiance -->
+      <div class="m1-ambiance-row" role="group" aria-label="Sons d'ambiance">
+        <button class="m1-amb-btn m1-amb-btn--active" data-amb="silence" aria-pressed="true">Silence</button>
+        <button class="m1-amb-btn" data-amb="pluie" aria-pressed="false">Pluie</button>
+        <button class="m1-amb-btn" data-amb="bols" aria-pressed="false">Bols</button>
+        <button class="m1-amb-btn" data-amb="drone" aria-pressed="false">Drone</button>
+      </div>
+    </div>
+
+    <!-- Pied de module -->
+    <div class="m1-footer">
+      <button class="m1-next-btn" id="m1-next-btn">
+        Module suivant
+        <span class="m1-next-arrow">→</span>
+      </button>
+    </div>
+
+    <!-- Toast casque -->
+    <div class="m1-toast" id="m1-toast" role="status" aria-live="polite">
+      🎧 Casque recommandé pour les binauraux
+    </div>
+
   </section>
 
   <!-- ═══════════════════════════════════════════
