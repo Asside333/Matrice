@@ -189,7 +189,7 @@ const Module3 = (() => {
 
     // Module suivant
     document.getElementById('m3-next-btn')
-      ?.addEventListener('click', () => navigateTo('accueil'));
+      ?.addEventListener('click', () => navigateTo('m4'));
   }
 
   // ── Lifecycle ─────────────────────────────────────────────────

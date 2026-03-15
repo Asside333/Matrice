@@ -13,6 +13,20 @@ const STORAGE_LAST_RITUAL = 'matrice_last_ritual';
 // Hooks de cycle de vie par écran — populé par chaque module
 const screenHooks = {};
 
+// ── État global du rituel ─────────────────────────────────────
+const RITUAL_STATE = {
+  mantra:        null,
+  mantraCategory: null,
+  intentions:    [],
+  customIntention: '',
+  visualization: null,
+  element:       null,
+  elementKey:    null,
+  sort:          null,
+  hexagram:      null,
+  hexagramName:  null,
+};
+
 // Métatron : géométrie
 const CX = 160, CY = 160;
 const R_CIRCLE = 28;
@@ -84,7 +98,7 @@ function updateSOSVisibility(screenId) {
 function updateNavVisibility(screenId) {
   const nav = document.getElementById('main-nav');
   if (!nav) return;
-  const hideNav = ['rituel', 'm2', 'm3'].includes(screenId);
+  const hideNav = ['rituel', 'm2', 'm3', 'm4', 'm5', 'm6', 'cloture'].includes(screenId);
   nav.style.opacity = hideNav ? '0' : '1';
   nav.style.pointerEvents = hideNav ? 'none' : 'auto';
   // Repositionner le bouton SOS selon présence de la nav

@@ -108,6 +108,12 @@ const Module2 = (() => {
     currentMantra   = mantra.text;
     currentCategory = mantra.category;
 
+    // Sauvegarde dans l'état global du rituel
+    if (typeof RITUAL_STATE !== 'undefined') {
+      RITUAL_STATE.mantra        = mantra.text;
+      RITUAL_STATE.mantraCategory = mantra.category;
+    }
+
     const textEl  = document.getElementById('m2-mantra-text');
     const catEl   = document.getElementById('m2-category');
     const starEl  = document.getElementById('m2-star-btn');

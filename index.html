@@ -490,10 +490,268 @@
     <!-- Pied de module -->
     <div class="m1-footer m3-footer" id="m3-footer">
       <button class="m1-next-btn" id="m3-next-btn">
+        Module suivant
+        <span class="m1-next-arrow">→</span>
+      </button>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       ÉCRAN — MODULE 4 : MAGNÉTISME & VISUALISATION
+  ═══════════════════════════════════════════ -->
+  <section id="screen-m4" class="screen no-nav" aria-label="Module 4 — Magnétisme et Visualisation">
+
+    <header class="m1-header">
+      <button class="btn-back" data-target="accueil" aria-label="Quitter le rituel">
+        <span class="back-arrow">←</span>
+      </button>
+      <div class="m1-module-info">
+        <span class="m1-module-num">4 / 6</span>
+        <div class="m1-dots" aria-hidden="true">
+          <span class="m1-dot"></span>
+          <span class="m1-dot"></span>
+          <span class="m1-dot"></span>
+          <span class="m1-dot m1-dot--active"></span>
+          <span class="m1-dot"></span>
+          <span class="m1-dot"></span>
+        </div>
+      </div>
+      <div class="m1-header-right"></div>
+    </header>
+
+    <main class="m4-main">
+
+      <!-- Phase chips / intention -->
+      <div class="m4-chips-phase" id="m4-chips-phase">
+        <p class="m4-question">Qu'est-ce que tu veux attirer aujourd'hui ?</p>
+        <div class="m4-chips-grid" role="group" aria-label="Intentions">
+          <button class="m4-chip" data-intention="Confiance" aria-pressed="false">Confiance</button>
+          <button class="m4-chip" data-intention="Abondance" aria-pressed="false">Abondance</button>
+          <button class="m4-chip" data-intention="Connexion" aria-pressed="false">Connexion</button>
+          <button class="m4-chip" data-intention="Créativité" aria-pressed="false">Créativité</button>
+          <button class="m4-chip" data-intention="Paix" aria-pressed="false">Paix</button>
+          <button class="m4-chip" data-intention="Puissance" aria-pressed="false">Puissance</button>
+        </div>
+        <p class="m4-or">ou précise librement</p>
+        <textarea class="m4-custom-input" id="m4-custom-input"
+                  placeholder="Quelque chose de spécifique..."
+                  rows="2"
+                  aria-label="Intention personnalisée"></textarea>
+        <button class="m4-visualize-btn" id="m4-visualize-btn">Visualiser ✦</button>
+      </div>
+
+      <!-- Phase visualisation -->
+      <div class="m4-viz-phase" id="m4-viz-phase">
+        <div class="m4-viz-halo" aria-hidden="true"></div>
+        <p class="m4-viz-text" id="m4-viz-text" aria-live="polite" aria-atomic="true"></p>
+        <button class="m4-reviz-btn" id="m4-reviz-btn">↺ Autre visualisation</button>
+      </div>
+
+    </main>
+
+    <div class="m1-footer m4-footer" id="m4-footer">
+      <button class="m1-next-btn" id="m4-next-btn">
+        Module suivant
+        <span class="m1-next-arrow">→</span>
+      </button>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       ÉCRAN — MODULE 5 : SORT DU JOUR
+  ═══════════════════════════════════════════ -->
+  <section id="screen-m5" class="screen no-nav" aria-label="Module 5 — Sort du jour">
+
+    <header class="m1-header">
+      <button class="btn-back" data-target="accueil" aria-label="Quitter le rituel">
+        <span class="back-arrow">←</span>
+      </button>
+      <div class="m1-module-info">
+        <span class="m1-module-num">5 / 6</span>
+        <div class="m1-dots" aria-hidden="true">
+          <span class="m1-dot"></span>
+          <span class="m1-dot"></span>
+          <span class="m1-dot"></span>
+          <span class="m1-dot"></span>
+          <span class="m1-dot m1-dot--active"></span>
+          <span class="m1-dot"></span>
+        </div>
+      </div>
+      <div class="m1-header-right"></div>
+    </header>
+
+    <main class="m5-main">
+
+      <!-- Solide de Platon -->
+      <div class="m5-solid-wrap" id="m5-solid-wrap" aria-hidden="true"></div>
+
+      <!-- Badge élément -->
+      <div class="m5-element-badge" id="m5-element-badge">✦</div>
+
+      <!-- Sort du jour -->
+      <div class="m5-sort-box" id="m5-sort-box">
+        <p class="m5-sort-titre" id="m5-sort-titre"></p>
+        <p class="m5-sort-texte" id="m5-sort-texte"></p>
+        <p class="m5-sort-geste" id="m5-sort-geste"></p>
+      </div>
+
+      <!-- Changer d'élément -->
+      <div class="m5-elements-row" role="group" aria-label="Choisir l'élément">
+        <button class="m5-el-btn" data-element="feu"   aria-label="Feu">🔥</button>
+        <button class="m5-el-btn" data-element="terre" aria-label="Terre">🌿</button>
+        <button class="m5-el-btn" data-element="air"   aria-label="Air">🌬</button>
+        <button class="m5-el-btn" data-element="eau"   aria-label="Eau">💧</button>
+        <button class="m5-el-btn" data-element="ether" aria-label="Éther">✨</button>
+      </div>
+
+      <!-- Phase lunaire -->
+      <p class="m5-moon" id="m5-moon" aria-label="Phase lunaire"></p>
+
+      <!-- Autre sort -->
+      <button class="m5-reshuffle-btn" id="m5-reshuffle-btn">↺ Autre sort</button>
+
+    </main>
+
+    <div class="m1-footer" id="m5-footer">
+      <button class="m1-next-btn" id="m5-next-btn">
+        Module suivant
+        <span class="m1-next-arrow">→</span>
+      </button>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       ÉCRAN — MODULE 6 : YI KING
+  ═══════════════════════════════════════════ -->
+  <section id="screen-m6" class="screen no-nav" aria-label="Module 6 — Yi King">
+
+    <header class="m1-header">
+      <button class="btn-back" data-target="accueil" aria-label="Quitter le rituel">
+        <span class="back-arrow">←</span>
+      </button>
+      <div class="m1-module-info">
+        <span class="m1-module-num">6 / 6</span>
+        <div class="m1-dots" aria-hidden="true">
+          <span class="m1-dot"></span>
+          <span class="m1-dot"></span>
+          <span class="m1-dot"></span>
+          <span class="m1-dot"></span>
+          <span class="m1-dot"></span>
+          <span class="m1-dot m1-dot--active"></span>
+        </div>
+      </div>
+      <div class="m1-header-right"></div>
+    </header>
+
+    <main class="m6-main">
+
+      <!-- Zone de lancer -->
+      <div class="m6-throw-zone" id="m6-throw-zone">
+        <p class="m6-instruction">Lance les pièces 6 fois pour construire ton hexagramme</p>
+
+        <!-- Lignes en cours de construction (bas → haut dans le DOM = haut → bas dans Yi King) -->
+        <div class="m6-traits-preview" aria-hidden="true">
+          <div class="m6-trait m6-trait--pending" id="m6-line-5"></div>
+          <div class="m6-trait m6-trait--pending" id="m6-line-4"></div>
+          <div class="m6-trait m6-trait--pending" id="m6-line-3"></div>
+          <div class="m6-trait m6-trait--pending" id="m6-line-2"></div>
+          <div class="m6-trait m6-trait--pending" id="m6-line-1"></div>
+          <div class="m6-trait m6-trait--pending" id="m6-line-0"></div>
+        </div>
+
+        <p class="m6-throw-count" id="m6-throw-count">0 / 6</p>
+
+        <button class="m6-throw-btn" id="m6-throw-btn" aria-label="Lancer les pièces">
+          Lancer les pièces
+        </button>
+      </div>
+
+      <!-- Zone résultat hexagramme -->
+      <div class="m6-result-zone" id="m6-result-zone">
+        <div class="m6-hex-svg-wrap" id="m6-hex-svg-wrap" aria-hidden="true"></div>
+        <p class="m6-hex-number" id="m6-hex-number"></p>
+        <p class="m6-hex-name-ch" id="m6-hex-name-ch"></p>
+        <p class="m6-hex-name-fr" id="m6-hex-name-fr"></p>
+        <p class="m6-hex-advice" id="m6-hex-advice"></p>
+        <button class="m6-full-btn" id="m6-full-btn">Voir la carte complète</button>
+      </div>
+
+    </main>
+
+    <!-- Overlay interprétation complète -->
+    <div class="m6-overlay" id="m6-overlay" role="dialog" aria-modal="true">
+      <div class="m6-overlay-card">
+        <button class="m6-overlay-close" id="m6-overlay-close" aria-label="Fermer">✕</button>
+        <p class="m6-overlay-title" id="m6-overlay-title"></p>
+        <p class="m6-overlay-text" id="m6-overlay-text"></p>
+      </div>
+    </div>
+
+    <div class="m1-footer m6-footer" id="m6-footer">
+      <button class="m1-next-btn" id="m6-next-btn">
         Clôturer le rituel
         <span class="m1-next-arrow">→</span>
       </button>
     </div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       ÉCRAN — CLÔTURE
+  ═══════════════════════════════════════════ -->
+  <section id="screen-cloture" class="screen no-nav" aria-label="Clôture du rituel">
+
+    <main class="cl-main">
+      <div class="cl-header-symbol" aria-hidden="true">
+        <!-- Cube de Métatron miniature -->
+        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+          <g stroke="currentColor" fill="none" stroke-width="0.6" opacity="0.7">
+            <circle cx="40" cy="40" r="20"/>
+            <circle cx="54" cy="40" r="20" opacity="0.5"/>
+            <circle cx="47" cy="26.5" r="20" opacity="0.5"/>
+            <circle cx="33" cy="26.5" r="20" opacity="0.5"/>
+            <circle cx="26" cy="40" r="20" opacity="0.5"/>
+            <circle cx="33" cy="53.5" r="20" opacity="0.5"/>
+            <circle cx="47" cy="53.5" r="20" opacity="0.5"/>
+          </g>
+        </svg>
+      </div>
+
+      <h2 class="cl-title">Rituel accompli</h2>
+      <p class="cl-subtitle">Tu repars calibré.</p>
+
+      <!-- Résumé -->
+      <div class="cl-summary">
+        <div class="cl-summary-row">
+          <span class="cl-summary-label">Mantra</span>
+          <span class="cl-summary-val" id="cl-mantra-val">—</span>
+        </div>
+        <div class="cl-summary-row">
+          <span class="cl-summary-label">Élément</span>
+          <span class="cl-summary-val" id="cl-element-val">—</span>
+        </div>
+        <div class="cl-summary-row">
+          <span class="cl-summary-label">Hexagramme</span>
+          <span class="cl-summary-val" id="cl-hex-val">—</span>
+        </div>
+      </div>
+
+      <!-- Streak -->
+      <div class="cl-streak-block">
+        <span class="cl-streak-num" id="cl-streak">0</span>
+        <span class="cl-streak-label">jours consécutifs</span>
+      </div>
+
+      <!-- Phrase de clôture -->
+      <p class="cl-closing" id="cl-closing"></p>
+
+      <button class="cl-finish-btn" id="cl-finish-btn">
+        Revenir à l'accueil
+      </button>
+    </main>
 
   </section>
 
@@ -548,7 +806,14 @@
   <script src="app.js"></script>
   <script src="data/mantras.js"></script>
   <script src="data/transmutations.js"></script>
+  <script src="data/visualisations.js"></script>
+  <script src="data/sorts.js"></script>
+  <script src="data/yiking.js"></script>
+  <script src="data/closings.js"></script>
   <script src="module2.js"></script>
   <script src="module3.js"></script>
+  <script src="module4.js"></script>
+  <script src="module5.js"></script>
+  <script src="module6.js"></script>
 </body>
 </html>
