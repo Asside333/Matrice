@@ -163,28 +163,65 @@
 
     <!-- Contrôles audio -->
     <div class="m1-audio-section">
-      <!-- Binauraux -->
-      <div class="m1-binaural-row" role="group" aria-label="Fréquence binaural">
-        <button class="m1-freq-btn m1-freq-btn--active" data-freq="theta" aria-pressed="true">
-          <span class="m1-freq-hz">Theta 6Hz</span>
-          <span class="m1-freq-mood">Ouverture</span>
-        </button>
-        <button class="m1-freq-btn" data-freq="alpha" aria-pressed="false">
-          <span class="m1-freq-hz">Alpha 10Hz</span>
-          <span class="m1-freq-mood">Focus calme</span>
-        </button>
-        <button class="m1-freq-btn" data-freq="gamma" aria-pressed="false">
-          <span class="m1-freq-hz">Gamma 40Hz</span>
-          <span class="m1-freq-mood">Énergie</span>
-        </button>
+
+      <!-- Groupe binauraux + volume -->
+      <div class="m1-audio-group">
+        <div class="m1-binaural-row" role="group" aria-label="Fréquence binaural">
+          <button class="m1-freq-btn m1-freq-btn--active" data-freq="theta" aria-pressed="true">
+            <span class="m1-freq-hz">Theta 6Hz</span>
+            <span class="m1-freq-mood">Ouverture</span>
+          </button>
+          <button class="m1-freq-btn" data-freq="alpha" aria-pressed="false">
+            <span class="m1-freq-hz">Alpha 10Hz</span>
+            <span class="m1-freq-mood">Focus calme</span>
+          </button>
+          <button class="m1-freq-btn" data-freq="gamma" aria-pressed="false">
+            <span class="m1-freq-hz">Gamma 40Hz</span>
+            <span class="m1-freq-mood">Énergie</span>
+          </button>
+        </div>
+        <div class="m1-vol-row">
+          <span class="m1-vol-icon" aria-hidden="true">
+            <!-- Icône casque / fréquence -->
+            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 9V8a6 6 0 0112 0v1" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+              <rect x="1" y="9" width="3" height="4" rx="1" stroke="currentColor" stroke-width="1.1"/>
+              <rect x="12" y="9" width="3" height="4" rx="1" stroke="currentColor" stroke-width="1.1"/>
+            </svg>
+          </span>
+          <input type="range" class="m1-vol-slider" id="m1-vol-binaural"
+                 min="0" max="100" value="40"
+                 aria-label="Volume binauraux">
+          <span class="m1-vol-label">Binauraux</span>
+        </div>
       </div>
-      <!-- Sons ambiance -->
-      <div class="m1-ambiance-row" role="group" aria-label="Sons d'ambiance">
-        <button class="m1-amb-btn m1-amb-btn--active" data-amb="silence" aria-pressed="true">Silence</button>
-        <button class="m1-amb-btn" data-amb="pluie" aria-pressed="false">Pluie</button>
-        <button class="m1-amb-btn" data-amb="bols" aria-pressed="false">Bols</button>
-        <button class="m1-amb-btn" data-amb="drone" aria-pressed="false">Drone</button>
+
+      <!-- Groupe ambiance + volume -->
+      <div class="m1-audio-group">
+        <div class="m1-ambiance-row" role="group" aria-label="Sons d'ambiance">
+          <button class="m1-amb-btn m1-amb-btn--active" data-amb="silence" aria-pressed="true">Silence</button>
+          <button class="m1-amb-btn" data-amb="pluie" aria-pressed="false">Pluie</button>
+          <button class="m1-amb-btn" data-amb="bols" aria-pressed="false">Bols</button>
+          <button class="m1-amb-btn" data-amb="drone" aria-pressed="false">Drone</button>
+        </div>
+        <div class="m1-vol-row">
+          <span class="m1-vol-icon" aria-hidden="true">
+            <!-- Icône onde sonore -->
+            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M1 8h2M13 8h2" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+              <path d="M4 5c1-1 3-1 4 0s3 1 4 0" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+              <path d="M4 11c1 1 3 1 4 0s3-1 4 0" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+              <path d="M6 3c.5-1 2.5-1 4 0" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+              <path d="M6 13c.5 1 2.5 1 4 0" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+            </svg>
+          </span>
+          <input type="range" class="m1-vol-slider" id="m1-vol-ambiance"
+                 min="0" max="100" value="50"
+                 aria-label="Volume ambiance">
+          <span class="m1-vol-label">Ambiance</span>
+        </div>
       </div>
+
     </div>
 
     <!-- Pied de module -->
@@ -286,6 +323,181 @@
   </section>
 
   <!-- ═══════════════════════════════════════════
+       ÉCRAN — MODULE 2 : MANTRA DU JOUR
+  ═══════════════════════════════════════════ -->
+  <section id="screen-m2" class="screen no-nav" aria-label="Module 2 — Mantra du jour">
+
+    <!-- En-tête compact -->
+    <header class="m1-header">
+      <button class="btn-back" data-target="accueil" aria-label="Quitter le rituel">
+        <span class="back-arrow">←</span>
+      </button>
+      <div class="m1-module-info">
+        <span class="m1-module-num">2 / 6</span>
+        <div class="m1-dots" aria-hidden="true">
+          <span class="m1-dot"></span>
+          <span class="m1-dot m1-dot--active"></span>
+          <span class="m1-dot"></span>
+          <span class="m1-dot"></span>
+          <span class="m1-dot"></span>
+          <span class="m1-dot"></span>
+        </div>
+      </div>
+      <div class="m1-header-right"></div>
+    </header>
+
+    <!-- Zone centrale -->
+    <main class="m2-main">
+      <!-- Halo doré -->
+      <div class="m2-halo" aria-hidden="true"></div>
+
+      <!-- Catégorie -->
+      <p class="m2-category" id="m2-category" aria-live="polite">NOYAU</p>
+
+      <!-- Texte du mantra -->
+      <p class="m2-mantra-text" id="m2-mantra-text" aria-live="polite" aria-atomic="true"></p>
+
+      <!-- Instruction -->
+      <p class="m2-instruction">Répète 3 fois à voix haute</p>
+
+      <!-- Actions -->
+      <div class="m2-actions">
+        <button class="m2-star-btn" id="m2-star-btn" aria-label="Sauvegarder en favori" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"
+                  stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
+          </svg>
+        </button>
+
+        <button class="m2-next-mantra-btn" id="m2-next-mantra-btn" aria-label="Tirer un autre mantra">
+          Autre mantra
+        </button>
+      </div>
+    </main>
+
+    <!-- Pied de module -->
+    <div class="m1-footer">
+      <button class="m1-next-btn" id="m2-next-btn">
+        Module suivant
+        <span class="m1-next-arrow">→</span>
+      </button>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       ÉCRAN — MODULE 3 : INTÉGRATION DU SOMBRE
+  ═══════════════════════════════════════════ -->
+  <section id="screen-m3" class="screen no-nav" aria-label="Module 3 — Intégration du sombre">
+
+    <!-- En-tête compact -->
+    <header class="m1-header">
+      <button class="btn-back" data-target="accueil" aria-label="Quitter le rituel">
+        <span class="back-arrow">←</span>
+      </button>
+      <div class="m1-module-info">
+        <span class="m1-module-num">3 / 6</span>
+        <div class="m1-dots" aria-hidden="true">
+          <span class="m1-dot"></span>
+          <span class="m1-dot"></span>
+          <span class="m1-dot m1-dot--active"></span>
+          <span class="m1-dot"></span>
+          <span class="m1-dot"></span>
+          <span class="m1-dot"></span>
+        </div>
+      </div>
+      <div class="m1-header-right"></div>
+    </header>
+
+    <!-- Fond Yin Yang -->
+    <div class="m3-yinyang-wrap" aria-hidden="true">
+      <svg id="m3-yinyang" class="m3-yinyang" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <!-- Yin Yang géométrique -->
+        <circle cx="60" cy="60" r="56" stroke="currentColor" stroke-width="0.8" fill="none" opacity="0.15"/>
+        <!-- Moitié sombre -->
+        <path d="M60,4 A56,56,0,0,1,60,116 A28,28,0,0,1,60,60 A28,28,0,0,0,60,4 Z"
+              fill="currentColor" opacity="0.08"/>
+        <!-- Petit cercle clair -->
+        <circle cx="60" cy="32" r="12" fill="none" stroke="currentColor" stroke-width="0.6" opacity="0.12"/>
+        <!-- Petit cercle sombre -->
+        <circle cx="60" cy="88" r="12" fill="currentColor" opacity="0.06"/>
+        <!-- Séparation -->
+        <path d="M60,4 A28,28,0,0,1,60,60 A28,28,0,0,0,60,116 A56,56,0,0,1,60,4 Z"
+              stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.10"/>
+      </svg>
+    </div>
+
+    <main class="m3-main">
+
+      <!-- Plume de Maât -->
+      <div class="m3-feather-wrap" aria-hidden="true">
+        <svg id="m3-feather" class="m3-feather" viewBox="0 0 60 120" xmlns="http://www.w3.org/2000/svg">
+          <!-- Tige centrale -->
+          <line x1="30" y1="10" x2="30" y2="115" stroke="currentColor" stroke-width="0.9" opacity="0.9"/>
+          <!-- Barbes gauche -->
+          <path d="M30,18 Q14,24 8,38" stroke="currentColor" stroke-width="0.7" fill="none" opacity="0.8"/>
+          <path d="M30,28 Q12,34 6,50" stroke="currentColor" stroke-width="0.7" fill="none" opacity="0.75"/>
+          <path d="M30,38 Q12,44 8,60" stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.7"/>
+          <path d="M30,48 Q14,52 10,68" stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.65"/>
+          <path d="M30,58 Q16,62 14,76" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.55"/>
+          <path d="M30,68 Q18,72 18,84" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.45"/>
+          <path d="M30,78 Q22,80 22,90" stroke="currentColor" stroke-width="0.4" fill="none" opacity="0.35"/>
+          <!-- Barbes droite -->
+          <path d="M30,18 Q46,24 52,38" stroke="currentColor" stroke-width="0.7" fill="none" opacity="0.8"/>
+          <path d="M30,28 Q48,34 54,50" stroke="currentColor" stroke-width="0.7" fill="none" opacity="0.75"/>
+          <path d="M30,38 Q48,44 52,60" stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.7"/>
+          <path d="M30,48 Q46,52 50,68" stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.65"/>
+          <path d="M30,58 Q44,62 46,76" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.55"/>
+          <path d="M30,68 Q42,72 42,84" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.45"/>
+          <path d="M30,78 Q38,80 38,90" stroke="currentColor" stroke-width="0.4" fill="none" opacity="0.35"/>
+          <!-- Pointe -->
+          <path d="M28,108 Q30,115 32,108" stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.6"/>
+          <!-- Éclat au sommet -->
+          <circle cx="30" cy="10" r="1.5" fill="currentColor" opacity="0.9"/>
+        </svg>
+      </div>
+
+      <!-- Enveloppe empilant les deux phases -->
+      <div class="m3-phases-wrap">
+
+        <!-- Phase saisie — rendue visible par onEnter() -->
+        <div class="m3-input-phase" id="m3-input-phase">
+          <p class="m3-question">Qu'est-ce qui pèse ce matin ?</p>
+          <textarea class="m3-textarea" id="m3-textarea"
+                    placeholder="Un mot, une phrase..."
+                    rows="3"
+                    aria-label="Ce qui pèse ce matin"></textarea>
+          <button class="m3-transmute-btn" id="m3-transmute-btn">
+            Transmuter
+          </button>
+        </div>
+
+        <!-- Phase résultat — masquée par défaut (opacity:0 en CSS base) -->
+        <div class="m3-result-phase" id="m3-result-phase">
+          <div class="m3-user-text-display" id="m3-user-text-display"></div>
+          <div class="m3-result-box" id="m3-result-box">
+            <p class="m3-transmutation-text" id="m3-transmutation-text"></p>
+          </div>
+          <button class="m3-reset-btn" id="m3-reset-btn" aria-label="Recommencer">
+            ↩ Autre chose qui pèse
+          </button>
+        </div>
+
+      </div>
+
+    </main>
+
+    <!-- Pied de module -->
+    <div class="m1-footer m3-footer" id="m3-footer">
+      <button class="m1-next-btn" id="m3-next-btn">
+        Clôturer le rituel
+        <span class="m1-next-arrow">→</span>
+      </button>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════
        BOUTON SOS GLOBAL (toujours visible)
   ═══════════════════════════════════════════ -->
   <button class="btn-sos" id="btn-sos" aria-label="Mode SOS — aide immédiate">
@@ -334,5 +546,9 @@
   </nav>
 
   <script src="app.js"></script>
+  <script src="data/mantras.js"></script>
+  <script src="data/transmutations.js"></script>
+  <script src="module2.js"></script>
+  <script src="module3.js"></script>
 </body>
 </html>

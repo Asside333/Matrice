@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(where:*)",
+      "Bash(powershell:*)",
+      "Bash(powershell.exe:*)"
+    ]
+  }
+}

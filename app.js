@@ -84,7 +84,7 @@ function updateSOSVisibility(screenId) {
 function updateNavVisibility(screenId) {
   const nav = document.getElementById('main-nav');
   if (!nav) return;
-  const hideNav = (screenId === 'rituel');
+  const hideNav = ['rituel', 'm2', 'm3'].includes(screenId);
   nav.style.opacity = hideNav ? '0' : '1';
   nav.style.pointerEvents = hideNav ? 'none' : 'auto';
   // Repositionner le bouton SOS selon présence de la nav
@@ -373,8 +373,8 @@ const Module1 = (() => {
   // ── Géométrie Graine de Vie ────────────────────────────────────
   const GDV_CX = 120, GDV_CY = 120;
   const GDV_R  = 54;   // rayon de chaque cercle = distance centre-à-centre
-  const SPREAD = 13;   // étalement max sur inspire (px)
-  const R_GROW = 5;    // croissance max du rayon (px)
+  const SPREAD = 22;   // étalement max sur inspire (px) — bien perceptible
+  const R_GROW = 11;   // croissance max du rayon (px)
 
   // ── État ──────────────────────────────────────────────────────
   let running      = false;
@@ -408,8 +408,10 @@ const Module1 = (() => {
     const { carrier, beat } = BINAURAL_DEF[freqKey];
 
     const gainNode = ac.createGain();
+    const sliderBin = document.getElementById('m1-vol-binaural');
+    const targetBin = sliderBin ? parseFloat(sliderBin.value) * 0.002 : 0.08;
     gainNode.gain.setValueAtTime(0, ac.currentTime);
-    gainNode.gain.linearRampToValueAtTime(0.08, ac.currentTime + 1.8);
+    gainNode.gain.linearRampToValueAtTime(targetBin, ac.currentTime + 1.8);
     gainNode.connect(ac.destination);
 
     const panL = ac.createStereoPanner(); panL.pan.value = -1;
@@ -456,8 +458,10 @@ const Module1 = (() => {
 
     const ac = ctx();
     const masterGain = ac.createGain();
+    const sliderAmb = document.getElementById('m1-vol-ambiance');
+    const targetAmb = sliderAmb ? parseFloat(sliderAmb.value) * 0.003 : 0.15;
     masterGain.gain.setValueAtTime(0, ac.currentTime);
-    masterGain.gain.linearRampToValueAtTime(0.18, ac.currentTime + 2.5);
+    masterGain.gain.linearRampToValueAtTime(targetAmb, ac.currentTime + 2.5);
     masterGain.connect(ac.destination);
     const sources = [];
 
@@ -780,9 +784,21 @@ const Module1 = (() => {
       updateTimerDisplay(totalSecs - elapsed);
     });
 
-    // Module suivant (placeholder → accueil pour l'instant)
+    // Slider volume binauraux
+    document.getElementById('m1-vol-binaural')?.addEventListener('input', e => {
+      const vol = parseFloat(e.target.value) * 0.002; // 0–100 → 0–0.20
+      if (binNodes) binNodes.gainNode.gain.setValueAtTime(vol, ctx().currentTime);
+    });
+
+    // Slider volume ambiance
+    document.getElementById('m1-vol-ambiance')?.addEventListener('input', e => {
+      const vol = parseFloat(e.target.value) * 0.003; // 0–100 → 0–0.30
+      if (ambNodes) ambNodes.masterGain.gain.setValueAtTime(vol, ctx().currentTime);
+    });
+
+    // Module suivant → Module 2
     document.getElementById('m1-next-btn')?.addEventListener('click', () => {
-      navigateTo('accueil');
+      navigateTo('m2');
     });
   }
 

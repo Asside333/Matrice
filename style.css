@@ -23,10 +23,10 @@
   --violet:           #534AB7;
   --copper:           #B87333;
   --text:             rgba(235, 228, 210, 0.92);
-  --text-dim:         rgba(235, 228, 210, 0.38);
-  --text-faint:       rgba(235, 228, 210, 0.16);
-  --stroke:           rgba(184, 134, 11, 0.55);
-  --stroke-dim:       rgba(184, 134, 11, 0.25);
+  --text-dim:         rgba(235, 228, 210, 0.68);
+  --text-faint:       rgba(235, 228, 210, 0.20);
+  --stroke:           rgba(184, 134, 11, 0.72);
+  --stroke-dim:       rgba(184, 134, 11, 0.38);
   --nav-bg:           rgba(13, 13, 26, 0.88);
   --nav-border:       rgba(184, 134, 11, 0.12);
   --header-border:    rgba(184, 134, 11, 0.10);
@@ -54,10 +54,10 @@ body.light-mode {
   --teal-hi:          #0F6E56;
   --violet:           #3D3585;
   --text:             rgba(28, 22, 8, 0.90);
-  --text-dim:         rgba(28, 22, 8, 0.38);
-  --text-faint:       rgba(28, 22, 8, 0.14);
-  --stroke:           rgba(154, 110, 10, 0.50);
-  --stroke-dim:       rgba(154, 110, 10, 0.20);
+  --text-dim:         rgba(28, 22, 8, 0.65);
+  --text-faint:       rgba(28, 22, 8, 0.20);
+  --stroke:           rgba(154, 110, 10, 0.68);
+  --stroke-dim:       rgba(154, 110, 10, 0.35);
   --nav-bg:           rgba(245, 237, 214, 0.92);
   --nav-border:       rgba(154, 110, 10, 0.14);
   --header-border:    rgba(154, 110, 10, 0.10);
@@ -231,7 +231,7 @@ body::before {
 }
 
 .streak-label {
-  font-size: 0.55rem;
+  font-size: 0.68rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--text-dim);
@@ -317,17 +317,17 @@ body::before {
 /* Lignes du Cube */
 .mcube-lines line {
   stroke: var(--stroke);
-  stroke-width: 0.5;
+  stroke-width: 0.85;
   transition: stroke 2.5s ease;
 }
 
 /* Hiérarchie d'opacité des lignes */
-.mcube-lines .line-cc  { opacity: 0.70; }  /* centre–centre */
-.mcube-lines .line-ci  { opacity: 0.55; }  /* centre–inner */
-.mcube-lines .line-co  { opacity: 0.30; }  /* centre–outer */
-.mcube-lines .line-ii  { opacity: 0.50; }  /* inner–inner */
-.mcube-lines .line-io  { opacity: 0.28; }  /* inner–outer */
-.mcube-lines .line-oo  { opacity: 0.20; }  /* outer–outer */
+.mcube-lines .line-cc  { opacity: 0.82; }  /* centre–centre */
+.mcube-lines .line-ci  { opacity: 0.70; }  /* centre–inner */
+.mcube-lines .line-co  { opacity: 0.45; }  /* centre–outer */
+.mcube-lines .line-ii  { opacity: 0.65; }  /* inner–inner */
+.mcube-lines .line-io  { opacity: 0.40; }  /* inner–outer */
+.mcube-lines .line-oo  { opacity: 0.30; }  /* outer–outer */
 
 /* Cercles du Cube */
 .mcube-circles circle {
@@ -337,18 +337,18 @@ body::before {
 }
 
 .mcube-circles .mcube-center {
-  stroke-width: 1.3;
+  stroke-width: 1.6;
   opacity: 1.0;
 }
 
 .mcube-circles .mcube-inner {
-  stroke-width: 0.9;
-  opacity: 0.80;
+  stroke-width: 1.2;
+  opacity: 0.90;
 }
 
 .mcube-circles .mcube-outer {
-  stroke-width: 0.7;
-  opacity: 0.50;
+  stroke-width: 1.0;
+  opacity: 0.65;
 }
 
 /* Easter egg 333 */
@@ -386,9 +386,9 @@ body::before {
 
 .accueil-subtitle {
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.65rem;
+  font-size: 0.78rem;
   font-weight: 300;
-  letter-spacing: 0.32em;
+  letter-spacing: 0.30em;
   text-transform: uppercase;
   color: var(--text-dim);
   transition: var(--t-theme);
@@ -588,7 +588,7 @@ body::before {
 
 .nav-label {
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.58rem;
+  font-size: 0.70rem;
   letter-spacing: 0.10em;
   text-transform: uppercase;
   transition: color 0.35s ease;
@@ -637,9 +637,9 @@ body::before {
 
 .screen-title {
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.72rem;
+  font-size: 0.84rem;
   font-weight: 400;
-  letter-spacing: 0.28em;
+  letter-spacing: 0.26em;
   text-transform: uppercase;
   color: var(--text-dim);
   transition: var(--t-theme);
@@ -801,7 +801,7 @@ body.easter-333 .mcube-333 {
 
 .m1-module-num {
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.58rem;
+  font-size: 0.72rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
   color: var(--text-dim);
@@ -856,10 +856,10 @@ body.easter-333 .mcube-333 {
 
 .m1-timer-display {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 1rem;
+  font-size: 1.15rem;
   font-weight: 300;
   color: var(--text-dim);
-  min-width: 36px;
+  min-width: 40px;
   text-align: center;
   letter-spacing: 0.06em;
   transition: color 0.5s ease;
@@ -896,14 +896,14 @@ body.easter-333 .mcube-333 {
 
 .m1-consigne-text {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 1.08rem;
+  font-size: 1.22rem;
   font-weight: 300;
   font-style: italic;
   color: var(--text);
   text-align: center;
   letter-spacing: 0.03em;
   line-height: 1.65;
-  text-shadow: 0 0 20px var(--bg);
+  text-shadow: 0 0 24px var(--bg);
 }
 
 /* ── Zone centrale ────────────────────────────────────────────── */
@@ -948,6 +948,11 @@ body.easter-333 .mcube-333 {
   overflow: visible;
 }
 
+/* Overflow visible sur le wrapper aussi pour les cercles en expansion */
+.m1-seed-wrap {
+  overflow: visible;
+}
+
 /* Les cercles de la Graine de Vie */
 #m1-seed-svg .gdv-circles circle {
   fill: none;
@@ -974,7 +979,7 @@ body.easter-333 .mcube-333 {
 
 .m1-phase-label {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 1.5rem;
+  font-size: 1.85rem;
   font-weight: 300;
   font-style: italic;
   color: var(--breath-text, #AFA9EC);
@@ -984,7 +989,7 @@ body.easter-333 .mcube-333 {
 
 .m1-phase-count {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 2.6rem;
+  font-size: 3.2rem;
   font-weight: 300;
   line-height: 1;
   color: var(--breath-text, #AFA9EC);
@@ -1025,16 +1030,16 @@ body.easter-333 .mcube-333 {
 
 .m1-pattern-name {
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.66rem;
+  font-size: 0.78rem;
   font-weight: 500;
   letter-spacing: 0.06em;
 }
 
 .m1-pattern-detail {
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.54rem;
+  font-size: 0.66rem;
   letter-spacing: 0.12em;
-  opacity: 0.65;
+  opacity: 0.75;
 }
 
 /* ── Section audio ────────────────────────────────────────────── */
@@ -1081,7 +1086,7 @@ body.light-mode .m1-freq-btn--active {
 
 .m1-freq-hz {
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.59rem;
+  font-size: 0.72rem;
   font-weight: 500;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -1089,9 +1094,9 @@ body.light-mode .m1-freq-btn--active {
 
 .m1-freq-mood {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 0.72rem;
+  font-size: 0.85rem;
   font-style: italic;
-  opacity: 0.72;
+  opacity: 0.82;
 }
 
 /* Ambiance */
@@ -1107,7 +1112,7 @@ body.light-mode .m1-freq-btn--active {
   border: 1px solid var(--stroke-dim);
   color: var(--text-dim);
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.60rem;
+  font-size: 0.72rem;
   letter-spacing: 0.10em;
   text-transform: uppercase;
   cursor: pointer;
@@ -1138,8 +1143,8 @@ body.light-mode .m1-freq-btn--active {
   border: none;
   color: var(--text-dim);
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.70rem;
-  letter-spacing: 0.20em;
+  font-size: 0.82rem;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   cursor: pointer;
   padding: 8px 14px;
@@ -1190,6 +1195,82 @@ body.light-mode .m1-toast {
   background: rgba(245, 237, 214, 0.96);
 }
 
+/* ── Sliders de volume ────────────────────────────────────────── */
+.m1-audio-group {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+
+.m1-vol-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 2px;
+}
+
+.m1-vol-icon {
+  flex-shrink: 0;
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+}
+
+.m1-vol-icon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.m1-vol-slider {
+  flex: 1;
+  -webkit-appearance: none;
+  appearance: none;
+  height: 1px;
+  background: var(--stroke-dim);
+  outline: none;
+  cursor: pointer;
+  border-radius: 0;
+  transition: background 0.3s ease;
+}
+
+.m1-vol-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--gold);
+  cursor: pointer;
+  box-shadow: 0 0 8px var(--gold-dim);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.m1-vol-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.3);
+  box-shadow: 0 0 12px var(--gold-dim);
+}
+
+.m1-vol-slider::-moz-range-thumb {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: var(--gold);
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 0 8px var(--gold-dim);
+}
+
+.m1-vol-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.60rem;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  flex-shrink: 0;
+  min-width: 52px;
+  text-align: right;
+}
+
 /* ── Adaptation écrans petits ─────────────────────────────────── */
 @media (max-height: 680px) {
   .m1-seed-wrap {
@@ -1214,3 +1295,578 @@ body.light-mode .m1-toast {
   .m1-seed-wrap { animation: none; }
   .m1-phase-label { transition: none; }
 }
+
+/* ════════════════════════════════════════════════════════════════
+   MODULE 2 — MANTRA DU JOUR
+   ════════════════════════════════════════════════════════════════ */
+
+.m2-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0 28px 24px;
+  position: relative;
+  gap: 20px;
+}
+
+/* Halo doré derrière le mantra */
+.m2-halo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center,
+    rgba(184, 134, 11, 0.18) 0%,
+    rgba(184, 134, 11, 0.06) 50%,
+    transparent 75%
+  );
+  pointer-events: none;
+  animation: m2-halo-pulse 4s ease-in-out infinite;
+}
+
+@keyframes m2-halo-pulse {
+  0%, 100% { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
+  50%       { opacity: 1;   transform: translate(-50%, -50%) scale(1.08); }
+}
+
+/* Catégorie */
+.m2-category {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.20em;
+  color: var(--gold);
+  text-transform: uppercase;
+  opacity: 0.75;
+  z-index: 1;
+}
+
+/* Texte du mantra */
+.m2-mantra-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.25rem, 5vw, 1.7rem);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.55;
+  color: var(--text);
+  text-align: center;
+  z-index: 1;
+  min-height: 80px;
+  opacity: 0;
+  transition: opacity 0.28s ease;
+}
+
+.m2-mantra-text.m2-text--visible {
+  opacity: 1;
+}
+
+/* Mots individuels — animation */
+.m2-word {
+  display: inline;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.m2-word.m2-word--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Instruction */
+.m2-instruction {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  letter-spacing: 0.04em;
+  z-index: 1;
+}
+
+/* Actions */
+.m2-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  z-index: 1;
+  margin-top: 8px;
+}
+
+/* Bouton étoile favori */
+.m2-star-btn {
+  background: none;
+  border: 1px solid rgba(184, 134, 11, 0.3);
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: color 0.25s, border-color 0.25s, transform 0.2s;
+  padding: 0;
+}
+
+.m2-star-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+.m2-star-btn.m2-star--active {
+  color: var(--gold);
+  border-color: var(--gold);
+}
+
+.m2-star-btn.m2-star--active svg path {
+  fill: var(--gold);
+}
+
+.m2-star-btn.m2-star--pulse {
+  animation: star-pulse 0.4s ease;
+}
+
+@keyframes star-pulse {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.35); }
+  70%  { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+/* Bouton "Autre mantra" */
+.m2-next-mantra-btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: var(--text-dim);
+  background: none;
+  border: 1px solid rgba(235, 228, 210, 0.18);
+  border-radius: 20px;
+  padding: 9px 20px;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.m2-next-mantra-btn:active {
+  color: var(--gold);
+  border-color: rgba(184, 134, 11, 0.5);
+}
+
+/* Mode clair */
+.light-mode .m2-halo {
+  background: radial-gradient(ellipse at center,
+    rgba(154, 110, 10, 0.14) 0%,
+    rgba(154, 110, 10, 0.05) 50%,
+    transparent 75%
+  );
+}
+
+/* ════════════════════════════════════════════════════════════════
+   MODULE 3 — INTÉGRATION DU SOMBRE
+   ════════════════════════════════════════════════════════════════ */
+
+#screen-m3 {
+  --m3-bg-overlay: rgba(10, 6, 20, 0.45);
+}
+
+/* Fond Yin Yang */
+.m3-yinyang-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.m3-yinyang {
+  width: min(65vmin, 260px);
+  height: min(65vmin, 260px);
+  color: var(--gold);
+  animation: m3-yy-rotate 120s linear infinite;
+  will-change: transform;
+}
+
+@keyframes m3-yy-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+/* Zone principale */
+.m3-main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0 0 16px;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  overflow: visible; /* ne pas couper la boîte de transmutation */
+}
+
+/* Plume de Maât */
+.m3-feather-wrap {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+  margin-top: 8px;
+}
+
+.m3-feather {
+  width: 44px;
+  height: 88px;
+  color: var(--gold);
+  filter: drop-shadow(0 0 3px rgba(184, 134, 11, 0.3));
+  transition: filter 0.6s ease;
+  will-change: transform;
+}
+
+.m3-feather.m3-feather--lit {
+  filter: drop-shadow(0 0 10px rgba(184, 134, 11, 0.7))
+          drop-shadow(0 0 20px rgba(184, 134, 11, 0.4));
+}
+
+/* Enveloppe relative pour les deux phases empilées */
+.m3-phases-wrap {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Phase saisie / résultat — empilées en absolu
+   État de base : caché. .m3-phase--visible révèle avec transition. */
+.m3-input-phase,
+.m3-result-phase {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 8px 20px 16px;
+  overflow-y: auto; /* scroll si le texte déborde sur petit écran */
+  /* État caché par défaut (transition sur opacity/transform) */
+  opacity: 0;
+  transform: translateY(18px);
+  pointer-events: none;
+  transition: opacity 0.42s ease, transform 0.42s ease;
+}
+
+/* Visible : révèle la phase */
+.m3-phase--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* pointer-events: auto UNIQUEMENT quand screen-m3 est actif.
+   La base a pointer-events:none pour éviter l'overlay fantôme
+   quand le screen est inactif (opacity:0 mais sinon interactif). */
+#screen-m3.active .m3-phase--visible {
+  pointer-events: auto;
+}
+
+/* Dissolution vers le haut */
+.m3-phase--dissolve {
+  opacity: 0;
+  transform: translateY(-28px) scale(0.97);
+  filter: blur(2px);
+  transition: opacity 0.4s ease, transform 0.4s ease, filter 0.4s ease;
+  pointer-events: none;
+}
+
+/* Question */
+.m3-question {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.15rem, 4.5vw, 1.5rem);
+  font-weight: 400;
+  font-style: italic;
+  color: var(--text);
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* Textarea */
+.m3-textarea {
+  width: 90%;
+  max-width: 420px;
+  min-height: 90px;
+  background: rgba(184, 134, 11, 0.05);
+  border: 1px solid rgba(184, 134, 11, 0.25);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  padding: 14px 16px;
+  resize: none;
+  line-height: 1.5;
+  outline: none;
+  transition: border-color 0.25s;
+  /* Override du user-select: none du body — essentiel pour la saisie */
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.m3-textarea:focus {
+  border-color: rgba(184, 134, 11, 0.55);
+}
+
+.m3-textarea::placeholder {
+  color: var(--text-faint);
+  font-style: italic;
+}
+
+.m3-textarea.m3-ta--shake {
+  animation: ta-shake 0.4s ease;
+  border-color: rgba(184, 134, 11, 0.6);
+}
+
+@keyframes ta-shake {
+  0%, 100% { transform: translateX(0); }
+  20%       { transform: translateX(-5px); }
+  40%       { transform: translateX(5px); }
+  60%       { transform: translateX(-4px); }
+  80%       { transform: translateX(4px); }
+}
+
+/* Bouton Transmuter */
+.m3-transmute-btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bg);
+  background: var(--gold);
+  border: none;
+  border-radius: 6px;
+  padding: 13px 36px;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  box-shadow: 0 2px 18px rgba(184, 134, 11, 0.35);
+}
+
+.m3-transmute-btn:active {
+  transform: scale(0.97);
+  background: var(--gold-hi);
+}
+
+/* Texte utilisateur affiché au-dessus */
+.m3-user-text-display {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.92rem;
+  font-style: italic;
+  color: var(--text-dim);
+  text-align: center;
+  opacity: 0.6;
+  margin-bottom: 4px;
+  max-width: 300px;
+}
+
+/* Boîte de transmutation */
+.m3-result-box {
+  position: relative;
+  overflow: hidden;
+  width: 90%;
+  max-width: 420px;
+  margin: 0 auto;
+  border-radius: 12px;
+  background: rgba(15, 110, 86, 0.08);
+  border: 1px solid rgba(15, 110, 86, 0.2);
+  padding: 28px 28px;
+  box-sizing: border-box;
+  transition: background 0.8s ease, border-color 0.8s ease,
+              box-shadow 0.8s ease;
+}
+
+.m3-result-box.m3-result--lit {
+  background: linear-gradient(135deg,
+    rgba(15, 110, 86, 0.18) 0%,
+    rgba(184, 134, 11, 0.12) 100%
+  );
+  border-color: rgba(23, 160, 122, 0.45);
+  box-shadow: 0 0 24px rgba(15, 110, 86, 0.2),
+              0 0 48px rgba(184, 134, 11, 0.08);
+}
+
+/* Texte de transmutation — centré, adaptatif */
+.m3-transmutation-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.125rem, 4vw, 1.35rem); /* min 18px */
+  font-weight: 400;
+  line-height: 1.65;
+  color: var(--text);
+  text-align: center;
+  width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+.m3-word {
+  display: inline;
+  opacity: 0;
+  transition: opacity 0.4s ease, text-shadow 0.4s ease;
+}
+
+.m3-word.m3-word--visible {
+  opacity: 1;
+  text-shadow: 0 0 12px rgba(23, 160, 122, 0.45);
+}
+
+/* Glow s'estompe après apparition */
+@keyframes m3-word-settle {
+  0%   { text-shadow: 0 0 18px rgba(23, 160, 122, 0.7); }
+  100% { text-shadow: none; }
+}
+
+.m3-word.m3-word--settled {
+  text-shadow: none;
+  transition: text-shadow 1.5s ease;
+}
+
+/* Bouton recommencer */
+.m3-reset-btn {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.76rem;
+  color: var(--text-dim);
+  background: none;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.03em;
+  padding: 8px 0;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.m3-reset-btn:active { opacity: 1; }
+
+/* Pied de module M3 — apparaît après transmutation */
+.m3-footer {
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.m3-footer.m3-footer--visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* pointer-events: auto seulement quand screen est ACTIVE
+   (évite le footer invisible qui bloque les clics sur d'autres écrans) */
+#screen-m3.active .m3-footer.m3-footer--visible {
+  pointer-events: auto;
+}
+
+/* ── Pulse du fond M3 — double battement de cœur ───────────────── */
+@keyframes m3-bg-pulse {
+  0%   { background-color: var(--bg); }
+  12%  { background-color: rgba(4, 2, 12, 1); }
+  24%  { background-color: var(--bg); }
+  36%  { background-color: rgba(4, 2, 12, 0.9); }
+  60%  { background-color: var(--bg); }
+  100% { background-color: var(--bg); }
+}
+
+#screen-m3.m3-pulse {
+  animation: m3-bg-pulse 0.75s ease;
+}
+
+/* ── Flash de lumière teal après la dissolution ──────────────────── */
+@keyframes m3-light-sweep {
+  0%   { opacity: 0; transform: translateX(-100%); }
+  50%  { opacity: 1; }
+  100% { opacity: 0; transform: translateX(100%); }
+}
+
+.m3-result-box::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(23, 160, 122, 0.25) 40%,
+    rgba(184, 134, 11, 0.2) 60%,
+    transparent 100%
+  );
+  pointer-events: none;
+  opacity: 0;
+  border-radius: 10px;
+}
+
+/* position/overflow définis dans la règle principale ci-dessous */
+
+.m3-result-box.m3-result--sweep::after {
+  animation: m3-light-sweep 1.1s ease forwards;
+}
+
+/* ── Yin Yang — flash d'intensité pendant la transmutation ───────── */
+@keyframes m3-yy-flash {
+  0%   { opacity: 1; }
+  30%  { opacity: 1; filter: brightness(4) saturate(2); }
+  60%  { opacity: 1; filter: brightness(1.5); }
+  100% { opacity: 1; filter: none; }
+}
+
+.m3-yinyang.m3-yy--flash {
+  animation: m3-yy-rotate 120s linear infinite,
+             m3-yy-flash 1s ease forwards;
+}
+
+/* ── Plume — glow intense pendant la transmutation ──────────────── */
+.m3-feather.m3-feather--lit {
+  filter: drop-shadow(0 0 8px rgba(184, 134, 11, 0.9))
+          drop-shadow(0 0 22px rgba(184, 134, 11, 0.55))
+          drop-shadow(0 0 40px rgba(184, 134, 11, 0.25));
+  color: var(--gold-hi);
+}
+
+/* Mode clair — ajustements M3 */
+.light-mode .m3-textarea {
+  background: rgba(154, 110, 10, 0.04);
+  border-color: rgba(154, 110, 10, 0.2);
+  color: var(--text);
+}
+
+.light-mode .m3-textarea:focus {
+  border-color: rgba(154, 110, 10, 0.45);
+}
+
+.light-mode .m3-transmute-btn {
+  background: #9A6E0A;
+}
+
+.light-mode .m3-result-box {
+  background: rgba(10, 80, 60, 0.06);
+  border-color: rgba(10, 80, 60, 0.18);
+}
+
+.light-mode .m3-result-box.m3-result--lit {
+  background: linear-gradient(135deg,
+    rgba(10, 80, 60, 0.12) 0%,
+    rgba(154, 110, 10, 0.08) 100%
+  );
+  border-color: rgba(15, 110, 86, 0.35);
+}
+
+/* Header right placeholder (pour aligner le header M2/M3) */
+.m1-header-right {
+  width: 72px;
+  /* même largeur que le bloc timer de M1 pour garder le centrage */
+}
+

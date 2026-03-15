@@ -1,0 +1,110 @@
+'use strict';
+
+/* ================================================================
+   MATRICE — data/transmutations.js
+   Pools de transmutation par contexte + détection mots-clés
+   ================================================================ */
+
+const TRANSMUTATIONS = {
+  pro: [
+    "Ce collègue, ce patron, cette tension — c'est ton terrain d'entraînement, pas ta prison. Tu y apprends ce qu'aucun livre ne t'enseignera.",
+    "Le travail qui pèse ce matin finance la liberté que tu construis. Chaque jour sur ce chantier est un pas vers ce que tu veux vraiment.",
+    "La difficulté professionnelle est un miroir. Ce qui t'irrite te montre où tu grandis. Regarde bien.",
+    "Tu tiens debout dans un environnement hostile. Il y a 18 mois, tu aurais fui. Aujourd'hui tu es encore là. C'est ça, la force.",
+    "Ce boulot n'est pas ta vie. C'est un outil. Utilise-le, ne le laisse pas t'utiliser.",
+    "La friction au travail aiguise quelque chose en toi. Tu ne le vois pas encore, mais tu es en train de forger exactement ce dont tu as besoin.",
+  ],
+
+  corps: [
+    "Ce corps a traversé tout ce que tu as traversé. Il n'est pas ton ennemi — il est ton allié le plus ancien.",
+    "La honte corporelle est un mensonge qu'on a gravé sur toi. À chaque souffle libre, tu l'effaces un peu plus.",
+    "Ton corps n'est pas une contamination. Il est le vaisseau de tout ce que tu crées. Honore-le.",
+    "Ce que tu ressens dans ton corps est un signal, pas une condamnation. Écoute-le sans le juger.",
+    "Le corps qui te porte ce matin est le même qui escalade, qui crée, qui tient debout. Il mérite ton respect.",
+    "Chaque inspiration est la preuve que ton corps te choisit. Chaque jour. Malgré tout.",
+  ],
+
+  deuil: [
+    "Le manque que tu ressens est la mesure de l'amour. Il ne diminuera pas — mais il peut devenir un moteur au lieu d'une ancre.",
+    "Vivre pleinement n'est pas une trahison. C'est le plus bel hommage que tu puisses rendre à ceux qui ne sont plus là.",
+    "Tu portes Émilie avec toi dans tout ce que tu construis. Elle n'est pas absente — elle est tissée dans chacun de tes actes de courage.",
+    "Le deuil n'a pas de calendrier. Ce matin il pèse. Demain il portera. Les deux sont vrais.",
+    "Tu as bâti la vie qu'elle aurait voulu vivre. C'est la preuve : tu mérites d'être ici.",
+    "La douleur de la perte prouve la profondeur du lien. Ce lien ne s'est pas brisé — il a changé de forme.",
+  ],
+
+  mental: [
+    "Les pensées en boucle sont un circuit fermé. Tu viens de l'ouvrir en les nommant. Le circuit est brisé.",
+    "Le tribunal intérieur siège sans preuves. Tu as le droit de te lever et de quitter la salle.",
+    "Cette voix qui t'attaque n'est pas la tienne. C'est un écho ancien. Tu n'es plus l'enfant qui devait l'écouter.",
+    "L'angoisse est de l'énergie sans direction. Tu viens de lui donner un nom. Maintenant donne-lui une sortie.",
+    "La peur dit 'danger'. Vérifie : y a-t-il un danger réel, maintenant, ici ? Non. Alors c'est un souvenir, pas une réalité.",
+    "Le mental qui s'emballe cherche à te protéger. Remercie-le. Puis reprends le volant.",
+  ],
+
+  general: [
+    "Ce poids est un signal, pas une sentence. Il te montre où diriger ton énergie.",
+    "Tu l'as nommé. Il n'a plus de pouvoir anonyme. Maintenant, avance avec.",
+    "Ce qui pèse ce matin est la preuve que tu ressens. Et ressentir, c'est être vivant.",
+    "La lourdeur est un ancrage mal orienté. Redirige-la vers ce que tu veux construire.",
+    "Tu n'as pas besoin de résoudre ça maintenant. Tu as besoin de le voir — et c'est fait.",
+    "Ce qui est nommé perd son emprise. Ce qui est vu ne peut plus agir dans l'ombre.",
+    "Chaque matin lourd est un matin où tu as quand même ouvert cette app. C'est déjà un acte de force.",
+    "Le sombre nourrit les racines. Pas de racines profondes sans obscurité traversée.",
+  ],
+};
+
+/* ----------------------------------------------------------------
+   Mots-clés par pool
+   ---------------------------------------------------------------- */
+const POOL_KEYWORDS = {
+  pro:    ['travail', 'boulot', 'collègue', 'patron', 'mission', 'intérim', 'chantier', 'client', 'entreprise', 'bureau', 'job', 'chef'],
+  corps:  ['corps', 'honte', 'souffle', 'odeur', 'peau', 'poids', 'sueur', 'laid', 'gros', 'moche', 'ventre', 'physique', 'douleur'],
+  deuil:  ['émilie', 'sœur', 'mort', 'deuil', 'perte', 'partie', 'absente', 'disparue', 'manque', 'perdu', 'décès', 'absence'],
+  mental: ['peur', 'angoisse', 'tribunal', 'voix', 'boucle', 'pensée', 'fou', 'spirale', 'tête', 'cerveau', 'mental', 'anxiété', 'doute', 'rumination'],
+};
+
+/**
+ * Détecte le pool approprié à partir du texte utilisateur.
+ * Retourne une clé de TRANSMUTATIONS.
+ * @param {string} text
+ * @returns {string}
+ */
+function detectPool(text) {
+  const lower = text.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+
+  // Comptage des hits par pool
+  const scores = {};
+  for (const [pool, keywords] of Object.entries(POOL_KEYWORDS)) {
+    scores[pool] = 0;
+    for (const kw of keywords) {
+      const kwNorm = kw.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      if (lower.includes(kwNorm)) scores[pool]++;
+    }
+  }
+
+  // Pool avec le score max (> 0) ; sinon general
+  let best = 'general';
+  let bestScore = 0;
+  for (const [pool, score] of Object.entries(scores)) {
+    if (score > bestScore) {
+      bestScore = score;
+      best = pool;
+    }
+  }
+  return best;
+}
+
+/**
+ * Retourne une transmutation aléatoire d'un pool.
+ * Évite la répétition de la dernière transmutation utilisée.
+ * @param {string} pool
+ * @param {string|null} lastText
+ * @returns {string}
+ */
+function pickTransmutation(pool, lastText = null) {
+  const list = TRANSMUTATIONS[pool] || TRANSMUTATIONS.general;
+  const filtered = lastText ? list.filter(t => t !== lastText) : list;
+  const src = filtered.length > 0 ? filtered : list;
+  return src[Math.floor(Math.random() * src.length)];
+}

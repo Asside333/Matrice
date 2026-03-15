@@ -3,7 +3,7 @@
    Cache offline, stratégie Cache-First
    ================================================================ */
 
-const CACHE_NAME = 'matrice-v2';
+const CACHE_NAME = 'matrice-v3';
 
 // Fichiers à mettre en cache à l'installation
 const ASSETS_TO_CACHE = [
@@ -12,6 +12,10 @@ const ASSETS_TO_CACHE = [
   './style.css',
   './app.js',
   './manifest.json',
+  './module2.js',
+  './module3.js',
+  './data/mantras.js',
+  './data/transmutations.js',
   // Google Fonts sont mis en cache dynamiquement (voir fetch handler)
 ];
 
