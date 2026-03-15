@@ -93,8 +93,9 @@ const Module2 = (() => {
     words.forEach((word, i) => {
       const span = document.createElement('span');
       span.className = 'm2-word';
-      span.textContent = word + (i < words.length - 1 ? '\u00A0' : '');
+      span.textContent = word;
       container.appendChild(span);
+      if (i < words.length - 1) container.appendChild(document.createTextNode(' '));
 
       const t = setTimeout(() => {
         span.classList.add('m2-word--visible');

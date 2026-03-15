@@ -240,86 +240,324 @@
   </section>
 
   <!-- ═══════════════════════════════════════════
-       ÉCRAN — STUDIO / MODE LIBRE (placeholder)
+       ÉCRAN — STUDIO / MODE LIBRE
   ═══════════════════════════════════════════ -->
   <section id="screen-libre" class="screen" aria-label="Studio — Mode Libre">
-    <header class="screen-header">
-      <button class="btn-back" data-target="accueil" aria-label="Retour">
-        <span class="back-arrow">←</span>
+
+    <!-- En-tête compact -->
+    <div class="sl-header">
+      <span class="sl-title">Studio</span>
+      <button class="sl-timer-btn" id="sl-timer-btn" aria-label="Définir un timer">
+        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="10" cy="11" r="7" stroke="currentColor" stroke-width="1.3"/>
+          <path d="M10 7v4l2.5 2" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+          <path d="M7.5 2.5h5" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+        </svg>
+        <span id="sl-timer-label">Timer</span>
       </button>
-      <span class="screen-title">Studio</span>
-      <div class="screen-header-right"></div>
-    </header>
-    <div class="screen-placeholder">
-      <div class="placeholder-geom">
-        <svg viewBox="0 0 80 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <!-- Onde sinusoïdale -->
-          <path d="M0,20 C10,0 20,0 30,20 S50,40 60,20 S80,0 80,20"
-                stroke="currentColor" fill="none" stroke-width="1.2" opacity="0.6"/>
-          <path d="M0,20 C10,35 20,35 30,20 S50,5 60,20 S80,35 80,20"
-                stroke="currentColor" fill="none" stroke-width="0.5" opacity="0.3"/>
+    </div>
+
+    <!-- Barre timer (visible quand actif) -->
+    <div class="sl-timer-bar sl-timer-bar--off" id="sl-timer-bar">
+      <span class="sl-timer-remaining" id="sl-timer-remaining">—</span>
+      <button class="sl-timer-stop" id="sl-timer-stop" aria-label="Arrêter le timer">✕</button>
+    </div>
+
+    <!-- Zone Respiration + Graine de Vie -->
+    <div class="sl-breath-zone">
+      <div class="sl-seed-wrap" aria-hidden="true">
+        <svg id="sl-seed-svg" class="sl-seed-svg" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <filter id="sl-glow-f" x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" id="sl-blur-el"/>
+              <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+            </filter>
+          </defs>
+          <g class="sl-seed-circles" filter="url(#sl-glow-f)"></g>
         </svg>
       </div>
-      <p class="placeholder-text">Le studio arrive bientôt.</p>
-      <p class="placeholder-sub">Binauraux · Respiration · Sons · Yi King libre</p>
+
+      <p class="sl-breath-label" id="sl-breath-label" aria-live="polite">—</p>
+
+      <div class="sl-pattern-row" role="group" aria-label="Pattern de respiration">
+        <button class="sl-pattern-btn sl-pattern-btn--on" data-pattern="5-5">5-5</button>
+        <button class="sl-pattern-btn" data-pattern="4-2-4-2">4-2-4-2</button>
+        <button class="sl-pattern-btn" data-pattern="4-7-8">4-7-8</button>
+      </div>
+
+      <button class="sl-play-btn" id="sl-play-btn" aria-label="Lancer / Pause respiration">
+        <svg class="sl-play-icon" id="sl-play-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <polygon points="6,4 20,12 6,20" fill="currentColor"/>
+        </svg>
+      </button>
     </div>
+
+    <div class="sl-divider" aria-hidden="true"></div>
+
+    <!-- Binauraux -->
+    <div class="sl-section">
+      <span class="sl-section-label">Binauraux</span>
+      <div class="sl-btn-row" role="group" aria-label="Sons binauraux">
+        <button class="sl-audio-btn" data-bin="theta" aria-pressed="false">Theta · Intro</button>
+        <button class="sl-audio-btn" data-bin="alpha" aria-pressed="false">Alpha · Focus</button>
+        <button class="sl-audio-btn" data-bin="gamma" aria-pressed="false">Gamma · Clarté</button>
+      </div>
+      <div class="sl-vol-row">
+        <svg class="sl-vol-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M3 7h3l5-4v14l-5-4H3V7z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
+          <path d="M14 7c1.5 1 2 2 2 3s-.5 2-2 3" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+        </svg>
+        <input type="range" class="sl-slider" id="sl-vol-bin" min="0" max="100" value="40" aria-label="Volume binauraux">
+      </div>
+    </div>
+
+    <div class="sl-divider" aria-hidden="true"></div>
+
+    <!-- Ambiance -->
+    <div class="sl-section">
+      <span class="sl-section-label">Ambiance</span>
+      <div class="sl-btn-row" role="group" aria-label="Sons d'ambiance">
+        <button class="sl-audio-btn" data-amb="pluie" aria-pressed="false">Pluie</button>
+        <button class="sl-audio-btn" data-amb="bols" aria-pressed="false">Bols</button>
+        <button class="sl-audio-btn" data-amb="drone" aria-pressed="false">Drone</button>
+        <button class="sl-audio-btn sl-audio-btn--on" data-amb="silence" aria-pressed="true">Silence</button>
+      </div>
+      <div class="sl-vol-row">
+        <svg class="sl-vol-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+          <path d="M3 7h3l5-4v14l-5-4H3V7z" stroke="currentColor" stroke-width="1.1" stroke-linejoin="round"/>
+          <path d="M14 7c1.5 1 2 2 2 3s-.5 2-2 3" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+        </svg>
+        <input type="range" class="sl-slider" id="sl-vol-amb" min="0" max="100" value="50" aria-label="Volume ambiance">
+      </div>
+    </div>
+
+    <!-- Yi King -->
+    <button class="sl-yiking-btn" id="sl-yiking-btn">✦ Tirage Yi King</button>
+
+    <!-- ── Overlay : Timer picker ──────────────────── -->
+    <div class="sl-overlay sl-overlay--off" id="sl-timer-overlay" role="dialog" aria-modal="true" aria-label="Choisir la durée">
+      <div class="sl-overlay-box">
+        <p class="sl-overlay-title">Durée de session</p>
+        <div class="sl-pick-row">
+          <button class="sl-pick-btn" data-min="5">5 min</button>
+          <button class="sl-pick-btn" data-min="10">10 min</button>
+          <button class="sl-pick-btn" data-min="15">15 min</button>
+          <button class="sl-pick-btn" data-min="20">20 min</button>
+          <button class="sl-pick-btn" data-min="30">30 min</button>
+        </div>
+        <button class="sl-overlay-cancel" id="sl-timer-overlay-cancel">Annuler</button>
+      </div>
+    </div>
+
+    <!-- ── Overlay : Yi King ───────────────────────── -->
+    <div class="sl-overlay sl-overlay--off" id="sl-yk-overlay" role="dialog" aria-modal="true" aria-label="Tirage Yi King">
+      <div class="sl-overlay-box sl-yk-box">
+        <button class="sl-overlay-close" id="sl-yk-close" aria-label="Fermer">✕</button>
+
+        <!-- Zone de lancer -->
+        <div id="sl-yk-throw-zone">
+          <p class="sl-overlay-title">Tirage Yi King</p>
+          <p class="sl-yk-hint" id="sl-yk-hint">Pose une question intérieure,<br>puis lance les pièces 6 fois.</p>
+          <div class="sl-yk-traits" id="sl-yk-traits">
+            <div class="sl-yk-trait sl-yk-trait--pending" id="sl-yk-line-0"></div>
+            <div class="sl-yk-trait sl-yk-trait--pending" id="sl-yk-line-1"></div>
+            <div class="sl-yk-trait sl-yk-trait--pending" id="sl-yk-line-2"></div>
+            <div class="sl-yk-trait sl-yk-trait--pending" id="sl-yk-line-3"></div>
+            <div class="sl-yk-trait sl-yk-trait--pending" id="sl-yk-line-4"></div>
+            <div class="sl-yk-trait sl-yk-trait--pending" id="sl-yk-line-5"></div>
+          </div>
+          <p class="sl-yk-count" id="sl-yk-count">0 / 6</p>
+          <button class="sl-yk-throw-btn" id="sl-yk-throw-btn">Lancer les pièces</button>
+        </div>
+
+        <!-- Zone résultat -->
+        <div id="sl-yk-result-zone" style="display:none; opacity:0; flex-direction:column; align-items:center; gap:10px;">
+          <div id="sl-yk-hex-svg-wrap"></div>
+          <p class="sl-yk-hex-num" id="sl-yk-hex-num"></p>
+          <p class="sl-yk-hex-name" id="sl-yk-hex-name"></p>
+          <p class="sl-yk-hex-advice" id="sl-yk-hex-advice"></p>
+          <button class="sl-yk-retry-btn" id="sl-yk-retry-btn">Nouveau tirage</button>
+        </div>
+
+      </div>
+    </div>
+
   </section>
 
   <!-- ═══════════════════════════════════════════
-       ÉCRAN — SOS (placeholder)
+       ÉCRAN — SOS (flux automatique)
   ═══════════════════════════════════════════ -->
-  <section id="screen-sos" class="screen screen-sos-active" aria-label="Mode SOS">
-    <header class="screen-header screen-header-sos">
-      <button class="btn-back" data-target="accueil" aria-label="Retour">
-        <span class="back-arrow">←</span>
-      </button>
-      <span class="screen-title">SOS</span>
-      <div class="screen-header-right"></div>
-    </header>
-    <div class="screen-placeholder">
-      <div class="placeholder-geom sos-geom">
-        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <polygon points="40,8 72,64 8,64"
-                   stroke="currentColor" fill="none" stroke-width="1" opacity="0.6"/>
-          <polygon points="40,22 60,56 20,56"
-                   stroke="currentColor" fill="none" stroke-width="0.6" opacity="0.4"/>
-          <circle cx="40" cy="44" r="4" fill="currentColor" opacity="0.5"/>
-        </svg>
+  <section id="screen-sos" class="screen" aria-label="Mode SOS">
+
+    <!-- Contrôles flottants permanents -->
+    <button class="sos-ctrl-quit" id="sos-ctrl-quit" aria-label="Quitter le mode SOS">Quitter</button>
+    <button class="sos-ctrl-bin" id="sos-ctrl-bin" aria-pressed="false" aria-label="Sons binauraux Theta 6Hz">
+      <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M2 9V8a6 6 0 0112 0v1" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+        <rect x="1" y="9" width="3" height="4" rx="1" stroke="currentColor" stroke-width="1.1"/>
+        <rect x="12" y="9" width="3" height="4" rx="1" stroke="currentColor" stroke-width="1.1"/>
+      </svg>
+      6Hz
+    </button>
+
+    <!-- Scène : une seule étape visible à la fois -->
+    <div class="sos-stage" id="sos-stage">
+
+      <!-- Étape 1 : Corps -->
+      <div class="sos-step" id="sos-s1">
+        <p class="sos-txt-huge" id="sos-s1-text">Serre les poings.<br>Fort.</p>
       </div>
-      <p class="placeholder-text">Le mode SOS arrive bientôt.</p>
-      <p class="placeholder-sub">Corps · Nommer · Ancre</p>
-    </div>
+
+      <!-- Étape 2 : Respiration -->
+      <div class="sos-step sos-step--off" id="sos-s2">
+        <div class="sos-halo" aria-hidden="true"></div>
+
+        <div class="sos-seed-wrap" aria-hidden="true">
+          <svg id="sos-seed-svg" class="sos-seed-svg" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+              <filter id="sos-glow-f" x="-50%" y="-50%" width="200%" height="200%">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" id="sos-blur-el"/>
+                <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+              </filter>
+            </defs>
+            <g class="sos-seed-circles" filter="url(#sos-glow-f)"></g>
+          </svg>
+        </div>
+
+        <p class="sos-breath-label" id="sos-breath-label" aria-live="polite">Inspirez...</p>
+
+        <div class="sos-breath-bar-wrap" aria-hidden="true">
+          <div class="sos-breath-bar-fill" id="sos-breath-fill"></div>
+        </div>
+      </div>
+
+      <!-- Étape 3 : Nommer -->
+      <div class="sos-step sos-step--off" id="sos-s3">
+        <p class="sos-txt-prompt">Nomme ce qui monte.<br><em>Un mot.</em></p>
+        <textarea class="sos-textarea" id="sos-textarea"
+                  placeholder="Un mot, une sensation…"
+                  rows="2" autocomplete="off" spellcheck="false"></textarea>
+        <div class="sos-prog-wrap" aria-hidden="true">
+          <div class="sos-prog-fill" id="sos-prog-fill"></div>
+        </div>
+      </div>
+
+      <!-- Étape 4 : Réponse / transmutation -->
+      <div class="sos-step sos-step--off" id="sos-s4">
+        <p class="sos-txt-response" id="sos-s4-text"></p>
+      </div>
+
+      <!-- Étape 5 : Victoire -->
+      <div class="sos-step sos-step--off" id="sos-s5">
+        <p class="sos-txt-victory">Tu es encore là.<br>Tu n'as pas fui.<br>C'est déjà une victoire.</p>
+        <div class="sos-end-btns sos-end-btns--off" id="sos-end-btns">
+          <button class="sos-btn-home" id="sos-btn-home">Retour à l'accueil</button>
+          <button class="sos-btn-more" id="sos-btn-more">J'ai besoin de plus</button>
+        </div>
+      </div>
+
+    </div><!-- /.sos-stage -->
+
   </section>
 
   <!-- ═══════════════════════════════════════════
-       ÉCRAN — SOIR / GRATITUDE (placeholder)
+       ÉCRAN — SOIR / GRATITUDE
   ═══════════════════════════════════════════ -->
   <section id="screen-soir" class="screen" aria-label="Mode Soir — Gratitude">
-    <header class="screen-header">
-      <button class="btn-back" data-target="accueil" aria-label="Retour">
-        <span class="back-arrow">←</span>
-      </button>
-      <span class="screen-title">Soir</span>
-      <div class="screen-header-right"></div>
-    </header>
-    <div class="screen-placeholder">
-      <div class="placeholder-geom">
-        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-          <circle cx="40" cy="40" r="28" stroke="currentColor" fill="none" stroke-width="0.8" opacity="0.5"/>
-          <circle cx="40" cy="40" r="18" stroke="currentColor" fill="none" stroke-width="0.6" opacity="0.4"/>
-          <circle cx="40" cy="40" r="8" stroke="currentColor" fill="none" stroke-width="0.8" opacity="0.6"/>
-          <!-- Étoile à 8 branches -->
-          <g stroke="currentColor" stroke-width="0.6" opacity="0.4">
-            <line x1="40" y1="10" x2="40" y2="70"/>
-            <line x1="10" y1="40" x2="70" y2="40"/>
-            <line x1="20" y1="20" x2="60" y2="60"/>
-            <line x1="60" y1="20" x2="20" y2="60"/>
-          </g>
-        </svg>
-      </div>
-      <p class="placeholder-text">Le mode soir arrive bientôt.</p>
-      <p class="placeholder-sub">Gratitude · Action · Lâcher</p>
+
+    <!-- Graine de Vie en filigrane -->
+    <div class="sv-bg-wrap" aria-hidden="true">
+      <svg class="sv-bg-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+        <!-- Centre -->
+        <circle cx="100" cy="100" r="50" fill="none" stroke="currentColor" stroke-width="0.5"/>
+        <!-- 6 cercles extérieurs (r=50, distance=50) -->
+        <circle cx="150" cy="100"    r="50" fill="none" stroke="currentColor" stroke-width="0.5"/>
+        <circle cx="125" cy="143.3"  r="50" fill="none" stroke="currentColor" stroke-width="0.5"/>
+        <circle cx="75"  cy="143.3"  r="50" fill="none" stroke="currentColor" stroke-width="0.5"/>
+        <circle cx="50"  cy="100"    r="50" fill="none" stroke="currentColor" stroke-width="0.5"/>
+        <circle cx="75"  cy="56.7"   r="50" fill="none" stroke="currentColor" stroke-width="0.5"/>
+        <circle cx="125" cy="56.7"   r="50" fill="none" stroke="currentColor" stroke-width="0.5"/>
+      </svg>
     </div>
+
+    <!-- En-tête -->
+    <div class="sv-header">
+      <span class="sv-title">Soir</span>
+      <button class="sv-history-btn" id="sv-history-btn" aria-label="Voir l'historique">
+        <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M10 6v4l3 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
+          <path d="M3.5 10a6.5 6.5 0 1 0 1-3.5L2 5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        Historique
+      </button>
+    </div>
+
+    <!-- Toggle format -->
+    <div class="sv-toggle-row" role="group" aria-label="Format">
+      <button class="sv-toggle-btn sv-toggle-btn--on" data-format="rapide">Rapide</button>
+      <button class="sv-toggle-btn" data-format="complet">Complet</button>
+    </div>
+
+    <!-- Zone principale -->
+    <div class="sv-main" id="sv-main">
+
+      <!-- ── Format Rapide ───────────────────────── -->
+      <div class="sv-form" id="sv-form-rapide">
+        <p class="sv-prompt">Une chose pour laquelle<br>tu es reconnaissant aujourd'hui.</p>
+        <textarea class="sv-textarea" id="sv-ta-rapide"
+                  placeholder="Écris librement…"
+                  rows="4" autocomplete="off" spellcheck="false"></textarea>
+        <button class="sv-seal-btn" id="sv-seal-rapide">Sceller</button>
+      </div>
+
+      <!-- ── Format Complet ──────────────────────── -->
+      <div class="sv-form sv-form--off" id="sv-form-complet">
+
+        <div class="sv-field">
+          <p class="sv-field-label">Gratitude</p>
+          <p class="sv-field-hint">Une chose positive du jour</p>
+          <textarea class="sv-textarea" id="sv-ta-gratitude"
+                    placeholder="Je suis reconnaissant pour…"
+                    rows="2" autocomplete="off" spellcheck="false"></textarea>
+        </div>
+
+        <div class="sv-field">
+          <p class="sv-field-label">Action</p>
+          <p class="sv-field-hint">Ce que j'ai accompli aujourd'hui</p>
+          <textarea class="sv-textarea" id="sv-ta-action"
+                    placeholder="Aujourd'hui j'ai…"
+                    rows="2" autocomplete="off" spellcheck="false"></textarea>
+        </div>
+
+        <div class="sv-field">
+          <p class="sv-field-label">Lâcher</p>
+          <p class="sv-field-hint">Ce que je relâche ce soir</p>
+          <textarea class="sv-textarea" id="sv-ta-lacher"
+                    placeholder="Je relâche…"
+                    rows="2" autocomplete="off" spellcheck="false"></textarea>
+        </div>
+
+        <button class="sv-seal-btn" id="sv-seal-complet">Sceller la journée</button>
+      </div>
+
+      <!-- ── Zone après scellement ───────────────── -->
+      <div class="sv-sealed sv-sealed--off" id="sv-sealed">
+        <div class="sv-seal-star" aria-hidden="true">✦</div>
+        <p class="sv-closing" id="sv-closing"></p>
+        <button class="sv-new-btn" id="sv-new-btn">Nouvelle entrée</button>
+      </div>
+
+    </div><!-- /.sv-main -->
+
+    <!-- ── Overlay : Historique ────────────────────── -->
+    <div class="sv-overlay sv-overlay--off" id="sv-history-overlay" role="dialog" aria-modal="true" aria-label="Historique du soir">
+      <div class="sv-overlay-box">
+        <button class="sv-overlay-close" id="sv-history-close" aria-label="Fermer">✕</button>
+        <p class="sv-overlay-title">Historique</p>
+        <div class="sv-history-list" id="sv-history-list"></div>
+      </div>
+    </div>
+
   </section>
 
   <!-- ═══════════════════════════════════════════
@@ -840,5 +1078,9 @@
   <script src="module4.js"></script>
   <script src="module5.js"></script>
   <script src="module6.js"></script>
+  <script src="module-sos.js"></script>
+  <script src="module-libre.js"></script>
+  <script src="data/soir-phrases.js"></script>
+  <script src="module-soir.js"></script>
 </body>
 </html>

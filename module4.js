@@ -63,8 +63,9 @@ const Module4 = (() => {
     words.forEach((w, i) => {
       const span = document.createElement('span');
       span.className = 'm4-word';
-      span.textContent = w + (i < words.length - 1 ? '\u00A0' : '');
+      span.textContent = w;
       container.appendChild(span);
+      if (i < words.length - 1) container.appendChild(document.createTextNode(' '));
     });
 
     container.style.transition = 'opacity 0.4s';

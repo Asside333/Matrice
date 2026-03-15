@@ -147,8 +147,9 @@ const Module3 = (() => {
       words.forEach((w, i) => {
         const span = document.createElement('span');
         span.className = 'm3-word';
-        span.textContent = w + (i < words.length - 1 ? '\u00A0' : '');
+        span.textContent = w;
         tText.appendChild(span);
+        if (i < words.length - 1) tText.appendChild(document.createTextNode(' '));
 
         // Apparition avec glow
         const tAppear = setTimeout(() => {
