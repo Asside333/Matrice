@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#B8860B" id="meta-theme">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="MATRICE">
+  <meta name="description" content="Calibre ton champ">
+  <title>MATRICE</title>
+
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ═══════════════════════════════════════════
+       SPLASH
+  ═══════════════════════════════════════════ -->
+  <div id="splash" class="splash" aria-hidden="true">
+    <div class="splash-inner">
+      <svg class="splash-cube" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+        <g stroke="currentColor" fill="none" stroke-width="0.8" opacity="0.9">
+          <circle cx="60" cy="60" r="24"/>
+          <circle cx="84" cy="60" r="24"/>
+          <circle cx="72" cy="39.2" r="24"/>
+          <circle cx="48" cy="39.2" r="24"/>
+          <circle cx="36" cy="60" r="24"/>
+          <circle cx="48" cy="80.8" r="24"/>
+          <circle cx="72" cy="80.8" r="24"/>
+        </g>
+      </svg>
+      <p class="splash-name">MATRICE</p>
+      <p class="splash-333">3 · 3 · 3</p>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════
+       ÉCRAN — ACCUEIL
+  ═══════════════════════════════════════════ -->
+  <section id="screen-accueil" class="screen active" role="main">
+    <div class="bg-glow" aria-hidden="true"></div>
+
+    <header class="accueil-header">
+      <div class="streak-block" title="Jours consécutifs">
+        <span class="streak-number" id="streak-number">0</span>
+        <span class="streak-label">jours</span>
+      </div>
+
+      <h1 class="app-name">MATRICE</h1>
+
+      <div class="moon-block" id="moon-block" title="">
+        <span class="moon-emoji" id="moon-emoji">🌑</span>
+      </div>
+    </header>
+
+    <main class="accueil-main">
+      <!-- Cube de Métatron -->
+      <div class="metatron-container" aria-hidden="true">
+        <div class="metatron-glow"></div>
+        <div class="metatron-spinner">
+          <svg id="metatron-svg"
+               viewBox="0 0 320 320"
+               xmlns="http://www.w3.org/2000/svg"
+               role="img"
+               aria-label="Cube de Métatron">
+            <!-- Généré dynamiquement par app.js -->
+          </svg>
+        </div>
+      </div>
+
+      <!-- Call to action -->
+      <div class="accueil-cta">
+        <p class="accueil-subtitle">Calibre ton champ</p>
+        <button class="btn-rituel" id="btn-rituel" aria-label="Commencer le rituel du matin">
+          <span class="btn-rituel-text">Commencer le rituel</span>
+          <span class="btn-rituel-shine" aria-hidden="true"></span>
+        </button>
+      </div>
+    </main>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       ÉCRAN — RITUEL (placeholder)
+  ═══════════════════════════════════════════ -->
+  <section id="screen-rituel" class="screen" aria-label="Rituel du matin">
+    <header class="screen-header">
+      <button class="btn-back" data-target="accueil" aria-label="Retour">
+        <span class="back-arrow">←</span>
+      </button>
+      <span class="screen-title">Rituel du matin</span>
+      <div class="screen-header-right"></div>
+    </header>
+    <div class="screen-placeholder">
+      <div class="placeholder-geom">
+        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- Graine de Vie simplifiée -->
+          <g stroke="currentColor" fill="none" stroke-width="0.8" opacity="0.6">
+            <circle cx="40" cy="40" r="14"/>
+            <circle cx="54" cy="40" r="14"/>
+            <circle cx="47" cy="27.8" r="14"/>
+            <circle cx="33" cy="27.8" r="14"/>
+            <circle cx="26" cy="40" r="14"/>
+            <circle cx="33" cy="52.2" r="14"/>
+            <circle cx="47" cy="52.2" r="14"/>
+          </g>
+        </svg>
+      </div>
+      <p class="placeholder-text">Le rituel arrive bientôt.</p>
+      <p class="placeholder-sub">Souffle · Mantra · Sombre · Magnétisme · Sort · Yi King</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       ÉCRAN — STUDIO / MODE LIBRE (placeholder)
+  ═══════════════════════════════════════════ -->
+  <section id="screen-libre" class="screen" aria-label="Studio — Mode Libre">
+    <header class="screen-header">
+      <button class="btn-back" data-target="accueil" aria-label="Retour">
+        <span class="back-arrow">←</span>
+      </button>
+      <span class="screen-title">Studio</span>
+      <div class="screen-header-right"></div>
+    </header>
+    <div class="screen-placeholder">
+      <div class="placeholder-geom">
+        <svg viewBox="0 0 80 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- Onde sinusoïdale -->
+          <path d="M0,20 C10,0 20,0 30,20 S50,40 60,20 S80,0 80,20"
+                stroke="currentColor" fill="none" stroke-width="1.2" opacity="0.6"/>
+          <path d="M0,20 C10,35 20,35 30,20 S50,5 60,20 S80,35 80,20"
+                stroke="currentColor" fill="none" stroke-width="0.5" opacity="0.3"/>
+        </svg>
+      </div>
+      <p class="placeholder-text">Le studio arrive bientôt.</p>
+      <p class="placeholder-sub">Binauraux · Respiration · Sons · Yi King libre</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       ÉCRAN — SOS (placeholder)
+  ═══════════════════════════════════════════ -->
+  <section id="screen-sos" class="screen screen-sos-active" aria-label="Mode SOS">
+    <header class="screen-header screen-header-sos">
+      <button class="btn-back" data-target="accueil" aria-label="Retour">
+        <span class="back-arrow">←</span>
+      </button>
+      <span class="screen-title">SOS</span>
+      <div class="screen-header-right"></div>
+    </header>
+    <div class="screen-placeholder">
+      <div class="placeholder-geom sos-geom">
+        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <polygon points="40,8 72,64 8,64"
+                   stroke="currentColor" fill="none" stroke-width="1" opacity="0.6"/>
+          <polygon points="40,22 60,56 20,56"
+                   stroke="currentColor" fill="none" stroke-width="0.6" opacity="0.4"/>
+          <circle cx="40" cy="44" r="4" fill="currentColor" opacity="0.5"/>
+        </svg>
+      </div>
+      <p class="placeholder-text">Le mode SOS arrive bientôt.</p>
+      <p class="placeholder-sub">Corps · Nommer · Ancre</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       ÉCRAN — SOIR / GRATITUDE (placeholder)
+  ═══════════════════════════════════════════ -->
+  <section id="screen-soir" class="screen" aria-label="Mode Soir — Gratitude">
+    <header class="screen-header">
+      <button class="btn-back" data-target="accueil" aria-label="Retour">
+        <span class="back-arrow">←</span>
+      </button>
+      <span class="screen-title">Soir</span>
+      <div class="screen-header-right"></div>
+    </header>
+    <div class="screen-placeholder">
+      <div class="placeholder-geom">
+        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <circle cx="40" cy="40" r="28" stroke="currentColor" fill="none" stroke-width="0.8" opacity="0.5"/>
+          <circle cx="40" cy="40" r="18" stroke="currentColor" fill="none" stroke-width="0.6" opacity="0.4"/>
+          <circle cx="40" cy="40" r="8" stroke="currentColor" fill="none" stroke-width="0.8" opacity="0.6"/>
+          <!-- Étoile à 8 branches -->
+          <g stroke="currentColor" stroke-width="0.6" opacity="0.4">
+            <line x1="40" y1="10" x2="40" y2="70"/>
+            <line x1="10" y1="40" x2="70" y2="40"/>
+            <line x1="20" y1="20" x2="60" y2="60"/>
+            <line x1="60" y1="20" x2="20" y2="60"/>
+          </g>
+        </svg>
+      </div>
+      <p class="placeholder-text">Le mode soir arrive bientôt.</p>
+      <p class="placeholder-sub">Gratitude · Action · Lâcher</p>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       BOUTON SOS GLOBAL (toujours visible)
+  ═══════════════════════════════════════════ -->
+  <button class="btn-sos" id="btn-sos" aria-label="Mode SOS — aide immédiate">
+    SOS
+  </button>
+
+  <!-- ═══════════════════════════════════════════
+       NAVIGATION PRINCIPALE
+  ═══════════════════════════════════════════ -->
+  <nav class="main-nav" id="main-nav" aria-label="Navigation principale">
+    <button class="nav-btn active" data-screen="accueil" aria-label="Accueil">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <polygon points="12,2 22,19 2,19" stroke="currentColor" stroke-width="1.2" fill="none"/>
+        <polygon points="12,8 18,19 6,19" stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.5"/>
+      </svg>
+      <span class="nav-label">Accueil</span>
+    </button>
+    <button class="nav-btn" data-screen="rituel" aria-label="Rituel du matin">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.2"/>
+        <g stroke="currentColor" stroke-width="1" stroke-linecap="round">
+          <line x1="12" y1="2" x2="12" y2="5"/>
+          <line x1="12" y1="19" x2="12" y2="22"/>
+          <line x1="2" y1="12" x2="5" y2="12"/>
+          <line x1="19" y1="12" x2="22" y2="12"/>
+          <line x1="4.9" y1="4.9" x2="7.1" y2="7.1"/>
+          <line x1="16.9" y1="16.9" x2="19.1" y2="19.1"/>
+          <line x1="19.1" y1="4.9" x2="16.9" y2="7.1"/>
+          <line x1="7.1" y1="16.9" x2="4.9" y2="19.1"/>
+        </g>
+      </svg>
+      <span class="nav-label">Rituel</span>
+    </button>
+    <button class="nav-btn" data-screen="libre" aria-label="Studio — Mode libre">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M2,12 C5,4 8,4 11,12 S17,20 20,12 S23,4 24,12" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+      </svg>
+      <span class="nav-label">Studio</span>
+    </button>
+    <button class="nav-btn" data-screen="soir" aria-label="Mode soir — Gratitude">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M21,12.79A9,9,0,1,1,11.21,3,7,7,0,0,0,21,12.79Z" stroke="currentColor" stroke-width="1.2" fill="none"/>
+      </svg>
+      <span class="nav-label">Soir</span>
+    </button>
+  </nav>
+
+  <script src="app.js"></script>
+</body>
+</html>
