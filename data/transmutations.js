@@ -13,6 +13,8 @@ const TRANSMUTATIONS = {
     "Tu tiens debout dans un environnement hostile. Il y a 18 mois, tu aurais fui. Aujourd'hui tu es encore là. C'est ça, la force.",
     "Ce boulot n'est pas ta vie. C'est un outil. Utilise-le, ne le laisse pas t'utiliser.",
     "La friction au travail aiguise quelque chose en toi. Tu ne le vois pas encore, mais tu es en train de forger exactement ce dont tu as besoin.",
+    "L'incompétence autour de toi n'est pas un obstacle — c'est une donnée. Tu l'intègres sans te perdre dedans. Tu continues à faire du bon travail indépendamment du contexte.",
+    "Certains matins, le simple fait de s'habiller et de partir est un acte de courage. C'est en être un aujourd'hui. Et c'est suffisant.",
   ],
 
   corps: [
@@ -51,6 +53,11 @@ const TRANSMUTATIONS = {
     "Ce qui est nommé perd son emprise. Ce qui est vu ne peut plus agir dans l'ombre.",
     "Chaque matin lourd est un matin où tu as quand même ouvert cette app. C'est déjà un acte de force.",
     "Le sombre nourrit les racines. Pas de racines profondes sans obscurité traversée.",
+    "Ce que tu portes n'est pas un défaut de caractère. C'est la preuve que tu t'en soucies. L'indifférent ne ressent pas ce poids.",
+    "Quelque chose en toi sait que ça peut changer. Cette partie-là a raison.",
+    "Tu n'as pas à tout résoudre. Tu as juste à traverser cette journée un pas à la fois. C'est déjà beaucoup.",
+    "Ce qui t'a amené ici ce matin, malgré tout, c'est quelque chose de fort. Honore-le.",
+    "Même les jours gris font partie du cycle. Tu n'es pas bloqué — tu es en transit.",
   ],
 };
 
@@ -96,15 +103,11 @@ function detectPool(text) {
 }
 
 /**
- * Retourne une transmutation aléatoire d'un pool.
- * Évite la répétition de la dernière transmutation utilisée.
- * @param {string} pool
- * @param {string|null} lastText
+ * Retourne une transmutation sans répétition jusqu'à épuisement du pool.
+ * @param {string} pool — clé de TRANSMUTATIONS (ex: 'pro', 'general')
  * @returns {string}
  */
-function pickTransmutation(pool, lastText = null) {
+function pickTransmutation(pool) {
   const list = TRANSMUTATIONS[pool] || TRANSMUTATIONS.general;
-  const filtered = lastText ? list.filter(t => t !== lastText) : list;
-  const src = filtered.length > 0 ? filtered : list;
-  return src[Math.floor(Math.random() * src.length)];
+  return MatriceStorage.pickUnique(list, 'transmutations.' + (TRANSMUTATIONS[pool] ? pool : 'general'));
 }

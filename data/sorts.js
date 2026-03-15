@@ -32,6 +32,16 @@ const SORTS = {
       texte: "Le soleil ne demande pas la permission de se lever. Tu n'as pas besoin d'être invité pour occuper ta place. Aujourd'hui, tu entres dans chaque espace avec la certitude de ce que tu apportes.",
       geste: "Tiens-toi droit, les pieds à largeur d'épaules. Pose une main sur ton plexus. Respire en gonflant le ventre. Reste une minute dans cette posture.",
     },
+    {
+      titre: "L'Embrasement",
+      texte: "Il y a des journées où tu n'as pas envie de commencer. Le feu commence souvent par une petite étincelle, pas une explosion. Agis sur la plus petite chose aujourd'hui — et regarde comme ça s'embrase.",
+      geste: "Claque deux fois dans tes mains. Fort. Sens la vibration dans ta paume. Tu viens de produire de la chaleur. L'énergie est déjà là.",
+    },
+    {
+      titre: "Le Soleil Intérieur",
+      texte: "Il y a un soleil au centre de ta poitrine. Pas métaphoriquement — une source de chaleur réelle, une vitalité qui ne demande qu'à rayonner. Aujourd'hui, tu ne te caches pas. Tu brilles là où tu te trouves.",
+      geste: "Pose les deux mains sur ton sternum. Imagine une chaleur dorée s'étendant de là vers tout ton corps. Reste 3 respirations dans cette sensation.",
+    },
   ],
 
   terre: [
@@ -59,6 +69,16 @@ const SORTS = {
       titre: "La Solidité qui sert",
       texte: "Tu es un ancre pour les gens qui t'entourent. Ta stabilité n'est pas rigidité — elle est ressource. Aujourd'hui, quelqu'un a besoin de ton calme, de ta constance, de ta présence.",
       geste: "Place une main sur le bas-ventre. Respire lentement en gonflant cette zone. Trois respirations. Laisse descendre la sérénité.",
+    },
+    {
+      titre: "Mains dans la Terre",
+      texte: "Tes ancêtres travaillaient la terre pour vivre. Cette mémoire est dans tes mains. Aujourd'hui, chaque tâche accomplie nourrit quelque chose — en toi, autour de toi. Le travail humble est une forme de prière.",
+      geste: "Frotte tes mains ensemble lentement, comme si tu pétrissais de la terre. Sense le poids imaginaire entre tes paumes. Puis dépose-le.",
+    },
+    {
+      titre: "Le Chêne et la Tempête",
+      texte: "Le chêne ne plie pas parce qu'il est rigide. Il plie parce qu'il est vivant — et ses racines sont si profondes qu'elles lui permettent tout. Aujourd'hui, tu peux te laisser affecter sans te perdre.",
+      geste: "Debout, pieds écartés. Laisse ton haut du corps se balancer légèrement à droite, à gauche. Observe que tes pieds restent stables. C'est ça, l'enracinement.",
     },
   ],
 
@@ -88,6 +108,16 @@ const SORTS = {
       texte: "Tout ce que tu penses n'a pas besoin d'être dit. Tout ce qui doit être dit n'a pas besoin d'être dit maintenant. Aujourd'hui, tu utilises le silence comme outil.",
       geste: "Avant de parler lors de ta prochaine interaction importante, prends une seconde de pause consciente. Une seule. Ça change tout.",
     },
+    {
+      titre: "La Plume de Maât",
+      texte: "Maât, déesse de la vérité, pesait les âmes contre une plume. Aujourd'hui, pèse tes paroles à cette aune : sont-elles vraies, utiles, bienveillantes ? Si la réponse est non, garde-les.",
+      geste: "Souffle longuement, comme si tu soufflais sur une plume pour la faire flotter. Légèreté. Précision. Vérité.",
+    },
+    {
+      titre: "Mercure en Éveil",
+      texte: "Mercure gouverne les communications, les voyages, les connexions. Aujourd'hui, chaque échange est une opportunité. Reste alerte aux messages inattendus — dans une conversation, dans une coïncidence, dans un silence.",
+      geste: "Touche tes tempes du bout des doigts. Prends conscience de ton cerveau actif. Remercie-le pour tout ce qu'il traite en ce moment sans que tu le demandes.",
+    },
   ],
 
   eau: [
@@ -115,6 +145,16 @@ const SORTS = {
       titre: "Guérison douce",
       texte: "L'eau guérit. Elle nettoie, elle apaise, elle renouvelle. Aujourd'hui, prends soin de toi avec la même douceur que tu aurais pour quelqu'un que tu aimes. Tu mérites cette tendresse.",
       geste: "Passe de l'eau fraîche sur ton visage ou tes poignets. Sens la fraîcheur. Reviens dans ton corps.",
+    },
+    {
+      titre: "La Source Intérieure",
+      texte: "Tu n'as pas besoin de chercher l'énergie à l'extérieur. Il y a une source en toi qui ne s'épuise pas. Elle coule en dessous de la fatigue, en dessous du doute. Tu n'as qu'à descendre jusque-là.",
+      geste: "Assieds-toi. Ferme les yeux. Écoute le silence intérieur. Après 30 secondes, demande-toi : 'De quoi ai-je vraiment besoin maintenant ?'",
+    },
+    {
+      titre: "Argent Vif",
+      texte: "Le mercure liquide — argent vif — suit toujours la pente naturelle des choses. Aujourd'hui, ne force rien. Repère le chemin de moindre résistance et suis-le. Non pas par lâcheté — par intelligence.",
+      geste: "Ferme les paumes. Imagine tenir de l'eau entre tes mains. Laisse-la couler à travers tes doigts. Sens la fluidité. Emporte-la dans ta journée.",
     },
   ],
 
@@ -144,6 +184,16 @@ const SORTS = {
       texte: "Entre chaque son, il y a du silence. Entre chaque pensée, il y a un espace. C'est dans cet espace que tu trouves ce dont tu as besoin. Pas dans le bruit.",
       geste: "Écoute le silence entre tes battements de cœur. Place une main sur ta poitrine. Après chaque battement, note le bref silence. C'est là que tu habites.",
     },
+    {
+      titre: "Le Passage",
+      texte: "L'éther est le cinquième élément — celui qui relie et transcende les quatre autres. Aujourd'hui, tu es un pont entre les mondes : entre ce qui est et ce qui sera, entre toi et les autres, entre le connu et l'inconnu.",
+      geste: "Étends les bras sur les côtés, paumes vers le ciel. Reste 10 secondes dans cette ouverture. Tu reçois et tu transmets en même temps.",
+    },
+    {
+      titre: "Kether — La Couronne",
+      texte: "Au sommet de l'arbre de vie, Kether est la couronne — la source de tout. Quelque chose de pur et d'originel est en toi. En dessous de tous les conditionnements, il y a une lumière intacte. Souviens-t'en aujourd'hui.",
+      geste: "Touche le sommet de ta tête du bout des doigts. Imagine une lumière blanche entrer par là. Laisse-la descendre lentement jusqu'au bas de ton dos.",
+    },
   ],
 };
 
@@ -169,14 +219,11 @@ function getTodayElement() {
 }
 
 /**
- * Retourne un sort aléatoire pour un élément donné.
+ * Retourne un sort sans répétition jusqu'à épuisement du pool.
  * @param {string} elementKey
- * @param {string} [lastSortText] — pour éviter la répétition
  * @returns {object} { titre, texte, geste }
  */
-function pickSort(elementKey, lastSortText = null) {
-  const pool = SORTS[elementKey] || SORTS.ether;
-  const candidates = pool.filter(s => s.texte !== lastSortText);
-  const source = candidates.length > 0 ? candidates : pool;
-  return source[Math.floor(Math.random() * source.length)];
+function pickSort(elementKey) {
+  const key  = SORTS[elementKey] ? elementKey : 'ether';
+  return MatriceStorage.pickUnique(SORTS[key], 'sorts.' + key);
 }

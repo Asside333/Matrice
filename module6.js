@@ -237,35 +237,42 @@ const ScreenCloture = (() => {
       : '—';
 
     // Phrase de clôture
-    const closing = pickClosing(state.elementKey || null);
+    const closing = pickClosing(state.elementKey || null); // uses MatriceStorage.pickUnique internally
     if (closingEl) closingEl.textContent = closing;
 
+    // Citation philosophique
+    const citation = (typeof pickCitation === 'function') ? pickCitation() : null;
+    const citWrap  = document.getElementById('cl-citation-wrap');
+    const citText  = document.getElementById('cl-citation-text');
+    const citAuth  = document.getElementById('cl-citation-author');
+    if (citation && citWrap) {
+      if (citText) citText.textContent = '« ' + citation.texte + ' »';
+      if (citAuth) citAuth.textContent = '— ' + citation.auteur;
+      citWrap.hidden = false;
+    } else if (citWrap) {
+      citWrap.hidden = true;
+    }
+
     // Streak
-    incrementStreak();
-    const streak = parseInt(localStorage.getItem('matrice_streak') || '0', 10);
+    const streak = MatriceStorage.incrementStreak();
     if (streakEl) streakEl.textContent = streak;
 
     // Mise à jour streak sur l'accueil
     const mainStreak = document.getElementById('streak-number');
     if (mainStreak) mainStreak.textContent = streak;
-  }
 
-  function incrementStreak() {
-    const today    = new Date().toDateString();
-    const lastDay  = localStorage.getItem('matrice_last_ritual');
-    if (lastDay === today) return; // déjà incrémenté aujourd'hui
-
-    const yesterday = new Date(Date.now() - 86400000).toDateString();
-    let streak = parseInt(localStorage.getItem('matrice_streak') || '0', 10);
-
-    if (lastDay === yesterday) {
-      streak += 1;
-    } else {
-      streak = 1; // streak brisé
-    }
-
-    localStorage.setItem('matrice_streak', String(streak));
-    localStorage.setItem('matrice_last_ritual', today);
+    // Sauvegarde du rituel dans le journal
+    MatriceStorage.saveRitualLog({
+      date:          new Date().toISOString().slice(0, 10),
+      humeur:        state.humeur        || null,
+      mantra:        state.mantra        || null,
+      mantraCategory: state.mantraCategory || null,
+      intentions:    state.intentions    || [],
+      element:       state.element       || null,
+      elementKey:    state.elementKey    || null,
+      hexagram:      state.hexagram      || null,
+      hexagramName:  state.hexagramName  || null,
+    });
   }
 
   function bindEvents() {

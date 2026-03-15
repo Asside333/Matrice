@@ -7,14 +7,14 @@
 
 // ── Constantes ────────────────────────────────────────────────────
 const NS = 'http://www.w3.org/2000/svg';
-const STORAGE_STREAK = 'matrice_streak';
-const STORAGE_LAST_RITUAL = 'matrice_last_ritual';
+// Legacy constants kept for reference — streak now managed by MatriceStorage (storage.js)
 
 // Hooks de cycle de vie par écran — populé par chaque module
 const screenHooks = {};
 
 // ── État global du rituel ─────────────────────────────────────
 const RITUAL_STATE = {
+  humeur:        null,
   mantra:        null,
   mantraCategory: null,
   intentions:    [],
@@ -78,6 +78,7 @@ function navigateTo(screenId) {
     updateNavState(screenId);
     updateSOSVisibility(screenId);
     updateNavVisibility(screenId);
+    DurSel?.show(screenId);
     // Hook d'entrée du nouvel écran
     screenHooks[screenId]?.onEnter?.();
   }, 180);
@@ -92,13 +93,14 @@ function updateNavState(screenId) {
 function updateSOSVisibility(screenId) {
   const sos = document.getElementById('btn-sos');
   if (!sos) return;
-  sos.classList.toggle('hidden', screenId === 'sos');
+  const hideSOS = ['sos', 'humeur', 'parametres', 'nuit'].includes(screenId);
+  sos.classList.toggle('hidden', hideSOS);
 }
 
 function updateNavVisibility(screenId) {
   const nav = document.getElementById('main-nav');
   if (!nav) return;
-  const hideNav = ['rituel', 'm2', 'm3', 'm4', 'm5', 'm6', 'cloture'].includes(screenId);
+  const hideNav = ['humeur', 'rituel', 'm2', 'm3', 'm4', 'm5', 'm6', 'cloture', 'parametres', 'nuit'].includes(screenId);
   nav.style.opacity = hideNav ? '0' : '1';
   nav.style.pointerEvents = hideNav ? 'none' : 'auto';
   // Repositionner le bouton SOS selon présence de la nav
@@ -213,14 +215,80 @@ function buildMetatronCube() {
 // ════════════════════════════════════════════════════════════════
 
 function loadStreak() {
-  const streak = parseInt(localStorage.getItem(STORAGE_STREAK) || '0', 10);
+  const streak = MatriceStorage.getStreak().count;
   const el = document.getElementById('streak-number');
   if (el) el.textContent = streak;
 
-  // Easter eggs sur streak 33 et 333
-  if (streak === 33 || streak === 333) {
-    document.body.classList.add('easter-333');
+  // Multiples de 3 : mcube-333 légèrement illuminé
+  if (streak > 0 && streak % 3 === 0) {
+    document.body.classList.add('streak-multiple-3');
+  } else {
+    document.body.classList.remove('streak-multiple-3');
   }
+
+  // Easter egg : streak 33 → Métatron pulse 3×
+  if (streak === 33) {
+    setTimeout(() => {
+      document.body.classList.add('easter-33');
+      setTimeout(() => document.body.classList.remove('easter-33'), 2000);
+    }, 800);
+  }
+
+  // Easter egg : streak 333 → flash plein écran
+  if (streak === 333) {
+    document.body.classList.add('easter-333');
+    setTimeout(() => document.body.classList.remove('easter-333'), 3500);
+  }
+
+  // Spirale Fibonacci sur l'accueil
+  buildAccueilSpiral(streak);
+}
+
+// ════════════════════════════════════════════════════════════════
+// SPIRALE FIBONACCI — Accueil
+// ════════════════════════════════════════════════════════════════
+
+function buildAccueilSpiral(streak) {
+  const container = document.querySelector('.streak-block');
+  if (!container) return;
+
+  // Supprimer ancien SVG spirale si présent
+  const oldSvg = container.querySelector('.streak-fib-svg');
+  if (oldSvg) oldSvg.remove();
+
+  const svgNS = 'http://www.w3.org/2000/svg';
+  const svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('class', 'streak-fib-svg');
+  svg.setAttribute('viewBox', '0 0 64 44');
+  svg.setAttribute('xmlns', svgNS);
+  svg.setAttribute('aria-hidden', 'true');
+
+  // Spirale logarithmique (limite Fibonacci)
+  const cx = 32, cy = 28;
+  const phi = Math.log(1.618) / (Math.PI / 2);
+  const a = 1.2;
+  const pts = [];
+  for (let t = -Math.PI * 2.5; t <= Math.PI * 1.2; t += 0.05) {
+    const r = a * Math.exp(phi * t);
+    const x = cx + r * Math.cos(t);
+    const y = cy - r * Math.sin(t);
+    if (x >= 1 && x <= 63 && y >= 1 && y <= 43) pts.push([x, y]);
+  }
+
+  if (pts.length >= 2) {
+    const path = document.createElementNS(svgNS, 'path');
+    path.setAttribute('d', 'M' + pts.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(' L'));
+    path.setAttribute('stroke', '#B8860B');
+    path.setAttribute('stroke-width', '0.8');
+    path.setAttribute('fill', 'none');
+    path.setAttribute('opacity', '0.5');
+    path.setAttribute('stroke-linecap', 'round');
+    svg.appendChild(path);
+  }
+
+  // Insérer avant streak-number
+  const numEl = container.querySelector('#streak-number') || container.querySelector('.streak-number');
+  container.insertBefore(svg, numEl);
 }
 
 // ════════════════════════════════════════════════════════════════
@@ -281,12 +349,24 @@ function hideSplash() {
 function bindEvents() {
   // Navigation principale (barre du bas)
   document.querySelectorAll('.nav-btn').forEach(btn => {
-    btn.addEventListener('click', () => navigateTo(btn.dataset.screen));
+    btn.addEventListener('click', () => {
+      // L'onglet Rituel passe par le check-in humeur
+      const target = btn.dataset.screen === 'rituel' ? 'humeur' : btn.dataset.screen;
+      navigateTo(target);
+    });
   });
 
-  // Bouton "Commencer le rituel"
+  // Bouton "Commencer le rituel" → check-in humeur d'abord
   document.getElementById('btn-rituel')
-    ?.addEventListener('click', () => navigateTo('rituel'));
+    ?.addEventListener('click', () => navigateTo('humeur'));
+
+  // Icône paramètres sur l'accueil
+  document.getElementById('btn-settings')
+    ?.addEventListener('click', () => navigateTo('parametres'));
+
+  // Bouton Mode Nuit sur l'accueil
+  document.getElementById('btn-nuit')
+    ?.addEventListener('click', () => navigateTo('nuit'));
 
   // Bouton SOS global
   document.getElementById('btn-sos')
@@ -316,6 +396,111 @@ function bindEvents() {
 // INITIALISATION
 // ════════════════════════════════════════════════════════════════
 
+// ════════════════════════════════════════════════════════════════
+// DURÉE ADAPTATIVE
+// ════════════════════════════════════════════════════════════════
+
+const DurSel = (() => {
+  const RITUAL_SCREENS = new Set(['rituel', 'm2', 'm3', 'm4', 'm5', 'm6']);
+  let panelOpen = false;
+  let currentMins = 5;
+
+  const DURATIONS = [
+    { mins: 3,  label: '3 min' },
+    { mins: 5,  label: '5 min' },
+    { mins: 7,  label: '7 min' },
+    { mins: 10, label: '10 min' },
+    { mins: 15, label: '15 min' },
+  ];
+
+  function render() {
+    const wrap = document.getElementById('dur-sel-wrap');
+    if (!wrap) return;
+
+    const trigger = wrap.querySelector('.dur-sel-trigger');
+    if (trigger) trigger.textContent = currentMins + ' min';
+
+    wrap.querySelectorAll('.dur-sel-btn').forEach(btn => {
+      const m = parseInt(btn.dataset.min, 10);
+      btn.classList.toggle('dur-sel-btn--active', m === currentMins);
+    });
+  }
+
+  function select(mins) {
+    currentMins = mins;
+    // Propager à Module1 si exposé
+    if (typeof Module1 !== 'undefined' && Module1.setDuration) {
+      Module1.setDuration(mins);
+    }
+    // Stocker dans RITUAL_STATE pour usage général
+    if (typeof RITUAL_STATE !== 'undefined') {
+      RITUAL_STATE.durationMins = mins;
+    }
+    render();
+    closePanel();
+  }
+
+  function openPanel() {
+    panelOpen = true;
+    document.getElementById('dur-sel-panel')?.classList.add('dur-sel-panel--open');
+  }
+
+  function closePanel() {
+    panelOpen = false;
+    document.getElementById('dur-sel-panel')?.classList.remove('dur-sel-panel--open');
+  }
+
+  function show(screenId) {
+    const wrap = document.getElementById('dur-sel-wrap');
+    if (!wrap) return;
+    if (RITUAL_SCREENS.has(screenId)) {
+      wrap.classList.remove('dur-sel-wrap--hidden');
+    } else {
+      wrap.classList.add('dur-sel-wrap--hidden');
+      closePanel();
+    }
+  }
+
+  function init() {
+    // Créer le DOM
+    const wrap = document.createElement('div');
+    wrap.id = 'dur-sel-wrap';
+    wrap.className = 'dur-sel-wrap dur-sel-wrap--hidden';
+    wrap.setAttribute('aria-label', 'Durée du rituel');
+
+    const panel = document.createElement('div');
+    panel.id = 'dur-sel-panel';
+    panel.className = 'dur-sel-panel';
+
+    DURATIONS.forEach(({ mins, label }) => {
+      const btn = document.createElement('button');
+      btn.className = 'dur-sel-btn' + (mins === currentMins ? ' dur-sel-btn--active' : '');
+      btn.dataset.min = mins;
+      btn.textContent = label;
+      btn.addEventListener('click', () => select(mins));
+      panel.appendChild(btn);
+    });
+
+    const trigger = document.createElement('button');
+    trigger.className = 'dur-sel-trigger';
+    trigger.textContent = currentMins + ' min';
+    trigger.addEventListener('click', () => {
+      panelOpen ? closePanel() : openPanel();
+    });
+
+    wrap.appendChild(panel);
+    wrap.appendChild(trigger);
+    document.body.appendChild(wrap);
+
+    // Fermer le panel si clic en dehors
+    document.addEventListener('click', e => {
+      if (panelOpen && !wrap.contains(e.target)) closePanel();
+    }, true);
+  }
+
+  return { init, show, getCurrentMins: () => currentMins };
+})();
+
 function init() {
   // 1. Thème (avant tout rendu visible)
   applyTheme();
@@ -330,11 +515,39 @@ function init() {
   // 4. Événements
   bindEvents();
 
-  // 5. Masquer le splash
+  // 5. Durée adaptative
+  DurSel.init();
+
+  // 6. Masquer le splash
   hideSplash();
 
-  // 6. Vérification du thème toutes les minutes
+  // 7. Vérification du thème toutes les minutes
   setInterval(applyTheme, 60_000);
+
+  // 8. Relancer les notifications si déjà configurées
+  setTimeout(() => {
+    try {
+      const s = JSON.parse(localStorage.getItem('matrice_notif_settings') || 'null');
+      if (s?.enabled && Notification?.permission === 'granted') {
+        // ModuleParametres expose scheduleNotifications via onEnter — on replanifie ici
+        // en reconstruisant la logique minimale pour ne pas coupler les modules
+        const MORNING_MSGS = ["C'est le moment de calibrer ton champ.", "Un nouveau matin. Commence-le depuis l'intérieur.", "Ta pratique du matin façonne ta journée.", "Avant que le bruit du monde entre — prends ce moment pour toi.", "Chaque matin qui commence ici change quelque chose."];
+        const EVENING_MSGS = ["La journée s'achève. Prends un moment pour la sceller.", "Ce soir, quelques mots suffisent.", "Avant de dormir — un instant de gratitude.", "Le journal du soir t'attend.", "Scelle cette journée avant de laisser entrer le sommeil."];
+        function scheduleOnce(hour, msgs) {
+          const now = new Date();
+          const next = new Date(now);
+          next.setHours(hour, 0, 0, 0);
+          if (next <= now) next.setDate(next.getDate() + 1);
+          setTimeout(() => {
+            try { new Notification('MATRICE', { body: msgs[Math.floor(Math.random() * msgs.length)], icon: './icons/icon-192.png' }); } catch(_) {}
+            scheduleOnce(hour, msgs);
+          }, Math.min(next - now, 2147483647));
+        }
+        scheduleOnce(s.morningHour ?? 7, MORNING_MSGS);
+        scheduleOnce(s.eveningHour ?? 21, EVENING_MSGS);
+      }
+    } catch (_) {}
+  }, 1000);
 }
 
 // Lancement à la fin du chargement du DOM
@@ -862,7 +1075,14 @@ const Module1 = (() => {
   // Liaison des événements au chargement du DOM
   document.addEventListener('DOMContentLoaded', bindEvents);
 
-  return { start, stop };
+  function setDuration(mins) {
+    // Ne pas changer si session en cours
+    if (running) return;
+    totalSecs = Math.max(90, Math.min(900, mins * 60));
+    updateTimerDisplay(totalSecs);
+  }
+
+  return { start, stop, setDuration };
 
 })();
 

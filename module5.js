@@ -361,7 +361,16 @@ const Module5 = (() => {
   function onEnter() {
     if (!solidCanvas) initSolidCanvas();
     displayMoonPhase();
-    displayElement(getTodayElement());
+
+    // L'humeur oriente l'élément proposé
+    const humeur = (typeof RITUAL_STATE !== 'undefined') ? RITUAL_STATE.humeur : null;
+    let element = getTodayElement();
+    if (humeur !== null && humeur <= 2) {
+      element = Math.random() < 0.5 ? 'terre' : 'eau';
+    } else if (humeur !== null && humeur >= 4) {
+      element = Math.random() < 0.5 ? 'feu' : 'ether';
+    }
+    displayElement(element);
   }
 
   function onLeave() {

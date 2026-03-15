@@ -11,6 +11,8 @@ const CLOSINGS = {
     "Tu as allumé quelque chose ce matin. Protège-le comme une flamme dans le vent — et avance.",
     "Le Phénix n'attend pas d'être prêt pour se lever. Il se lève, et il devient prêt en vol.",
     "Cette journée est ta forge. Entre dedans avec tout ce que tu es.",
+    "Garde cette chaleur dans tes paumes. Elle est disponible chaque fois que tu en as besoin — reviens y poser tes mains.",
+    "L'étincelle de ce matin est faite pour traverser la journée entière. Pas juste ce rituel. Toi entier.",
   ],
 
   terre: [
@@ -18,6 +20,7 @@ const CLOSINGS = {
     "La montagne ne craint pas la tempête. Sois cette montagne.",
     "Tu repars avec les pieds ancrés et les mains ouvertes. C'est tout ce qu'il faut.",
     "Le rituel est terminé. Le travail continue, mais différemment — depuis le calme.",
+    "Porte cette terre avec toi. Elle est dans tes pieds, dans ta colonne, dans chaque geste posé que tu feras aujourd'hui.",
   ],
 
   air: [
@@ -25,6 +28,7 @@ const CLOSINGS = {
     "Les idées d'aujourd'hui ont de l'espace pour voler. Laisse-les.",
     "Tu as respiré, tu as vu, tu as entendu. C'est suffisant pour changer la direction d'une journée.",
     "Ce qui doit se dire se dira. Ce qui doit s'entendre s'entendra. Fais confiance au flux.",
+    "Porte cette légèreté dans tes interactions du jour. Un peu moins de gravité dans tout — et observe ce qui change.",
   ],
 
   eau: [
@@ -49,17 +53,21 @@ const CLOSINGS = {
     "Tu n'avais pas besoin d'être parfait ce matin. Tu avais juste besoin d'être là.",
     "Va. Reviens. C'est la seule promesse que tu dois tenir.",
     "Ce matin tu t'es choisi. Continue de te choisir tout au long de la journée.",
+    "Ce rituel a eu lieu. Il ne peut pas être défait. Cette version de toi a existé ce matin.",
+    "Tu portes quelque chose de différent en sortant qu'en entrant. Même si tu ne sais pas encore quoi.",
+    "La cohérence est le plus grand luxe. Tu viens d'en prendre un peu. Garde-la.",
+    "Chaque matin qui commence ici est un matin qui ne commence pas dans le bruit. C'est déjà un choix de vie.",
   ],
 };
 
 /**
- * Retourne une phrase de clôture pour un élément donné.
+ * Retourne une phrase de clôture sans répétition jusqu'à épuisement du pool.
  * @param {string} [elementKey] — clé d'élément ou null pour générique
  * @returns {string}
  */
 function pickClosing(elementKey = null) {
-  const pool = (elementKey && CLOSINGS[elementKey])
-    ? [...CLOSINGS[elementKey], ...CLOSINGS.generic]
-    : CLOSINGS.generic;
-  return pool[Math.floor(Math.random() * pool.length)];
+  const hasElement = elementKey && CLOSINGS[elementKey];
+  const pool    = hasElement ? [...CLOSINGS[elementKey], ...CLOSINGS.generic] : CLOSINGS.generic;
+  const seenKey = 'closings.' + (hasElement ? elementKey : 'generic');
+  return MatriceStorage.pickUnique(pool, seenKey);
 }

@@ -9,35 +9,16 @@ const ModuleSoir = (() => {
 
   // ── Clés localStorage ─────────────────────────────────────────
   const KEY_ENTRIES = 'matrice_soir_entries';
-  const KEY_SEEN    = 'matrice_soir_phrases_seen';
 
   // ── État ──────────────────────────────────────────────────────
   let format = 'rapide'; // 'rapide' | 'complet'
 
-  // ── Sélection de phrase sans répétition (sur 20 entrées) ─────
+  // ── Sélection de phrase sans répétition ──────────────────────
   function pickPhrase() {
     const pool = typeof SOIR_PHRASES !== 'undefined' ? SOIR_PHRASES : [
       'La journée est terminée. Repose-toi.',
     ];
-    let seen = [];
-    try { seen = JSON.parse(localStorage.getItem(KEY_SEEN) || '[]'); } catch {}
-
-    // Indices non vus
-    let available = pool.map((_, i) => i).filter(i => !seen.includes(i));
-
-    // Tout vu → réinitialiser (garder seulement le dernier pour éviter répétition immédiate)
-    if (available.length === 0) {
-      const last = seen[seen.length - 1];
-      seen = last !== undefined ? [last] : [];
-      available = pool.map((_, i) => i).filter(i => !seen.includes(i));
-    }
-
-    const idx = available[Math.floor(Math.random() * available.length)];
-    seen.push(idx);
-    // Garder seulement les 20 derniers
-    if (seen.length > 20) seen = seen.slice(seen.length - 20);
-    try { localStorage.setItem(KEY_SEEN, JSON.stringify(seen)); } catch {}
-    return pool[idx];
+    return MatriceStorage.pickUnique(pool, 'evening_closings');
   }
 
   // ── Persistance des entrées ───────────────────────────────────

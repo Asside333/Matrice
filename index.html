@@ -56,8 +56,16 @@
 
       <h1 class="app-name">MATRICE</h1>
 
-      <div class="moon-block" id="moon-block" title="">
-        <span class="moon-emoji" id="moon-emoji">🌑</span>
+      <div class="accueil-header-right">
+        <div class="moon-block" id="moon-block" title="">
+          <span class="moon-emoji" id="moon-emoji">🌑</span>
+        </div>
+        <button class="accueil-settings-btn" id="btn-settings" aria-label="Paramètres">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="3"/>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+          </svg>
+        </button>
       </div>
     </header>
 
@@ -83,8 +91,31 @@
           <span class="btn-rituel-text">Commencer le rituel</span>
           <span class="btn-rituel-shine" aria-hidden="true"></span>
         </button>
+        <button class="accueil-nuit-btn" id="btn-nuit" aria-label="Mode Nuit — Sommeil profond">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" width="14" height="14" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+          Mode Nuit
+        </button>
       </div>
     </main>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       ÉCRAN — CHECK-IN HUMEUR
+  ═══════════════════════════════════════════ -->
+  <section id="screen-humeur" class="screen no-nav" aria-label="Check-in humeur">
+    <div class="hm-inner">
+      <p class="hm-question">Comment tu te sens<br>ce matin ?</p>
+      <div class="hm-circles" role="group" aria-label="Humeur de 1 à 5">
+        <button class="hm-dot" data-humeur="1" aria-label="Difficile" style="--hm-col:#3a3a42"></button>
+        <button class="hm-dot" data-humeur="2" aria-label="Peu en forme" style="--hm-col:#5c5c6e"></button>
+        <button class="hm-dot" data-humeur="3" aria-label="Neutre" style="--hm-col:#9A7A2E"></button>
+        <button class="hm-dot" data-humeur="4" aria-label="Bien" style="--hm-col:#C8952A"></button>
+        <button class="hm-dot" data-humeur="5" aria-label="Excellent" style="--hm-col:#FFD700"></button>
+      </div>
+      <p class="hm-hint">Touche un cercle</p>
+    </div>
   </section>
 
   <!-- ═══════════════════════════════════════════
@@ -1011,11 +1042,171 @@
       <!-- Phrase de clôture -->
       <p class="cl-closing" id="cl-closing"></p>
 
+      <!-- Citation philosophique -->
+      <div class="cl-citation-wrap" id="cl-citation-wrap">
+        <div class="cl-citation-line" aria-hidden="true"></div>
+        <blockquote class="cl-citation-text" id="cl-citation-text"></blockquote>
+        <cite class="cl-citation-author" id="cl-citation-author"></cite>
+      </div>
+
       <button class="cl-finish-btn" id="cl-finish-btn">
         Revenir à l'accueil
       </button>
     </main>
 
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       ÉCRAN — MODE NUIT
+  ═══════════════════════════════════════════ -->
+  <section id="screen-nuit" class="screen no-nav" aria-label="Mode Nuit — Sommeil profond">
+
+    <!-- PHASE CONFIG (affichée par défaut) -->
+    <div class="nuit-config" id="nuit-config">
+      <button class="nuit-back-btn" id="nuit-back-btn" aria-label="Retour">
+        <svg viewBox="0 0 24 24" fill="none" width="18" height="18" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M19 12H5M12 5l-7 7 7 7"/>
+        </svg>
+      </button>
+
+      <div class="nuit-config-inner">
+        <div class="nuit-cfg-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" width="32" height="32" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+          </svg>
+        </div>
+        <h2 class="nuit-cfg-title">Mode Nuit</h2>
+        <p class="nuit-cfg-subtitle">Respiration 4-7-8 · Ondes delta</p>
+
+        <!-- Durée -->
+        <div class="nuit-cfg-group">
+          <p class="nuit-cfg-group-label">Durée</p>
+          <div class="nuit-duration-row" role="group" aria-label="Durée">
+            <button class="nuit-dur-btn" data-min="10">10 min</button>
+            <button class="nuit-dur-btn" data-min="15">15 min</button>
+            <button class="nuit-dur-btn nuit-dur-btn--on" data-min="20">20 min</button>
+            <button class="nuit-dur-btn" data-min="30">30 min</button>
+          </div>
+        </div>
+
+        <!-- Toggles audio -->
+        <div class="nuit-cfg-group">
+          <p class="nuit-cfg-group-label">Sons</p>
+          <div class="nuit-toggle-row">
+            <span class="nuit-toggle-label">Binauraux Delta</span>
+            <button class="nuit-toggle nuit-toggle--on" id="nuit-bin-toggle" aria-pressed="true" data-key="bin"></button>
+          </div>
+          <div class="nuit-toggle-row">
+            <span class="nuit-toggle-label">Drone grave</span>
+            <button class="nuit-toggle nuit-toggle--on" id="nuit-drone-toggle" aria-pressed="true" data-key="drone"></button>
+          </div>
+        </div>
+
+        <button class="nuit-launch-btn" id="nuit-launch-btn">Commencer</button>
+      </div>
+    </div>
+
+    <!-- PHASE SESSION (cachée jusqu'au lancement) -->
+    <div class="nuit-session" id="nuit-session" style="display:none">
+      <!-- Graine de Vie en fond, pulsante -->
+      <div class="nuit-seed-wrap" aria-hidden="true">
+        <svg id="nuit-seed-svg" class="nuit-seed-svg" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg"></svg>
+      </div>
+
+      <div class="nuit-content">
+        <p class="nuit-phrase" id="nuit-phrase">Laisse-toi porter.</p>
+        <p class="nuit-breath-label" id="nuit-breath-label"></p>
+        <p class="nuit-timer" id="nuit-timer">20:00</p>
+        <div class="nuit-controls">
+          <button class="nuit-stop-btn" id="nuit-stop-btn">Arrêter</button>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       ÉCRAN — PARCOURS
+  ═══════════════════════════════════════════ -->
+  <section id="screen-parcours" class="screen pa-screen" aria-label="Parcours">
+    <div class="pa-scroll" id="pa-scroll">
+
+      <!-- Streak + spirale -->
+      <div class="pa-streak-block">
+        <svg class="pa-fib-svg" id="pa-fib-svg" viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid meet"></svg>
+        <div class="pa-streak-text">
+          <span class="pa-streak-number" id="pa-streak-num">0</span>
+          <span class="pa-streak-label">jours consécutifs</span>
+        </div>
+      </div>
+
+      <!-- Courbe d'humeur -->
+      <div class="pa-section">
+        <h3 class="pa-section-title">Humeur — 30 jours</h3>
+        <svg class="pa-mood-svg" id="pa-mood-svg"
+             viewBox="0 0 300 100"
+             xmlns="http://www.w3.org/2000/svg"
+             preserveAspectRatio="none"
+             aria-hidden="true"></svg>
+      </div>
+
+      <!-- Tendances -->
+      <div class="pa-section">
+        <h3 class="pa-section-title">Tendances</h3>
+        <div id="pa-tendances"></div>
+      </div>
+
+      <!-- Rituels -->
+      <div class="pa-section">
+        <h3 class="pa-section-title">Derniers rituels</h3>
+        <div id="pa-ritual-list"></div>
+      </div>
+
+      <!-- Journal du soir -->
+      <div class="pa-section">
+        <h3 class="pa-section-title">Journal du soir</h3>
+        <div id="pa-soir-list"></div>
+      </div>
+
+      <div style="height:40px"></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════════════════════════════
+       ÉCRAN — PARAMÈTRES
+  ═══════════════════════════════════════════ -->
+  <section id="screen-parametres" class="screen no-nav" aria-label="Paramètres">
+    <header class="pm-header">
+      <button class="pm-back-btn" id="pm-back-btn" aria-label="Retour">←</button>
+      <h2 class="pm-title">Paramètres</h2>
+    </header>
+
+    <div class="pm-body">
+      <!-- Streak -->
+      <div class="pm-section">
+        <h3 class="pm-section-title">Streak</h3>
+        <button class="pm-action-btn" id="pm-reset-streak-btn">Réinitialiser le streak</button>
+        <div class="pm-confirm" id="pm-reset-confirm" hidden>
+          <p class="pm-confirm-text">Confirmer la réinitialisation ?</p>
+          <div class="pm-confirm-btns">
+            <button class="pm-confirm-yes" id="pm-reset-yes">Oui, réinitialiser</button>
+            <button class="pm-confirm-no"  id="pm-reset-no">Annuler</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Mantras favoris -->
+      <div class="pm-section">
+        <h3 class="pm-section-title">Mantras favoris</h3>
+        <div class="pm-favs-list" id="pm-favs-list"></div>
+      </div>
+
+      <!-- Notifications -->
+      <div class="pm-section">
+        <h3 class="pm-section-title">Notifications</h3>
+        <div id="pm-notif-section"></div>
+      </div>
+    </div>
   </section>
 
   <!-- ═══════════════════════════════════════════
@@ -1058,6 +1249,13 @@
       </svg>
       <span class="nav-label">Studio</span>
     </button>
+    <button class="nav-btn" data-screen="parcours" aria-label="Parcours — Historique">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <polyline points="3,17 7,13 11,15 15,9 21,11" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+        <line x1="3" y1="20" x2="21" y2="20" stroke="currentColor" stroke-width="0.8" opacity="0.4"/>
+      </svg>
+      <span class="nav-label">Parcours</span>
+    </button>
     <button class="nav-btn" data-screen="soir" aria-label="Mode soir — Gratitude">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
         <path d="M21,12.79A9,9,0,1,1,11.21,3,7,7,0,0,0,21,12.79Z" stroke="currentColor" stroke-width="1.2" fill="none"/>
@@ -1066,6 +1264,7 @@
     </button>
   </nav>
 
+  <script src="storage.js"></script>
   <script src="app.js"></script>
   <script src="data/mantras.js"></script>
   <script src="data/transmutations.js"></script>
@@ -1073,6 +1272,7 @@
   <script src="data/sorts.js"></script>
   <script src="data/yiking.js"></script>
   <script src="data/closings.js"></script>
+  <script src="data/citations.js"></script>
   <script src="module2.js"></script>
   <script src="module3.js"></script>
   <script src="module4.js"></script>
@@ -1082,5 +1282,9 @@
   <script src="module-libre.js"></script>
   <script src="data/soir-phrases.js"></script>
   <script src="module-soir.js"></script>
+  <script src="module-humeur.js"></script>
+  <script src="module-parcours.js"></script>
+  <script src="module-parametres.js"></script>
+  <script src="module-nuit.js"></script>
 </body>
 </html>

@@ -7,81 +7,59 @@
 
 const Module2 = (() => {
 
-  const STORAGE_FAVORITES = 'matrice_favorites';
-  const STORAGE_SEEN      = 'matrice_mantras_seen';
-
   // ── État ──────────────────────────────────────────────────────
   let currentMantra   = null;
   let currentCategory = null;
   let animTimeout     = null;
   let wordTimeouts    = [];
 
-  // ── Persistence : mantras déjà vus ───────────────────────────
-  function getSeenIndices(cat) {
-    try {
-      const raw = localStorage.getItem(STORAGE_SEEN);
-      return raw ? (JSON.parse(raw)[cat] || []) : [];
-    } catch { return []; }
-  }
-
-  function saveSeenIndex(cat, idx) {
-    try {
-      const raw = localStorage.getItem(STORAGE_SEEN);
-      const data = raw ? JSON.parse(raw) : {};
-      data[cat] = data[cat] || [];
-      data[cat].push(idx);
-      // Réinitialise si tout vu
-      if (data[cat].length >= MANTRAS[cat].length) data[cat] = [idx];
-      localStorage.setItem(STORAGE_SEEN, JSON.stringify(data));
-    } catch {}
-  }
-
-  // ── Favoris ───────────────────────────────────────────────────
-  function getFavorites() {
-    try {
-      const raw = localStorage.getItem(STORAGE_FAVORITES);
-      return raw ? JSON.parse(raw) : [];
-    } catch { return []; }
-  }
-
-  function isFavorite(text) {
-    return getFavorites().includes(text);
-  }
-
-  function toggleFavorite(text) {
-    const favs = getFavorites();
-    const idx  = favs.indexOf(text);
-    if (idx === -1) {
-      favs.push(text);
-    } else {
-      favs.splice(idx, 1);
-    }
-    localStorage.setItem(STORAGE_FAVORITES, JSON.stringify(favs));
-    return idx === -1; // true = maintenant favori
-  }
-
   // ── Sélection du mantra ───────────────────────────────────────
+  // Traverse toutes les catégories, pondérée par nombre de non-vus.
+  // L'humeur oriente la catégorie : 1-2 → ANCRAGE, 4-5 → ÉLAN.
   function pickMantra() {
-    // Choisit une catégorie au hasard, pondérée par taille
+    const humeur = (typeof RITUAL_STATE !== 'undefined') ? RITUAL_STATE.humeur : null;
+
+    if (humeur !== null && humeur <= 2 && MANTRAS.ANCRAGE) {
+      return { text: MatriceStorage.pickUnique(MANTRAS.ANCRAGE, 'mantras.ANCRAGE'), category: 'ANCRAGE' };
+    }
+    if (humeur !== null && humeur >= 4 && MANTRAS['ÉLAN']) {
+      return { text: MatriceStorage.pickUnique(MANTRAS['ÉLAN'], 'mantras.ÉLAN'), category: 'ÉLAN' };
+    }
+
     const allTexts = [];
     for (const cat of MANTRAS_CATEGORIES) {
-      const seen = getSeenIndices(cat);
-      const unseen = MANTRAS[cat]
+      const seen = MatriceStorage.getSeen('mantras.' + cat);
+      MANTRAS[cat]
         .map((text, i) => ({ text, cat, i }))
-        .filter(({ i }) => !seen.includes(i));
-      allTexts.push(...unseen);
+        .filter(({ i }) => !seen.includes(i))
+        .forEach(item => allTexts.push(item));
     }
 
-    // Si tout vu, on repart de zéro
+    // Si tout vu, réinitialiser et recommencer
     if (allTexts.length === 0) {
-      localStorage.removeItem(STORAGE_SEEN);
+      for (const cat of MANTRAS_CATEGORIES) {
+        MatriceStorage.saveSeen('mantras.' + cat, []);
+      }
       return pickMantra();
     }
 
     const pick = allTexts[Math.floor(Math.random() * allTexts.length)];
-    saveSeenIndex(pick.cat, pick.i);
+
+    // Mettre à jour seen pour cette catégorie (garder le dernier si tout vu)
+    const seen = MatriceStorage.getSeen('mantras.' + pick.cat);
+    seen.push(pick.i);
+    if (seen.length >= MANTRAS[pick.cat].length) {
+      MatriceStorage.saveSeen('mantras.' + pick.cat, [pick.i]);
+    } else {
+      MatriceStorage.saveSeen('mantras.' + pick.cat, seen);
+    }
+
     return { text: pick.text, category: pick.cat };
   }
+
+  // ── Favoris (délégués à MatriceStorage) ──────────────────────
+  const isFavorite    = text => MatriceStorage.isFavorite(text);
+  const toggleFavorite = text => MatriceStorage.toggleFavorite(text);
 
   // ── Animation mot-par-mot ─────────────────────────────────────
   function animateWords(text, container) {

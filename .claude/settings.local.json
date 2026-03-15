@@ -6,7 +6,10 @@
       "Bash(powershell.exe:*)",
       "Bash(node:*)",
       "Bash(node.exe:*)",
-      "Bash(grep:*)"
+      "Bash(grep:*)",
+      "Bash(\"D:\\\\matrice\\\\Matrice\\\\style.css\":*)",
+      "Bash(\"/d/matrice/Matrice/style.css\":*)",
+      "Bash(winget upgrade:*)"
     ]
   }
 }

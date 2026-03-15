@@ -85,12 +85,13 @@ body {
   user-select: none;
 }
 
-/* ── RÈGLE GLOBALE : interdiction absolue de couper les mots ──── */
-/* overflow-wrap: break-word et word-break: break-all sont bannis.  */
-/* Les mots ne se coupent JAMAIS au milieu d'une lettre.           */
+/* ── RÈGLE GLOBALE : pas de coupure forcée de syllabe ─────────── */
+/* word-break: break-all est banni (coupe au milieu des lettres).  */
+/* overflow-wrap: break-word permet le passage à la ligne si besoin */
+/* uniquement quand un mot est trop long pour son conteneur.       */
 * {
   word-break: normal;
-  overflow-wrap: normal;
+  overflow-wrap: break-word;
   hyphens: none;
   -webkit-hyphens: none;
   -ms-hyphens: none;
@@ -3934,3 +3935,1152 @@ body.light-mode .m1-toast {
 .light-mode .sv-hist-text { color: #1a1630; }
 .light-mode .sv-hist-phrase { color: rgba(26, 22, 48, 0.55); }
 
+
+/* ================================================================
+   CHECK-IN HUMEUR
+   ================================================================ */
+
+#screen-humeur {
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hm-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  padding: 0 24px;
+}
+
+.hm-question {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.7rem, 5vw, 2.4rem);
+  font-weight: 300;
+  text-align: center;
+  color: var(--gold-hi);
+  line-height: 1.4;
+}
+
+.hm-circles {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+
+.hm-dot {
+  border-radius: 50%;
+  background: var(--hm-col);
+  border: 2px solid rgba(255,255,255,0.10);
+  cursor: pointer;
+  padding: 0;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  flex-shrink: 0;
+}
+.hm-dot:nth-child(1) { width: 30px; height: 30px; }
+.hm-dot:nth-child(2) { width: 38px; height: 38px; }
+.hm-dot:nth-child(3) { width: 46px; height: 46px; border-color: rgba(184,134,11,0.25); }
+.hm-dot:nth-child(4) { width: 54px; height: 54px; border-color: rgba(184,134,11,0.35); }
+.hm-dot:nth-child(5) { width: 62px; height: 62px; border-color: rgba(255,215,0,0.4); }
+
+.hm-dot:active { transform: scale(1.25); }
+.hm-dot--selected {
+  transform: scale(1.2);
+  box-shadow: 0 0 18px var(--hm-col);
+  border-color: rgba(255,255,255,0.4);
+}
+
+.hm-hint {
+  font-size: 0.7rem;
+  color: rgba(255,255,255,0.2);
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/* ================================================================
+   ACCUEIL — engrenage settings
+   ================================================================ */
+
+.accueil-header-right {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.accueil-settings-btn {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.22);
+  cursor: pointer;
+  padding: 2px;
+  line-height: 1;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+}
+
+.accueil-settings-btn:hover { color: rgba(255,255,255,0.5); }
+
+/* ================================================================
+   PARCOURS
+   ================================================================ */
+
+.pa-screen {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.pa-scroll {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: var(--nav-height);
+}
+
+.pa-header {
+  padding: 52px 24px 8px;
+  text-align: center;
+}
+
+.pa-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.1rem;
+  font-weight: 300;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* .pa-streak-block, .pa-section, etc. — définitions complètes plus bas */
+
+/* classes .pa-hl-*, .pa-rc-*, .pa-soir-card, .pa-sc-* supprimées — remplacées par .pa-tend-*, .pa-ritual-row, .pa-soir-row (voir bas du fichier) */
+
+/* ================================================================
+   PARAMETRES
+   ================================================================ */
+
+#screen-parametres {
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.pm-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 56px 24px 20px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  flex-shrink: 0;
+}
+
+.pm-back-btn {
+  background: none;
+  border: none;
+  color: var(--gold);
+  font-size: 1.3rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  line-height: 1;
+}
+
+.pm-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.3rem;
+  font-weight: 300;
+  color: var(--gold);
+  letter-spacing: 0.12em;
+}
+
+.pm-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+}
+
+.pm-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.pm-section-title {
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.28);
+}
+
+.pm-action-btn {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.55);
+  border-radius: 8px;
+  padding: 13px 18px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.2s, color 0.2s;
+  font-family: inherit;
+}
+
+.pm-action-btn:hover {
+  border-color: rgba(184,134,11,0.4);
+  color: rgba(255,255,255,0.75);
+}
+
+.pm-confirm {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+
+.pm-confirm-text {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 10px;
+}
+
+.pm-confirm-btns { display: flex; gap: 8px; }
+
+.pm-confirm-yes,
+.pm-confirm-no {
+  flex: 1;
+  background: none;
+  border-radius: 6px;
+  padding: 9px 12px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.pm-confirm-yes {
+  border: 1px solid rgba(200,80,80,0.35);
+  color: rgba(255,120,120,0.7);
+}
+
+.pm-confirm-no {
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.4);
+}
+
+.pm-favs-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.pm-fav-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.pm-fav-text {
+  flex: 1;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.4;
+}
+
+.pm-fav-remove {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.18);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 0 4px;
+  flex-shrink: 0;
+  line-height: 1;
+  transition: color 0.15s;
+}
+
+.pm-fav-remove:hover { color: rgba(255,100,100,0.6); }
+
+.pm-empty {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.2);
+  text-align: center;
+  padding: 20px 0;
+  font-style: italic;
+}
+
+/* Nav 5 onglets — petits ecrans */
+@media (max-width: 360px) {
+  .nav-label { font-size: 9px; letter-spacing: 0; }
+  .nav-icon  { width: 20px; height: 20px; }
+}
+
+/* ================================================================
+   CITATIONS PHILOSOPHIQUES — Écran clôture
+   ================================================================ */
+
+.cl-citation-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 20px 24px 4px;
+  width: 100%;
+  max-width: 360px;
+}
+
+.cl-citation-line {
+  width: 48px;
+  height: 1px;
+  background: rgba(184,134,11,0.35);
+  margin-bottom: 4px;
+}
+
+.cl-citation-text {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.55);
+  text-align: center;
+  line-height: 1.55;
+  margin: 0;
+}
+
+.cl-citation-author {
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  color: rgba(184,134,11,0.55);
+  font-style: normal;
+}
+
+/* ================================================================
+   MODE NUIT — Écran
+   ================================================================ */
+
+#screen-nuit {
+  background: #060608;
+  overflow: hidden;
+}
+
+.nuit-seed-wrap {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.nuit-seed-svg {
+  width: min(320px, 90vw);
+  height: min(320px, 90vw);
+  opacity: 0.12;
+  transition: opacity 2s ease;
+}
+
+.nuit-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.nuit-phrase {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 0.04em;
+  text-align: center;
+  transition: opacity 3s ease;
+  margin: 0;
+}
+
+.nuit-phrase--fade {
+  opacity: 0;
+}
+
+.nuit-timer {
+  font-size: 2.2rem;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  color: rgba(184,134,11,0.5);
+  letter-spacing: 0.1em;
+  min-width: 5ch;
+  text-align: center;
+}
+
+.nuit-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.nuit-stop-btn {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.3);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 8px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.nuit-stop-btn:hover { border-color: rgba(255,255,255,0.3); color: rgba(255,255,255,0.6); }
+
+.nuit-breath-label {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.2);
+  letter-spacing: 0.08em;
+  text-align: center;
+  min-height: 1.2em;
+  transition: opacity 1s;
+}
+
+/* ================================================================
+   DURÉE ADAPTATIVE — Sélecteur flottant pendant rituel
+   ================================================================ */
+
+.dur-sel-wrap {
+  position: fixed;
+  bottom: 72px;
+  right: 16px;
+  z-index: 120;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  pointer-events: auto;
+}
+
+.dur-sel-wrap--hidden {
+  display: none;
+}
+
+.dur-sel-trigger {
+  background: rgba(30,25,15,0.85);
+  border: 1px solid rgba(184,134,11,0.3);
+  color: rgba(255,255,255,0.5);
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  padding: 5px 10px;
+  border-radius: 12px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: all 0.15s;
+}
+
+.dur-sel-trigger:hover { border-color: rgba(184,134,11,0.6); color: rgba(255,255,255,0.8); }
+
+.dur-sel-panel {
+  background: rgba(20,16,8,0.95);
+  border: 1px solid rgba(184,134,11,0.25);
+  border-radius: 12px;
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  backdrop-filter: blur(12px);
+  opacity: 0;
+  transform: translateY(6px) scale(0.96);
+  pointer-events: none;
+  transition: opacity 0.15s, transform 0.15s;
+}
+
+.dur-sel-panel--open {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  pointer-events: auto;
+}
+
+.dur-sel-btn {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.45);
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  padding: 6px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  transition: all 0.1s;
+  white-space: nowrap;
+}
+
+.dur-sel-btn:hover { background: rgba(184,134,11,0.12); color: rgba(255,255,255,0.85); }
+.dur-sel-btn--active { color: #B8860B; font-weight: 600; }
+
+/* ================================================================
+   EASTER EGGS 333
+   ================================================================ */
+
+/* mcube-333 texte : légèrement illuminé aux multiples de 3 */
+.mcube-333 {
+  font-size: 10px;
+  text-anchor: middle;
+  dominant-baseline: middle;
+  fill: rgba(184,134,11,0);
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  letter-spacing: 0.12em;
+  transition: fill 1.5s ease;
+  pointer-events: none;
+}
+
+/* Illumination subtile aux multiples de 3 */
+body.streak-multiple-3 .mcube-333 {
+  fill: rgba(184,134,11,0.12);
+}
+
+/* Streak 33 : Métatron pulse doré */
+body.easter-33 .metatron-spinner {
+  animation: easter33-pulse 0.5s ease-in-out 3;
+}
+
+@keyframes easter33-pulse {
+  0%, 100% { filter: none; }
+  50% { filter: drop-shadow(0 0 18px rgba(184,134,11,0.9)) drop-shadow(0 0 40px rgba(255,215,0,0.4)); }
+}
+
+/* Streak 333 : plein écran pulse doré */
+body.easter-333::after {
+  content: '333';
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: radial-gradient(circle, rgba(255,215,0,0.08) 0%, rgba(0,0,0,0) 70%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 5rem;
+  color: rgba(255,215,0,0.6);
+  letter-spacing: 0.3em;
+  animation: easter333-flash 3s ease-in-out forwards;
+  pointer-events: none;
+}
+
+@keyframes easter333-flash {
+  0% { opacity: 0; }
+  15% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* Splash 3·3·3 : animation légère */
+.splash-333 {
+  opacity: 0;
+  animation: splash333-appear 0.8s ease-out 0.4s forwards;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.3em;
+  color: rgba(184,134,11,0.5);
+}
+
+@keyframes splash333-appear {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ================================================================
+   SPIRALE FIBONACCI — Accueil (streak-block remplacé)
+   ================================================================ */
+
+.streak-block {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  cursor: default;
+}
+
+.streak-fib-svg {
+  width: 64px;
+  height: 44px;
+  opacity: 0.55;
+  display: block;
+}
+
+.streak-number {
+  position: absolute;
+  font-size: 1rem;
+  font-weight: 600;
+  color: rgba(184,134,11,0.9);
+  line-height: 1;
+  /* centré sur le svg */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -52%);
+}
+
+.streak-label {
+  position: static;
+  font-size: 0.55rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-top: 2px;
+}
+
+/* ================================================================
+   NOTIFICATIONS — Section dans Paramètres
+   ================================================================ */
+
+.pm-notif-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+}
+
+.pm-notif-label {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.55);
+}
+
+.pm-notif-toggle {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 11px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+
+.pm-notif-toggle::after {
+  content: '';
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.4);
+  transition: left 0.2s, background 0.2s;
+}
+
+.pm-notif-toggle--on {
+  background: rgba(184,134,11,0.5);
+}
+
+.pm-notif-toggle--on::after {
+  left: 21px;
+  background: #FFD700;
+}
+
+.pm-notif-time {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pm-notif-time-input {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px;
+  color: rgba(255,255,255,0.7);
+  font-size: 0.82rem;
+  padding: 4px 8px;
+  width: 64px;
+  text-align: center;
+}
+
+.pm-notif-time-input:focus {
+  outline: none;
+  border-color: rgba(184,134,11,0.4);
+}
+
+.pm-notif-hint {
+  font-size: 0.68rem;
+  color: rgba(255,255,255,0.2);
+  margin-top: 8px;
+  line-height: 1.4;
+}
+
+/* ================================================================
+   BOUTON MODE NUIT — Accueil
+   ================================================================ */
+
+.accueil-nuit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: 1px solid rgba(184,134,11,0.22);
+  color: rgba(184,134,11,0.55);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 10px 26px;
+  border-radius: 28px;
+  cursor: pointer;
+  margin-top: -8px;
+  transition: all 0.25s;
+  white-space: nowrap;
+}
+
+.accueil-nuit-btn:hover {
+  border-color: rgba(184,134,11,0.5);
+  color: rgba(184,134,11,0.9);
+  background: rgba(184,134,11,0.06);
+}
+
+.accueil-nuit-btn svg {
+  flex-shrink: 0;
+  stroke: currentColor;
+}
+
+/* Bouton retour Mode Nuit */
+.nuit-back-btn {
+  position: absolute;
+  top: calc(env(safe-area-inset-top, 0px) + 16px);
+  left: 16px;
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.15);
+  font-size: 1.2rem;
+  cursor: pointer;
+  padding: 8px;
+  z-index: 10;
+  transition: color 0.2s;
+}
+.nuit-back-btn:hover { color: rgba(255,255,255,0.4); }
+
+/* Bouton start Mode Nuit */
+.nuit-start-btn {
+  background: none;
+  border: 1px solid rgba(184,134,11,0.3);
+  color: rgba(184,134,11,0.6);
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 10px 28px;
+  border-radius: 24px;
+  cursor: pointer;
+  margin-top: 24px;
+  transition: all 0.2s;
+}
+.nuit-start-btn:hover {
+  border-color: rgba(184,134,11,0.7);
+  color: rgba(184,134,11,0.9);
+  background: rgba(184,134,11,0.06);
+}
+
+/* nuit-start-btn styles added above via heredoc */
+
+/* ================================================================
+   AUDIT FIXES — Mode Nuit config + Parcours redesign
+   ================================================================ */
+
+/* .accueil-nuit-btn — défini dans la section BOUTON MODE NUIT ci-dessus */
+
+/* ── Mode Nuit — Phase config ─────────────────────────────────── */
+.nuit-config {
+  position: absolute;
+  inset: 0;
+  background: #060608;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  box-sizing: border-box;
+  z-index: 2;
+}
+
+.nuit-config-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.nuit-cfg-icon {
+  color: rgba(184,134,11,0.5);
+  margin-bottom: 4px;
+}
+
+.nuit-cfg-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.6rem;
+  font-weight: 300;
+  color: rgba(255,255,255,0.7);
+  letter-spacing: 0.1em;
+  margin: 0;
+}
+
+.nuit-cfg-subtitle {
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.2);
+  letter-spacing: 0.08em;
+  text-align: center;
+  margin: -12px 0 0;
+}
+
+.nuit-cfg-group {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nuit-cfg-group-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+  margin: 0;
+}
+
+/* Durée */
+.nuit-duration-row {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+}
+
+.nuit-dur-btn {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.35);
+  font-size: 0.78rem;
+  padding: 7px 14px;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.nuit-dur-btn:hover {
+  border-color: rgba(184,134,11,0.3);
+  color: rgba(255,255,255,0.6);
+}
+.nuit-dur-btn--on {
+  background: rgba(184,134,11,0.12);
+  border-color: rgba(184,134,11,0.5);
+  color: #B8860B;
+}
+
+/* Toggles */
+.nuit-toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 0;
+}
+
+.nuit-toggle-label {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.4);
+}
+
+.nuit-toggle {
+  position: relative;
+  width: 38px;
+  height: 20px;
+  background: rgba(255,255,255,0.08);
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background 0.2s;
+  flex-shrink: 0;
+}
+.nuit-toggle::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  transition: left 0.2s, background 0.2s;
+}
+.nuit-toggle--on {
+  background: rgba(184,134,11,0.4);
+}
+.nuit-toggle--on::after {
+  left: 20px;
+  background: #B8860B;
+}
+
+/* Bouton Lancer */
+.nuit-launch-btn {
+  margin-top: 8px;
+  background: rgba(184,134,11,0.1);
+  border: 1px solid rgba(184,134,11,0.4);
+  color: rgba(184,134,11,0.85);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 12px 36px;
+  border-radius: 28px;
+  cursor: pointer;
+  transition: all 0.2s;
+  width: 100%;
+}
+.nuit-launch-btn:hover {
+  background: rgba(184,134,11,0.18);
+  border-color: rgba(184,134,11,0.7);
+  color: #FFD700;
+}
+
+/* ── Mode Nuit — Phase session ────────────────────────────────── */
+.nuit-session {
+  position: absolute;
+  inset: 0;
+  background: #060608;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+
+/* ── Parcours — Streak ────────────────────────────────────────── */
+.pa-streak-block {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 20px 12px;
+  min-height: 140px;
+}
+
+.pa-fib-svg {
+  width: 180px;
+  height: 116px;
+  opacity: 0.45;
+  display: block;
+}
+
+.pa-streak-text {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  pointer-events: none;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.pa-streak-number {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(3.2rem, 12vw, 5rem);
+  font-weight: 300;
+  color: var(--gold, #B8860B);
+  line-height: 1;
+  text-shadow: 0 0 40px rgba(184,134,11,0.25);
+}
+
+.pa-streak-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.28);
+  margin-top: 4px;
+}
+
+/* ── Parcours — Sections ─────────────────────────────────────── */
+.pa-section {
+  padding: 12px 20px 16px;
+  border-top: 1px solid rgba(255,255,255,0.05);
+}
+
+.pa-section-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.25);
+  margin: 0 0 12px;
+  font-style: normal;
+  font-weight: 400;
+}
+
+/* ── Parcours — Courbe d'humeur ──────────────────────────────── */
+.pa-mood-svg {
+  width: 100%;
+  height: 80px;
+  display: block;
+}
+
+/* ── Parcours — Tendances (3 cartes horizontales) ────────────── */
+.pa-tend-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.pa-tend-card {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(184,134,11,0.12);
+  border-radius: 10px;
+  padding: 10px 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-align: center;
+  min-height: 72px;
+  justify-content: center;
+}
+
+.pa-tend-label {
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.22);
+}
+
+.pa-tend-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.pa-tend-value {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.3;
+  word-break: break-word;
+}
+
+.pa-tend-value--small {
+  font-size: 0.78rem;
+}
+
+.pa-tend-count {
+  font-size: 0.62rem;
+  color: rgba(184,134,11,0.5);
+  display: block;
+}
+
+.pa-tend-icon {
+  color: rgba(184,134,11,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pa-tend-dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.15);
+  display: block;
+}
+
+.pa-tend-empty {
+  color: rgba(255,255,255,0.12);
+  font-size: 0.82rem;
+}
+
+/* ── Parcours — Rituels ──────────────────────────────────────── */
+.pa-ritual-row {
+  display: grid;
+  grid-template-columns: 52px 10px 1fr 18px;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.pa-ritual-row:last-child { border-bottom: none; }
+
+.pa-rr-date {
+  font-size: 0.65rem;
+  color: rgba(255,255,255,0.3);
+  white-space: nowrap;
+}
+
+.pa-rr-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  border: 1px solid rgba(255,255,255,0.12);
+  flex-shrink: 0;
+  justify-self: center;
+}
+
+.pa-rr-mantra {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.5);
+  line-height: 1.3;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pa-rr-elem {
+  color: rgba(184,134,11,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+/* ── Parcours — Journal soir ─────────────────────────────────── */
+.pa-soir-row {
+  display: grid;
+  grid-template-columns: 52px 1fr;
+  gap: 8px;
+  align-items: baseline;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+.pa-soir-row:last-child { border-bottom: none; }
+
+.pa-sr-date {
+  font-size: 0.63rem;
+  color: rgba(255,255,255,0.25);
+  white-space: nowrap;
+}
+
+.pa-sr-text {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.4;
+}
+
+.pa-empty {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.18);
+  text-align: center;
+  padding: 18px 0;
+}
+
+/* ── Mode Nuit — Bouton retour (config) ──────────────────────── */
+.nuit-config .nuit-back-btn {
+  position: absolute;
+  top: calc(env(safe-area-inset-top, 0px) + 16px);
+  left: 16px;
+}
