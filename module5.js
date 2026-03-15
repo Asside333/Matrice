@@ -2,159 +2,322 @@
 
 /* ================================================================
    MATRICE — Module 5 : Sort du jour
-   Élément, Solide de Platon SVG, Sort avec geste, Phase lunaire
+   Solides de Platon 3D animés (canvas), icônes SVG élégantes,
+   sort avec geste physique, phase lunaire
    ================================================================ */
 
 const Module5 = (() => {
 
-  // ── État ──────────────────────────────────────────────────────
-  let currentElement = null;
-  let currentSort    = null;
-  let sortRevealTimeout = null;
+  // ════════════════════════════════════════════════════════════════
+  // SOLIDES DE PLATON — Géométrie 3D & Rendu Canvas
+  // ════════════════════════════════════════════════════════════════
 
-  // ── SVGs des Solides de Platon (filaires) ─────────────────────
-  const SOLID_SVGS = {
-    feu: `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="m5-solid-svg">
-      <!-- Tétraèdre / Feu -->
-      <g stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <polygon points="100,28 172,152 28,152" stroke-width="1.2" opacity="0.7"/>
-        <line x1="100" y1="28" x2="100" y2="152" stroke-width="0.7" opacity="0.4"/>
-        <line x1="172" y1="152" x2="100" y2="105" stroke-width="0.7" opacity="0.4"/>
-        <line x1="28" y1="152" x2="100" y2="105" stroke-width="0.7" opacity="0.4"/>
-        <circle cx="100" cy="105" r="2.5" fill="currentColor" opacity="0.5"/>
-        <circle cx="100" cy="28" r="2" fill="currentColor" opacity="0.6"/>
-        <circle cx="172" cy="152" r="2" fill="currentColor" opacity="0.6"/>
-        <circle cx="28" cy="152" r="2" fill="currentColor" opacity="0.6"/>
-      </g>
+  const PHI = (1 + Math.sqrt(5)) / 2; // Nombre d'or
+
+  // ── Normalise les sommets sur la sphère unitaire ───────────────
+  function normVerts(verts) {
+    const maxR = Math.max(...verts.map(v =>
+      Math.sqrt(v[0] * v[0] + v[1] * v[1] + v[2] * v[2])
+    ));
+    return verts.map(v => [v[0] / maxR, v[1] / maxR, v[2] / maxR]);
+  }
+
+  // ── Détecte les arêtes par distance minimale ───────────────────
+  function edgesByMinDist(verts) {
+    let minD2 = Infinity;
+    for (let i = 0; i < verts.length; i++) {
+      for (let j = i + 1; j < verts.length; j++) {
+        const dx = verts[i][0] - verts[j][0];
+        const dy = verts[i][1] - verts[j][1];
+        const dz = verts[i][2] - verts[j][2];
+        const d2 = dx * dx + dy * dy + dz * dz;
+        if (d2 < minD2) minD2 = d2;
+      }
+    }
+    const edges = [];
+    const thresh = minD2 * 1.18; // tolérance 18%
+    for (let i = 0; i < verts.length; i++) {
+      for (let j = i + 1; j < verts.length; j++) {
+        const dx = verts[i][0] - verts[j][0];
+        const dy = verts[i][1] - verts[j][1];
+        const dz = verts[i][2] - verts[j][2];
+        const d2 = dx * dx + dy * dy + dz * dz;
+        if (d2 <= thresh) edges.push([i, j]);
+      }
+    }
+    return edges;
+  }
+
+  // ── Sommets bruts des 5 solides ────────────────────────────────
+  const SOLID_VERTS_RAW = {
+    // Tétraèdre — 4 sommets, 6 arêtes
+    feu: [
+      [ 1,  1,  1], [ 1, -1, -1],
+      [-1,  1, -1], [-1, -1,  1],
+    ],
+
+    // Cube (hexaèdre) — 8 sommets, 12 arêtes
+    terre: [
+      [-1, -1, -1], [-1, -1,  1], [-1,  1, -1], [-1,  1,  1],
+      [ 1, -1, -1], [ 1, -1,  1], [ 1,  1, -1], [ 1,  1,  1],
+    ],
+
+    // Octaèdre — 6 sommets, 12 arêtes
+    air: [
+      [ 1,  0,  0], [-1,  0,  0],
+      [ 0,  1,  0], [ 0, -1,  0],
+      [ 0,  0,  1], [ 0,  0, -1],
+    ],
+
+    // Icosaèdre — 12 sommets, 30 arêtes
+    eau: [
+      [ 0,  1,  PHI], [ 0,  1, -PHI],
+      [ 0, -1,  PHI], [ 0, -1, -PHI],
+      [ 1,  PHI,  0], [ 1, -PHI,  0],
+      [-1,  PHI,  0], [-1, -PHI,  0],
+      [ PHI,  0,  1], [ PHI,  0, -1],
+      [-PHI,  0,  1], [-PHI,  0, -1],
+    ],
+
+    // Dodécaèdre — 20 sommets, 30 arêtes
+    ether: [
+      // Cube intérieur (8)
+      [ 1,  1,  1], [ 1,  1, -1], [ 1, -1,  1], [ 1, -1, -1],
+      [-1,  1,  1], [-1,  1, -1], [-1, -1,  1], [-1, -1, -1],
+      // Rectangles sur les faces (12)
+      [ 0,  PHI,  1/PHI], [ 0,  PHI, -1/PHI],
+      [ 0, -PHI,  1/PHI], [ 0, -PHI, -1/PHI],
+      [ 1/PHI,  0,  PHI], [-1/PHI,  0,  PHI],
+      [ 1/PHI,  0, -PHI], [-1/PHI,  0, -PHI],
+      [ PHI,  1/PHI,  0], [ PHI, -1/PHI,  0],
+      [-PHI,  1/PHI,  0], [-PHI, -1/PHI,  0],
+    ],
+  };
+
+  // ── Pré-calcul normalisé + arêtes ─────────────────────────────
+  const SOLID_DATA = {};
+  for (const key of Object.keys(SOLID_VERTS_RAW)) {
+    const verts = normVerts(SOLID_VERTS_RAW[key]);
+    const edges = edgesByMinDist(verts);
+    SOLID_DATA[key] = { verts, edges };
+  }
+
+  // ── Animation State ────────────────────────────────────────────
+  let solidCanvas   = null;
+  let solidCtx      = null;
+  let solidRafId    = null;
+  let solidKey      = null;
+  let angleX        = 0.3;
+  let angleY        = 0;
+  let lastTs        = 0;
+
+  // ── Initialise le canvas ───────────────────────────────────────
+  function initSolidCanvas() {
+    const wrap = document.getElementById('m5-solid-wrap');
+    if (!wrap) return;
+
+    const dpr  = Math.min(window.devicePixelRatio || 1, 2);
+    const size = 160;
+
+    solidCanvas = document.createElement('canvas');
+    solidCanvas.width  = size * dpr;
+    solidCanvas.height = size * dpr;
+    solidCanvas.style.width  = size + 'px';
+    solidCanvas.style.height = size + 'px';
+    solidCanvas.className = 'm5-solid-canvas';
+
+    wrap.innerHTML = '';
+    wrap.appendChild(solidCanvas);
+
+    solidCtx = solidCanvas.getContext('2d');
+    solidCtx.scale(dpr, dpr);
+  }
+
+  // ── Rotation 3D (axes X et Y) ─────────────────────────────────
+  function rotatePt(v, ax, ay) {
+    const [x, y, z] = v;
+    // Rotation Y
+    const x1 =  x * Math.cos(ay) + z * Math.sin(ay);
+    const z1 = -x * Math.sin(ay) + z * Math.cos(ay);
+    // Rotation X
+    const y2 = y * Math.cos(ax) - z1 * Math.sin(ax);
+    const z2 = y * Math.sin(ax) + z1 * Math.cos(ax);
+    return [x1, y2, z2];
+  }
+
+  // ── Projection perspective ─────────────────────────────────────
+  function projectPt(v, size) {
+    const fov  = 2.6;
+    const z    = v[2] + fov;
+    const s    = (fov / z) * (size * 0.40);
+    return [v[0] * s + size / 2, v[1] * s + size / 2, v[2]];
+  }
+
+  // ── Boucle d'animation ─────────────────────────────────────────
+  function drawFrame(ts) {
+    if (!solidCtx || !solidKey) return;
+
+    const dt = Math.min((ts - lastTs) / 1000, 0.05);
+    lastTs = ts;
+
+    // Rotation lente sur deux axes
+    angleY += 0.35 * dt;
+    angleX  = 0.28 + Math.sin(ts * 0.00018) * 0.22;
+
+    const { verts, edges } = SOLID_DATA[solidKey];
+    const el   = ELEMENTS[solidKey];
+    const size = 160;
+
+    solidCtx.clearRect(0, 0, size, size);
+
+    // Rotation + projection
+    const rotated   = verts.map(v => rotatePt(v, angleX, angleY));
+    const projected = rotated.map(v => projectPt(v, size));
+
+    // Trier les arêtes par profondeur (back-to-front)
+    const sortedEdges = [...edges].sort((a, b) => {
+      const zA = (projected[a[0]][2] + projected[a[1]][2]) / 2;
+      const zB = (projected[b[0]][2] + projected[b[1]][2]) / 2;
+      return zA - zB;
+    });
+
+    solidCtx.lineCap = 'round';
+
+    for (const [i, j] of sortedEdges) {
+      const [ax, ay, az] = projected[i];
+      const [bx, by, bz] = projected[j];
+      const midZ  = (az + bz) / 2;              // −1..+1
+      const depth = (midZ + 1) / 2;             //  0..1 (0=arrière)
+      const alpha = 0.15 + 0.70 * depth;
+      const lw    = 0.5  + 1.0  * depth;
+
+      solidCtx.globalAlpha = alpha;
+      solidCtx.lineWidth   = lw;
+      solidCtx.strokeStyle = el.couleur;
+
+      solidCtx.beginPath();
+      solidCtx.moveTo(ax, ay);
+      solidCtx.lineTo(bx, by);
+      solidCtx.stroke();
+    }
+
+    solidCtx.globalAlpha = 1;
+    solidRafId = requestAnimationFrame(drawFrame);
+  }
+
+  function startSolidAnim(key) {
+    if (solidRafId) cancelAnimationFrame(solidRafId);
+    solidKey = key;
+    angleY = 0;
+    lastTs = 0;
+    solidRafId = requestAnimationFrame(drawFrame);
+  }
+
+  function stopSolidAnim() {
+    if (solidRafId) {
+      cancelAnimationFrame(solidRafId);
+      solidRafId = null;
+    }
+    solidKey = null;
+  }
+
+  // ════════════════════════════════════════════════════════════════
+  // ICÔNES SVG DES ÉLÉMENTS
+  // ════════════════════════════════════════════════════════════════
+
+  const ELEMENT_ICONS = {
+    feu: `<svg class="m5-badge-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 3C10 7 7 10 7 14.5C7 18 9.2 21 12 21C14.8 21 17 18 17 14.5C17 10 14 7 12 3Z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M9.5 16.5C9.5 18 10.6 19 12 19" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity="0.6"/>
     </svg>`,
 
-    terre: `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="m5-solid-svg">
-      <!-- Cube / Terre -->
-      <g stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <!-- Face avant -->
-        <rect x="55" y="75" width="80" height="80" stroke-width="1.2" opacity="0.7"/>
-        <!-- Face arrière projetée -->
-        <rect x="72" y="55" width="80" height="80" stroke-width="0.6" opacity="0.35"/>
-        <!-- Arêtes de liaison -->
-        <line x1="55" y1="75" x2="72" y2="55" stroke-width="0.7" opacity="0.5"/>
-        <line x1="135" y1="75" x2="152" y2="55" stroke-width="0.7" opacity="0.5"/>
-        <line x1="135" y1="155" x2="152" y2="135" stroke-width="0.7" opacity="0.5"/>
-        <line x1="55" y1="155" x2="72" y2="135" stroke-width="0.7" opacity="0.5"/>
-      </g>
+    terre: `<svg class="m5-badge-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M3 19L9 8L13 14L17 9L21 19" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="3" y1="19" x2="21" y2="19" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
     </svg>`,
 
-    air: `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="m5-solid-svg">
-      <!-- Octaèdre / Air -->
-      <g stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <!-- Équateur -->
-        <polygon points="100,80 152,124 100,168 48,124" stroke-width="1.2" opacity="0.7"/>
-        <!-- Sommet et nadir -->
-        <line x1="100" y1="38" x2="152" y2="124" stroke-width="0.9" opacity="0.6"/>
-        <line x1="100" y1="38" x2="100" y2="80" stroke-width="0.9" opacity="0.6"/>
-        <line x1="100" y1="38" x2="48" y2="124" stroke-width="0.9" opacity="0.6"/>
-        <line x1="100" y1="172" x2="152" y2="124" stroke-width="0.7" opacity="0.4"/>
-        <line x1="100" y1="172" x2="100" y2="168" stroke-width="0.7" opacity="0.4"/>
-        <line x1="100" y1="172" x2="48" y2="124" stroke-width="0.7" opacity="0.4"/>
-        <!-- Arête centrale cachée -->
-        <line x1="100" y1="80" x2="100" y2="168" stroke-width="0.5" opacity="0.2" stroke-dasharray="4,3"/>
-        <circle cx="100" cy="38" r="2.5" fill="currentColor" opacity="0.6"/>
-      </g>
+    air: `<svg class="m5-badge-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M3 9Q9 6.5 15 9Q19 10.5 21 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M3 13Q9 10.5 15 13Q19 14.5 21 13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
+      <path d="M3 17Q8 14.5 13 17Q16 18.5 18 17" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/>
     </svg>`,
 
-    eau: `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="m5-solid-svg">
-      <!-- Icosaèdre simplifié / Eau -->
-      <g stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <!-- Bande équatoriale -->
-        <polygon points="100,42 148,72 134,118 66,118 52,72" stroke-width="1.2" opacity="0.65"/>
-        <!-- Triangle du bas -->
-        <polygon points="66,118 134,118 100,158" stroke-width="1.0" opacity="0.6"/>
-        <!-- Sommet -->
-        <line x1="100" y1="42" x2="100" y2="158" stroke-width="0.5" opacity="0.2" stroke-dasharray="4,3"/>
-        <line x1="148" y1="72" x2="134" y2="118" stroke-width="0.8" opacity="0.5"/>
-        <line x1="52" y1="72" x2="66" y2="118" stroke-width="0.8" opacity="0.5"/>
-        <line x1="100" y1="42" x2="66" y2="118" stroke-width="0.7" opacity="0.4"/>
-        <line x1="100" y1="42" x2="134" y2="118" stroke-width="0.7" opacity="0.4"/>
-        <line x1="52" y1="72" x2="100" y2="158" stroke-width="0.6" opacity="0.35"/>
-        <line x1="148" y1="72" x2="100" y2="158" stroke-width="0.6" opacity="0.35"/>
-        <circle cx="100" cy="42" r="2" fill="currentColor" opacity="0.6"/>
-        <circle cx="100" cy="158" r="2" fill="currentColor" opacity="0.6"/>
-      </g>
+    eau: `<svg class="m5-badge-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 3C12 3 5 11 5 15.5C5 19.1 8.1 22 12 22C15.9 22 19 19.1 19 15.5C19 11 12 3 12 3Z" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M9 16.5C9 18 10.3 19 12 19" stroke="currentColor" stroke-width="1.1" stroke-linecap="round" opacity="0.55"/>
     </svg>`,
 
-    ether: `<svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" class="m5-solid-svg">
-      <!-- Dodécaèdre projeté / Éther -->
-      <g stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <!-- Pentagone central -->
-        <polygon points="100,52 132,76 120,114 80,114 68,76" stroke-width="1.2" opacity="0.7"/>
-        <!-- Pentagone externe (projeté) -->
-        <polygon points="100,28 152,62 136,128 64,128 48,62" stroke-width="0.7" opacity="0.4"/>
-        <!-- Connexions -->
-        <line x1="100" y1="28" x2="100" y2="52" stroke-width="0.6" opacity="0.4"/>
-        <line x1="152" y1="62" x2="132" y2="76" stroke-width="0.6" opacity="0.4"/>
-        <line x1="136" y1="128" x2="120" y2="114" stroke-width="0.6" opacity="0.4"/>
-        <line x1="64" y1="128" x2="80" y2="114" stroke-width="0.6" opacity="0.4"/>
-        <line x1="48" y1="62" x2="68" y2="76" stroke-width="0.6" opacity="0.4"/>
-        <!-- Face du bas -->
-        <polygon points="80,148 120,148 136,128 100,140 64,128" stroke-width="0.6" opacity="0.3"/>
-        <line x1="80" y1="148" x2="80" y2="114" stroke-width="0.5" opacity="0.3"/>
-        <line x1="120" y1="148" x2="120" y2="114" stroke-width="0.5" opacity="0.3"/>
-        <circle cx="100" cy="52" r="1.5" fill="currentColor" opacity="0.5"/>
-      </g>
+    ether: `<svg class="m5-badge-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="12,3 15.5,9.5 22.5,9.5 16.8,14.2 19.1,21 12,17 4.9,21 7.2,14.2 1.5,9.5 8.5,9.5" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/>
     </svg>`,
   };
 
-  // ── Affichage élément ─────────────────────────────────────────
+  // ════════════════════════════════════════════════════════════════
+  // ÉTAT & LOGIQUE DU MODULE
+  // ════════════════════════════════════════════════════════════════
+
+  let currentElement    = null;
+  let currentSort       = null;
+  let sortRevealTimeout = null;
+
+  // ── Affichage de l'élément ────────────────────────────────────
   function displayElement(elementKey) {
     currentElement = elementKey;
     const el = ELEMENTS[elementKey];
     if (!el) return;
 
-    // Mise à jour du badge élément
+    // Badge avec icône SVG
     const badge = document.getElementById('m5-element-badge');
     if (badge) {
-      badge.textContent = `${el.emoji} ${el.nom}`;
-      badge.style.setProperty('--el-color', el.couleur);
+      badge.innerHTML = `${ELEMENT_ICONS[elementKey] || ''}<span>${el.nom}</span>`;
+      badge.style.color = el.couleur;
     }
 
-    // Solide de Platon
-    const solidWrap = document.getElementById('m5-solid-wrap');
-    if (solidWrap) solidWrap.innerHTML = SOLID_SVGS[elementKey] || '';
+    // Couleur CSS pour l'écran
+    const screen = document.getElementById('screen-m5');
+    if (screen) {
+      screen.style.setProperty('--m5-color',  el.couleur);
+      screen.style.setProperty('--m5-color2', el.secondaire);
+    }
 
-    // Coloration
-    document.getElementById('screen-m5')?.style.setProperty('--m5-color', el.couleur);
-    document.getElementById('screen-m5')?.style.setProperty('--m5-color2', el.secondaire);
-
-    // Boutons d'élément : actif
+    // Boutons actif/inactif
     document.querySelectorAll('.m5-el-btn').forEach(btn => {
-      btn.classList.toggle('m5-el-btn--active', btn.dataset.element === elementKey);
+      const isActive = btn.dataset.element === elementKey;
+      btn.classList.toggle('m5-el-btn--active', isActive);
+      btn.style.color = isActive ? el.couleur : '';
     });
 
-    // Sauvegarder dans RITUAL_STATE
+    // Sauvegarde RITUAL_STATE
     if (typeof RITUAL_STATE !== 'undefined') {
       RITUAL_STATE.element    = el.nom;
       RITUAL_STATE.elementKey = elementKey;
     }
 
-    // Tirer le sort
+    // Lance l'animation 3D du nouveau solide
+    startSolidAnim(elementKey);
+
+    // Tire le sort
     revealSort();
   }
 
-  // ── Révéler un sort ──────────────────────────────────────────
+  // ── Révéler un sort ───────────────────────────────────────────
   function revealSort() {
-    const sort = pickSort(currentElement, currentSort?.texte);
+    const sort = pickSort(currentElement, currentSort ? currentSort.texte : null);
     currentSort = sort;
     if (typeof RITUAL_STATE !== 'undefined') RITUAL_STATE.sort = sort.texte;
 
-    const titreEl  = document.getElementById('m5-sort-titre');
-    const texteEl  = document.getElementById('m5-sort-texte');
-    const gesteEl  = document.getElementById('m5-sort-geste');
-    const sortBox  = document.getElementById('m5-sort-box');
+    const titreEl = document.getElementById('m5-sort-titre');
+    const texteEl = document.getElementById('m5-sort-texte');
+    const gesteEl = document.getElementById('m5-sort-geste');
+    const sortBox = document.getElementById('m5-sort-box');
 
     if (!titreEl) return;
 
+    // Fade out
     if (sortBox) {
-      sortBox.style.opacity = '0';
-      sortBox.style.transform = 'translateY(12px)';
+      sortBox.style.transition = 'opacity 0.3s, transform 0.3s';
+      sortBox.style.opacity    = '0';
+      sortBox.style.transform  = 'translateY(8px)';
     }
 
     clearTimeout(sortRevealTimeout);
@@ -163,54 +326,46 @@ const Module5 = (() => {
       if (texteEl) texteEl.textContent = sort.texte;
       if (gesteEl) gesteEl.textContent = `✦ ${sort.geste}`;
       if (sortBox) {
-        sortBox.style.transition = 'opacity 0.55s, transform 0.55s';
+        sortBox.style.transition = 'opacity 0.5s, transform 0.5s';
         sortBox.style.opacity    = '1';
         sortBox.style.transform  = 'translateY(0)';
       }
-    }, 80);
+    }, 200);
   }
 
   // ── Phase lunaire ─────────────────────────────────────────────
   function displayMoonPhase() {
     const { emoji, nom } = getPhaseLunaire();
     const el = document.getElementById('m5-moon');
-    if (el) el.textContent = `${emoji} ${nom}`;
+    if (el) el.textContent = `${emoji}  ${nom}`;
   }
 
-  // ── Liaison des événements ─────────────────────────────────────
+  // ── Liaison des événements ────────────────────────────────────
   function bindEvents() {
-    // Boutons d'élément
     document.querySelectorAll('.m5-el-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        displayElement(btn.dataset.element);
-      });
+      btn.addEventListener('click', () => displayElement(btn.dataset.element));
     });
 
-    // Autre sort (même élément)
     document.getElementById('m5-reshuffle-btn')
       ?.addEventListener('click', () => {
         const btn = document.getElementById('m5-reshuffle-btn');
-        if (btn) {
-          btn.style.opacity = '0.4';
-          setTimeout(() => { btn.style.opacity = ''; }, 600);
-        }
+        if (btn) { btn.style.opacity = '0.35'; setTimeout(() => { btn.style.opacity = ''; }, 500); }
         revealSort();
       });
 
-    // Module suivant
     document.getElementById('m5-next-btn')
       ?.addEventListener('click', () => navigateTo('m6'));
   }
 
   // ── Lifecycle ─────────────────────────────────────────────────
   function onEnter() {
+    if (!solidCanvas) initSolidCanvas();
     displayMoonPhase();
-    const todayKey = getTodayElement();
-    displayElement(todayKey);
-    document.getElementById('m5-footer')?.classList.remove('m5-footer--hidden');
+    displayElement(getTodayElement());
   }
 
   function onLeave() {
+    stopSolidAnim();
     clearTimeout(sortRevealTimeout);
   }
 
