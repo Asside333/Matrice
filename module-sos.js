@@ -16,7 +16,7 @@ const ModuleSOS = (() => {
   const SPREAD = 15, R_GROW = 8;
 
   // ── État ──────────────────────────────────────────────────────
-  let sosBreathMs = 60000;       // durée respiration, choisie en step 0
+  const BREATH_TOTAL_MS = 60000; // étape 2 = 60 s
   let timers      = [];
   let breathRaf   = null;
   let breathPhase = 'inspire'; // 'inspire' | 'expire'
@@ -246,7 +246,7 @@ const ModuleSOS = (() => {
     return pool[Math.floor(Math.random() * pool.length)];
   }
 
-  // ── Flux principal (démarre depuis step 1, après choix de durée) ─
+  // ── Flux principal ────────────────────────────────────────────
   function runFlow() {
     // Étape 1 — Corps (8 s)
     after(5000, () => {
@@ -269,8 +269,8 @@ const ModuleSOS = (() => {
         buildSeed();
         startBreath();
 
-        // Étape 2 — Respiration (durée choisie)
-        after(sosBreathMs, () => {
+        // Étape 2 — Respiration (60 s)
+        after(BREATH_TOTAL_MS, () => {
           stopBreath();
 
           gotoStep('sos-s2', 'sos-s3', () => {
@@ -323,7 +323,7 @@ const ModuleSOS = (() => {
 
   // ── Réinitialiser l'affichage ─────────────────────────────────
   function resetSteps() {
-    ['sos-s0', 'sos-s1', 'sos-s2', 'sos-s3', 'sos-s4', 'sos-s5'].forEach((id, i) => {
+    ['sos-s1', 'sos-s2', 'sos-s3', 'sos-s4', 'sos-s5'].forEach((id, i) => {
       const el = document.getElementById(id);
       if (!el) return;
       el.style.transition = 'none';
@@ -377,24 +377,15 @@ const ModuleSOS = (() => {
       ?.addEventListener('click', quitSOS);
     document.getElementById('sos-btn-more')
       ?.addEventListener('click', () => { clearAll(); navigateTo('libre'); });
-
-    // Boutons de durée (step 0)
-    document.querySelectorAll('.sos-dur-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        sosBreathMs = parseInt(btn.dataset.breath, 10) || 60000;
-        gotoStep('sos-s0', 'sos-s1', () => runFlow());
-      });
-    });
   }
 
   // ── Lifecycle ─────────────────────────────────────────────────
   function onEnter() {
     clearAll();
     binActive = false;
-    sosBreathMs = 60000; // reset à la valeur par défaut
     updateBinBtn();
     resetSteps();
-    // Le flow démarre après le choix de durée (step 0)
+    runFlow();
   }
 
   function onLeave() {
