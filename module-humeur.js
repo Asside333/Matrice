@@ -39,6 +39,14 @@ const ModuleHumeur = (() => {
     document.querySelectorAll('.hm-dot').forEach(btn => btn.classList.remove('hm-dot--selected'));
     // Réinitialiser l'humeur dans RITUAL_STATE pour forcer un nouveau choix
     if (typeof RITUAL_STATE !== 'undefined') RITUAL_STATE.humeur = null;
+
+    // Phase lunaire subtile sous la question
+    const moonEl = document.getElementById('hm-moon-phase');
+    if (moonEl && typeof MoonSystem !== 'undefined') {
+      const phase = MoonSystem.getMoonPhase(new Date());
+      moonEl.innerHTML = MoonSystem.drawMoonIcon(phase.key, 16) +
+        `<span class="hm-moon-name">${phase.name}</span>`;
+    }
   }
 
   function onLeave() {}

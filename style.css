@@ -217,35 +217,43 @@ body::before {
 .accueil-header {
   position: relative;
   z-index: 2;
-  display: grid;
-  grid-template-columns: 1fr auto 1fr;
+  display: flex;
   align-items: center;
+  justify-content: center;
   padding: 56px 28px 0;
   height: var(--header-height);
   flex-shrink: 0;
 }
 
-/* h1 centré dans la colonne du milieu */
-.accueil-header .app-name {
-  grid-column: 2;
-  justify-self: center;
-}
-
-/* Icônes : dans la 3e colonne, alignées à droite */
-
-/* ── Spirale saisonnière — Accueil ────────────────────────────── */
-.accueil-spiral-block {
+/* ── Mini spirale — coin haut-gauche de l'écran accueil ─────── */
+.accueil-spiral-mini {
+  position: absolute;
+  top: calc(var(--header-height) + 12px);
+  left: 18px;
+  z-index: 3;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  margin: 8px 0 14px;
+  gap: 5px;
+  cursor: default;
   user-select: none;
 }
 
 #accueil-spiral-svg {
-  width: 190px;
-  height: 190px;
+  width: 110px;
+  height: 110px;
   overflow: visible;
+  display: block;
+}
+
+.accueil-spiral-saison {
+  font-size: 0.54rem;
+  letter-spacing: 0.04em;
+  color: rgba(184,134,11,0.55);
+  text-align: center;
+  white-space: nowrap;
+  line-height: 1;
+  transition: color var(--t-theme);
 }
 
 /* Nom app */
@@ -260,18 +268,103 @@ body::before {
   text-align: center;
 }
 
-/* Lune */
+/* Lune — header accueil */
 .moon-block {
-  min-width: 44px;
-  text-align: right;
+  min-width: 26px;
+  text-align: center;
   cursor: default;
 }
 
-.moon-emoji {
-  font-size: 1.15rem;
-  opacity: 0.7;
-  display: inline-block;
-  transition: opacity 0.4s ease;
+.moon-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.72;
+  transition: opacity 0.4s;
+  color: var(--gold);
+}
+
+.moon-icon svg { display: block; }
+
+/* Lune — écran humeur */
+.hm-moon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin: -4px 0 10px;
+  opacity: 0.55;
+  color: var(--gold);
+}
+
+.hm-moon .moon-icon { opacity: 1; }
+
+.hm-moon-name {
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* Lune — header soir */
+.sv-moon {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  opacity: 0.55;
+  color: var(--gold);
+}
+
+.sv-moon .moon-icon { opacity: 1; }
+
+.sv-moon-name {
+  font-family: var(--font-sans);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+}
+
+/* Lune — m5 sort du jour */
+.m5-moon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  color: var(--gold);
+  opacity: 0.65;
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  letter-spacing: 0.05em;
+  margin: 4px 0 8px;
+}
+
+.m5-moon .moon-icon { opacity: 1; }
+.m5-moon span { opacity: 0.85; }
+
+/* Lune — clôture */
+.cl-moon-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(184, 134, 11, 0.06);
+  border: 1px solid rgba(184, 134, 11, 0.18);
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin: 14px 0 8px;
+  color: var(--gold);
+}
+
+.cl-moon-icon {
+  flex-shrink: 0;
+  opacity: 0.85;
+}
+
+.cl-moon-insight {
+  font-family: var(--font-serif);
+  font-size: 0.82rem;
+  font-style: italic;
+  line-height: 1.5;
+  opacity: 0.88;
+  margin: 0;
 }
 
 /* ── Main Accueil ─────────────────────────────────────────────── */
@@ -2262,14 +2355,6 @@ body.light-mode .m1-toast {
   color: var(--m5-color);
 }
 
-/* ── Phase lunaire ────────────────────────────────────────────── */
-.m5-moon {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.83rem;
-  color: var(--text-dim);
-  text-align: center;
-}
-
 /* ── Autre sort ───────────────────────────────────────────────── */
 .m5-reshuffle-btn {
   background: none;
@@ -4048,8 +4133,9 @@ body.light-mode .m1-toast {
    ================================================================ */
 
 .accueil-header-right {
-  grid-column: 3;
-  justify-self: end;
+  position: absolute;
+  right: 28px;
+  top: 56px;
   display: flex;
   flex-direction: row;
   align-items: center;
@@ -5156,6 +5242,7 @@ body.light-mode .pa-tend-label  { color: rgba(28,22,8,0.60); }
 body.light-mode .pa-tend-value  { color: rgba(28,22,8,0.82); }
 body.light-mode .pa-tend-empty  { color: rgba(28,22,8,0.52); }
 body.light-mode .pa-section-title { color: rgba(28,22,8,0.62); }
+body.light-mode .accueil-spiral-saison { color: rgba(28,22,8,0.48); }
 body.light-mode .pa-season-days   { color: rgba(28,22,8,0.55); }
 body.light-mode .pa-season-name   { color: var(--gold); }
 

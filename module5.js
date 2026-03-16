@@ -335,9 +335,11 @@ const Module5 = (() => {
 
   // ── Phase lunaire ─────────────────────────────────────────────
   function displayMoonPhase() {
-    const { emoji, nom } = getPhaseLunaire();
-    const el = document.getElementById('m5-moon');
-    if (el) el.textContent = `${emoji}  ${nom}`;
+    const phase = MoonSystem.getMoonPhase(new Date());
+    const el    = document.getElementById('m5-moon');
+    if (!el) return;
+    const icon = MoonSystem.drawMoonIcon(phase.key, 18);
+    el.innerHTML = `${icon}<span>${phase.name}</span>`;
   }
 
   // ── Liaison des événements ────────────────────────────────────
@@ -363,12 +365,17 @@ const Module5 = (() => {
     displayMoonPhase();
 
     // L'humeur oriente l'élément proposé
+    // humeur 1-2 → terre/eau  |  humeur 4-5 → feu/ether  |  humeur 3 ou null → lune décide
     const humeur = (typeof RITUAL_STATE !== 'undefined') ? RITUAL_STATE.humeur : null;
-    let element = getTodayElement();
+    let element;
     if (humeur !== null && humeur <= 2) {
       element = Math.random() < 0.5 ? 'terre' : 'eau';
     } else if (humeur !== null && humeur >= 4) {
       element = Math.random() < 0.5 ? 'feu' : 'ether';
+    } else {
+      // humeur neutre ou non renseignée : la lune choisit
+      const phase = MoonSystem.getMoonPhase(new Date());
+      element = phase.elementKey || getTodayElement();
     }
     displayElement(element);
   }

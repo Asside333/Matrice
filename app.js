@@ -34,8 +34,10 @@ const SpiralGold = (() => {
   return { path, dayPos };
 })();
 
-// Paramètres communs spirale (viewBox 280×280, cx=cy=140)
+// Paramètres spirale grande — Parcours (viewBox 280×280)
 const SP = { cx: 140, cy: 140, a: 2, tStart: 1.0, tEnd: 12.0 };
+// Paramètres spirale mini — Accueil (viewBox 120×120, affichée 110×110px)
+const SP_MINI = { cx: 60, cy: 60, a: 0.85, tStart: 1.0, tEnd: 12.0 };
 // Couleurs humeur : 1=gris foncé  2=gris  3=or sombre  4=or  5=or vif
 const MOOD_COLS = ['', '#5a5a62', '#888899', '#B8860B', '#DAA520', '#FFD700'];
 
@@ -293,18 +295,19 @@ function buildAccueilSpiral() {
   const { streakConsecutif, streakSaison, season, seasonDays } = MatriceStorage.getStreakData();
   const cal   = MatriceStorage.getCalendar();
   const today = new Date().toISOString().slice(0, 10);
-  const { cx, cy, a, tStart, tEnd } = SP;
+  const { cx, cy, a, tStart, tEnd } = SP_MINI; // viewBox 120×120, affiché 110px
   const n = seasonDays.length;
+  // scale ≈ 110/120 = 0.917 → font-size SVG × 0.917 = px rendus
 
   // ── Tracé de la spirale ──
-  const pathPts = SpiralGold.path(cx, cy, a, tStart, tEnd, 300);
+  const pathPts = SpiralGold.path(cx, cy, a, tStart, tEnd, 280);
   const d = 'M' + pathPts.map(([x, y]) => `${x.toFixed(2)},${y.toFixed(2)}`).join(' L');
   const spiralPath = document.createElementNS(NS, 'path');
   spiralPath.setAttribute('d', d);
   spiralPath.setAttribute('stroke', season.colorTrace);
-  spiralPath.setAttribute('stroke-width', '1.2');
+  spiralPath.setAttribute('stroke-width', '1.1');
   spiralPath.setAttribute('fill', 'none');
-  spiralPath.setAttribute('opacity', '0.45');
+  spiralPath.setAttribute('opacity', '0.55');
   spiralPath.setAttribute('stroke-linecap', 'round');
   svg.appendChild(spiralPath);
 
@@ -318,76 +321,53 @@ function buildAccueilSpiral() {
     const dot = document.createElementNS(NS, 'circle');
     dot.setAttribute('cx', x.toFixed(2));
     dot.setAttribute('cy', y.toFixed(2));
-    dot.setAttribute('r', i === todayIdx ? '3.8' : '2.8');
+    dot.setAttribute('r', i === todayIdx ? '2.8' : '2.0');
     dot.setAttribute('fill', MOOD_COLS[entry.mood] || MOOD_COLS[3]);
     svg.appendChild(dot);
   });
 
-  // ── Texte central ──
+  // ── Streak au centre ──
+  // font-size 28 × 0.917 ≈ 25.7px rendu → bien lisible
   const tCount = document.createElementNS(NS, 'text');
-  tCount.setAttribute('x', cx); tCount.setAttribute('y', cy - 2);
+  tCount.setAttribute('x', cx); tCount.setAttribute('y', cy + 1);
   tCount.setAttribute('text-anchor', 'middle');
   tCount.setAttribute('dominant-baseline', 'middle');
   tCount.setAttribute('fill', '#B8860B');
   tCount.setAttribute('font-family', "'Cormorant Garamond', Georgia, serif");
-  tCount.setAttribute('font-size', '34');
+  tCount.setAttribute('font-size', '28');
   tCount.setAttribute('font-weight', '300');
   tCount.textContent = streakConsecutif;
   svg.appendChild(tCount);
 
+  // font-size 8 × 0.917 ≈ 7.3px → lisible
   const tLabel = document.createElementNS(NS, 'text');
-  tLabel.setAttribute('x', cx); tLabel.setAttribute('y', cy + 17);
+  tLabel.setAttribute('x', cx); tLabel.setAttribute('y', cy + 15);
   tLabel.setAttribute('text-anchor', 'middle');
   tLabel.setAttribute('fill', 'rgba(184,134,11,0.60)');
   tLabel.setAttribute('font-family', "'DM Sans', sans-serif");
-  tLabel.setAttribute('font-size', '9'); tLabel.setAttribute('letter-spacing', '2');
+  tLabel.setAttribute('font-size', '8');
+  tLabel.setAttribute('letter-spacing', '1.8');
   tLabel.textContent = 'JOURS';
   svg.appendChild(tLabel);
 
-  const tSeason = document.createElementNS(NS, 'text');
-  tSeason.setAttribute('x', cx); tSeason.setAttribute('y', cy + 31);
-  tSeason.setAttribute('text-anchor', 'middle');
-  tSeason.setAttribute('fill', 'rgba(184,134,11,0.42)');
-  tSeason.setAttribute('font-family', "'DM Sans', sans-serif");
-  tSeason.setAttribute('font-size', '7.5');
-  tSeason.textContent = `${season.name} : ${streakSaison}/${n}`;
-  svg.appendChild(tSeason);
+  // ── Texte saison (HTML span en dessous du SVG) ──
+  const saison = document.getElementById('accueil-spiral-saison');
+  if (saison) saison.textContent = `${season.name} : ${streakSaison}/${n}`;
 }
 
 // ════════════════════════════════════════════════════════════════
 // PHASE LUNAIRE
 // ════════════════════════════════════════════════════════════════
 
-const PHASES_LUNAIRES = [
-  { emoji: '🌑', nom: 'Nouvelle Lune' },
-  { emoji: '🌒', nom: 'Croissant croissant' },
-  { emoji: '🌓', nom: 'Premier Quartier' },
-  { emoji: '🌔', nom: 'Gibbeuse croissante' },
-  { emoji: '🌕', nom: 'Pleine Lune' },
-  { emoji: '🌖', nom: 'Gibbeuse décroissante' },
-  { emoji: '🌗', nom: 'Dernier Quartier' },
-  { emoji: '🌘', nom: 'Dernier Croissant' },
-];
-
-function getPhaseLunaire() {
-  // Référence : nouvelle lune connue du 6 janvier 2000 à 18h14 UTC
-  const REF_NEW_MOON = Date.UTC(2000, 0, 6, 18, 14, 0);
-  const SYNODIC_MS = 29.530588853 * 24 * 60 * 60 * 1000; // ms par cycle lunaire
-
-  const elapsed = (Date.now() - REF_NEW_MOON) % SYNODIC_MS;
-  const phase = (elapsed + SYNODIC_MS) % SYNODIC_MS / SYNODIC_MS; // 0..1
-
-  return PHASES_LUNAIRES[Math.floor(phase * 8) % 8];
-}
-
 function displayPhaseLunaire() {
-  const { emoji, nom } = getPhaseLunaire();
+  const phase   = MoonSystem.getMoonPhase(new Date());
+  const iconSvg = MoonSystem.drawMoonIcon(phase.key, 22);
 
-  const emojiEl = document.getElementById('moon-emoji');
+  const iconEl  = document.getElementById('moon-icon');
   const blockEl = document.getElementById('moon-block');
 
-  if (emojiEl) emojiEl.textContent = emoji;
-  if (blockEl) blockEl.setAttribute('title', nom);
+  if (iconEl)  iconEl.innerHTML = iconSvg;
+  if (blockEl) blockEl.setAttribute('title', phase.name);
 }
 
 // ════════════════════════════════════════════════════════════════

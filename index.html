@@ -48,12 +48,22 @@
   <section id="screen-accueil" class="screen active" role="main">
     <div class="bg-glow" aria-hidden="true"></div>
 
+    <!-- Mini spirale positionnée en absolu dans le coin haut-gauche -->
+    <div class="accueil-spiral-mini" role="img" aria-label="Spirale de progression">
+      <svg id="accueil-spiral-svg"
+           viewBox="0 0 120 120"
+           xmlns="http://www.w3.org/2000/svg"
+           aria-hidden="true"
+           overflow="visible"></svg>
+      <span class="accueil-spiral-saison" id="accueil-spiral-saison"></span>
+    </div>
+
     <header class="accueil-header">
       <h1 class="app-name">MATRICE</h1>
 
       <div class="accueil-header-right">
         <div class="moon-block" id="moon-block" title="">
-          <span class="moon-emoji" id="moon-emoji">🌑</span>
+          <span class="moon-icon" id="moon-icon"></span>
         </div>
         <button class="accueil-theme-btn" id="btn-theme-toggle" aria-label="Passer en mode clair">
           <!-- icône mise à jour dynamiquement par app.js -->
@@ -86,15 +96,6 @@
       <div class="accueil-cta">
         <p class="accueil-subtitle">Calibre ton champ</p>
 
-        <!-- Spirale saisonnière -->
-        <div class="accueil-spiral-block">
-          <svg id="accueil-spiral-svg"
-               viewBox="0 0 280 280"
-               xmlns="http://www.w3.org/2000/svg"
-               aria-label="Spirale de la saison"
-               overflow="visible"></svg>
-        </div>
-
         <button class="btn-rituel" id="btn-rituel" aria-label="Commencer le rituel du matin">
           <span class="btn-rituel-text">Commencer le rituel</span>
           <span class="btn-rituel-shine" aria-hidden="true"></span>
@@ -120,6 +121,7 @@
     </button>
     <div class="hm-inner">
       <p class="hm-question">Comment tu te sens<br>ce matin ?</p>
+      <div class="hm-moon" id="hm-moon-phase" aria-live="polite"></div>
       <div class="hm-circles" role="group" aria-label="Humeur de 1 à 5">
         <button class="hm-dot" data-humeur="1" aria-label="Difficile" style="--hm-col:#3a3a42"></button>
         <button class="hm-dot" data-humeur="2" aria-label="Peu en forme" style="--hm-col:#5c5c6e"></button>
@@ -527,6 +529,7 @@
     <!-- En-tête -->
     <div class="sv-header">
       <span class="sv-title">Soir</span>
+      <div class="sv-moon" id="sv-moon-phase" aria-live="polite"></div>
       <button class="sv-history-btn" id="sv-history-btn" aria-label="Voir l'historique">
         <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M10 6v4l3 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
@@ -1062,6 +1065,12 @@
         <cite class="cl-citation-author" id="cl-citation-author"></cite>
       </div>
 
+      <!-- Insight lunaire -->
+      <div class="cl-moon-wrap" id="cl-moon-wrap" hidden>
+        <div class="cl-moon-icon" id="cl-moon-icon"></div>
+        <p class="cl-moon-insight" id="cl-moon-insight"></p>
+      </div>
+
       <button class="cl-finish-btn" id="cl-finish-btn">
         Revenir à l'accueil
       </button>
@@ -1302,6 +1311,7 @@
   </nav>
 
   <script src="storage.js"></script>
+  <script src="data/moon.js"></script>
   <script src="app.js"></script>
   <script src="data/mantras.js"></script>
   <script src="data/transmutations.js"></script>

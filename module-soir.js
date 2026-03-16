@@ -244,6 +244,14 @@ const ModuleSoir = (() => {
   function onEnter() {
     resetForm();
     setFormat('rapide');
+
+    // Phase lunaire dans le header du soir
+    const moonEl = document.getElementById('sv-moon-phase');
+    if (moonEl && typeof MoonSystem !== 'undefined') {
+      const phase = MoonSystem.getMoonPhase(new Date());
+      moonEl.innerHTML = MoonSystem.drawMoonIcon(phase.key, 16) +
+        `<span class="sv-moon-name">${phase.name}</span>`;
+    }
   }
 
   function onLeave() {

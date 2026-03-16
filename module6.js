@@ -253,6 +253,17 @@ const ScreenCloture = (() => {
       citWrap.hidden = true;
     }
 
+    // Insight lunaire
+    const moonWrap    = document.getElementById('cl-moon-wrap');
+    const moonIconEl  = document.getElementById('cl-moon-icon');
+    const moonInsight = document.getElementById('cl-moon-insight');
+    if (moonWrap && typeof MoonSystem !== 'undefined') {
+      const phase = MoonSystem.getMoonPhase(new Date());
+      if (moonIconEl) moonIconEl.innerHTML = MoonSystem.drawMoonIcon(phase.key, 28);
+      if (moonInsight) moonInsight.textContent = phase.insight;
+      moonWrap.hidden = false;
+    }
+
     // Streak
     const streak = MatriceStorage.incrementStreak(state.humeur || 3);
     if (streakEl) streakEl.textContent = streak;

@@ -340,6 +340,24 @@ const ModuleParcours = (() => {
     const t30 = svgEl('text', { x: padL, y: H - 2, 'text-anchor': 'start', fill: 'rgba(255,255,255,0.18)', 'font-size': '7' });
     t30.textContent = '−30j';
     svgContainer.appendChild(t30);
+
+    // Marqueurs lunaires : nouvelle lune ◯ et pleine lune ● en haut de chart
+    if (typeof MoonSystem !== 'undefined') {
+      days.forEach((dateStr, i) => {
+        const phase = MoonSystem.getMoonPhase(dateStr);
+        if (phase.idx === 0 || phase.idx === 4) {
+          const x = xOf(i);
+          const isNew = phase.idx === 0;
+          const circ = svgEl('circle', {
+            cx: x, cy: padT - 3, r: '2.5',
+            fill: isNew ? 'none' : 'rgba(184,134,11,0.55)',
+            stroke: 'rgba(184,134,11,0.45)',
+            'stroke-width': '0.8',
+          });
+          svgContainer.appendChild(circ);
+        }
+      });
+    }
   }
 
   // ── Tendances (3 cartes horizontales) ─────────────────────────
