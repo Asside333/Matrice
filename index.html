@@ -49,11 +49,6 @@
     <div class="bg-glow" aria-hidden="true"></div>
 
     <header class="accueil-header">
-      <div class="streak-block" title="Jours consécutifs">
-        <span class="streak-number" id="streak-number">0</span>
-        <span class="streak-label">jours</span>
-      </div>
-
       <h1 class="app-name">MATRICE</h1>
 
       <div class="accueil-header-right">
@@ -90,6 +85,16 @@
       <!-- Call to action -->
       <div class="accueil-cta">
         <p class="accueil-subtitle">Calibre ton champ</p>
+
+        <!-- Spirale saisonnière -->
+        <div class="accueil-spiral-block">
+          <svg id="accueil-spiral-svg"
+               viewBox="0 0 280 280"
+               xmlns="http://www.w3.org/2000/svg"
+               aria-label="Spirale de la saison"
+               overflow="visible"></svg>
+        </div>
+
         <button class="btn-rituel" id="btn-rituel" aria-label="Commencer le rituel du matin">
           <span class="btn-rituel-text">Commencer le rituel</span>
           <span class="btn-rituel-shine" aria-hidden="true"></span>
@@ -1139,13 +1144,20 @@
   <section id="screen-parcours" class="screen pa-screen" aria-label="Parcours">
     <div class="pa-scroll" id="pa-scroll">
 
-      <!-- Streak + spirale -->
-      <div class="pa-streak-block">
-        <svg class="pa-fib-svg" id="pa-fib-svg" viewBox="0 0 200 130" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid meet"></svg>
-        <div class="pa-streak-text">
-          <span class="pa-streak-number" id="pa-streak-num">0</span>
-          <span class="pa-streak-label">jours consécutifs</span>
-        </div>
+      <!-- Spirale saisonnière (grande) -->
+      <div class="pa-spiral-block">
+        <svg class="pa-spiral-svg" id="pa-spiral-svg"
+             viewBox="0 0 280 280"
+             xmlns="http://www.w3.org/2000/svg"
+             aria-label="Spirale de la saison en cours"
+             overflow="visible"
+             preserveAspectRatio="xMidYMid meet"></svg>
+      </div>
+
+      <!-- Saisons archivées -->
+      <div class="pa-section" id="pa-archived-section" style="display:none">
+        <h3 class="pa-section-title">Saisons passées</h3>
+        <div class="pa-season-cards" id="pa-archived-seasons"></div>
       </div>
 
       <!-- Courbe d'humeur -->

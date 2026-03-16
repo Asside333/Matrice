@@ -7,7 +7,37 @@
 
 // ── Constantes ────────────────────────────────────────────────────
 const NS = 'http://www.w3.org/2000/svg';
-// Legacy constants kept for reference — streak now managed by MatriceStorage (storage.js)
+
+// ── Spirale d'or — utilitaire partagé ────────────────────────────
+// r(t) = a · exp(B · t)   où B = ln(φ) / (π/2)  ← vraie spirale d'or
+const SpiralGold = (() => {
+  const B = Math.log(1.618) / (Math.PI / 2); // ≈ 0.3063
+
+  /** Points [x,y] du tracé lisse de la spirale (nPts segments) */
+  function path(cx, cy, a, tStart, tEnd, nPts) {
+    const pts = [];
+    for (let i = 0; i <= nPts; i++) {
+      const t = tStart + (i / nPts) * (tEnd - tStart);
+      const r = a * Math.exp(B * t);
+      pts.push([cx + r * Math.cos(t), cy - r * Math.sin(t)]);
+    }
+    return pts;
+  }
+
+  /** Position [x,y] pour le jour i sur n jours total */
+  function dayPos(cx, cy, a, tStart, tEnd, i, n) {
+    const t = tStart + (i / Math.max(n - 1, 1)) * (tEnd - tStart);
+    const r = a * Math.exp(B * t);
+    return [cx + r * Math.cos(t), cy - r * Math.sin(t)];
+  }
+
+  return { path, dayPos };
+})();
+
+// Paramètres communs spirale (viewBox 280×280, cx=cy=140)
+const SP = { cx: 140, cy: 140, a: 2, tStart: 1.0, tEnd: 12.0 };
+// Couleurs humeur : 1=gris foncé  2=gris  3=or sombre  4=or  5=or vif
+const MOOD_COLS = ['', '#5a5a62', '#888899', '#B8860B', '#DAA520', '#FFD700'];
 
 // Hooks de cycle de vie par écran — populé par chaque module
 const screenHooks = {};
@@ -229,84 +259,99 @@ function buildMetatronCube() {
 }
 
 // ════════════════════════════════════════════════════════════════
-// STREAK
+// STREAK + SPIRALE — Accueil
 // ════════════════════════════════════════════════════════════════
 
 function loadStreak() {
-  const streak = MatriceStorage.getStreak().count;
-  const el = document.getElementById('streak-number');
-  if (el) el.textContent = streak;
+  const { streakConsecutif } = MatriceStorage.getStreakData();
 
-  // Multiples de 3 : mcube-333 légèrement illuminé
-  if (streak > 0 && streak % 3 === 0) {
+  // Easter eggs
+  if (streakConsecutif > 0 && streakConsecutif % 3 === 0) {
     document.body.classList.add('streak-multiple-3');
   } else {
     document.body.classList.remove('streak-multiple-3');
   }
-
-  // Easter egg : streak 33 → Métatron pulse 3×
-  if (streak === 33) {
+  if (streakConsecutif === 33) {
     setTimeout(() => {
       document.body.classList.add('easter-33');
       setTimeout(() => document.body.classList.remove('easter-33'), 2000);
     }, 800);
   }
-
-  // Easter egg : streak 333 → flash plein écran
-  if (streak === 333) {
+  if (streakConsecutif === 333) {
     document.body.classList.add('easter-333');
     setTimeout(() => document.body.classList.remove('easter-333'), 3500);
   }
 
-  // Spirale Fibonacci sur l'accueil
-  buildAccueilSpiral(streak);
+  buildAccueilSpiral();
 }
 
-// ════════════════════════════════════════════════════════════════
-// SPIRALE FIBONACCI — Accueil
-// ════════════════════════════════════════════════════════════════
+function buildAccueilSpiral() {
+  const svg = document.getElementById('accueil-spiral-svg');
+  if (!svg) return;
+  svg.innerHTML = '';
 
-function buildAccueilSpiral(streak) {
-  const container = document.querySelector('.streak-block');
-  if (!container) return;
+  const { streakConsecutif, streakSaison, season, seasonDays } = MatriceStorage.getStreakData();
+  const cal   = MatriceStorage.getCalendar();
+  const today = new Date().toISOString().slice(0, 10);
+  const { cx, cy, a, tStart, tEnd } = SP;
+  const n = seasonDays.length;
 
-  // Supprimer ancien SVG spirale si présent
-  const oldSvg = container.querySelector('.streak-fib-svg');
-  if (oldSvg) oldSvg.remove();
+  // ── Tracé de la spirale ──
+  const pathPts = SpiralGold.path(cx, cy, a, tStart, tEnd, 300);
+  const d = 'M' + pathPts.map(([x, y]) => `${x.toFixed(2)},${y.toFixed(2)}`).join(' L');
+  const spiralPath = document.createElementNS(NS, 'path');
+  spiralPath.setAttribute('d', d);
+  spiralPath.setAttribute('stroke', season.colorTrace);
+  spiralPath.setAttribute('stroke-width', '1.2');
+  spiralPath.setAttribute('fill', 'none');
+  spiralPath.setAttribute('opacity', '0.45');
+  spiralPath.setAttribute('stroke-linecap', 'round');
+  svg.appendChild(spiralPath);
 
-  const svgNS = 'http://www.w3.org/2000/svg';
-  const svg = document.createElementNS(svgNS, 'svg');
-  svg.setAttribute('class', 'streak-fib-svg');
-  svg.setAttribute('viewBox', '0 0 64 44');
-  svg.setAttribute('xmlns', svgNS);
-  svg.setAttribute('aria-hidden', 'true');
+  // ── Points des jours complétés ──
+  const todayIdx = seasonDays.indexOf(today);
+  seasonDays.forEach((dateStr, i) => {
+    if (dateStr > today) return;
+    const entry = cal[dateStr];
+    if (!entry?.completed) return;
+    const [x, y] = SpiralGold.dayPos(cx, cy, a, tStart, tEnd, i, n);
+    const dot = document.createElementNS(NS, 'circle');
+    dot.setAttribute('cx', x.toFixed(2));
+    dot.setAttribute('cy', y.toFixed(2));
+    dot.setAttribute('r', i === todayIdx ? '3.8' : '2.8');
+    dot.setAttribute('fill', MOOD_COLS[entry.mood] || MOOD_COLS[3]);
+    svg.appendChild(dot);
+  });
 
-  // Spirale logarithmique (limite Fibonacci)
-  const cx = 32, cy = 28;
-  const phi = Math.log(1.618) / (Math.PI / 2);
-  const a = 1.2;
-  const pts = [];
-  for (let t = -Math.PI * 2.5; t <= Math.PI * 1.2; t += 0.05) {
-    const r = a * Math.exp(phi * t);
-    const x = cx + r * Math.cos(t);
-    const y = cy - r * Math.sin(t);
-    if (x >= 1 && x <= 63 && y >= 1 && y <= 43) pts.push([x, y]);
-  }
+  // ── Texte central ──
+  const tCount = document.createElementNS(NS, 'text');
+  tCount.setAttribute('x', cx); tCount.setAttribute('y', cy - 2);
+  tCount.setAttribute('text-anchor', 'middle');
+  tCount.setAttribute('dominant-baseline', 'middle');
+  tCount.setAttribute('fill', '#B8860B');
+  tCount.setAttribute('font-family', "'Cormorant Garamond', Georgia, serif");
+  tCount.setAttribute('font-size', '34');
+  tCount.setAttribute('font-weight', '300');
+  tCount.textContent = streakConsecutif;
+  svg.appendChild(tCount);
 
-  if (pts.length >= 2) {
-    const path = document.createElementNS(svgNS, 'path');
-    path.setAttribute('d', 'M' + pts.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(' L'));
-    path.setAttribute('stroke', '#B8860B');
-    path.setAttribute('stroke-width', '0.8');
-    path.setAttribute('fill', 'none');
-    path.setAttribute('opacity', '0.5');
-    path.setAttribute('stroke-linecap', 'round');
-    svg.appendChild(path);
-  }
+  const tLabel = document.createElementNS(NS, 'text');
+  tLabel.setAttribute('x', cx); tLabel.setAttribute('y', cy + 17);
+  tLabel.setAttribute('text-anchor', 'middle');
+  tLabel.setAttribute('fill', 'rgba(184,134,11,0.60)');
+  tLabel.setAttribute('font-family', "'DM Sans', sans-serif");
+  tLabel.setAttribute('font-size', '9'); tLabel.setAttribute('letter-spacing', '2');
+  tLabel.textContent = 'JOURS';
+  svg.appendChild(tLabel);
 
-  // Insérer avant streak-number
-  const numEl = container.querySelector('#streak-number') || container.querySelector('.streak-number');
-  container.insertBefore(svg, numEl);
+  const tSeason = document.createElementNS(NS, 'text');
+  tSeason.setAttribute('x', cx); tSeason.setAttribute('y', cy + 31);
+  tSeason.setAttribute('text-anchor', 'middle');
+  tSeason.setAttribute('fill', 'rgba(184,134,11,0.42)');
+  tSeason.setAttribute('font-family', "'DM Sans', sans-serif");
+  tSeason.setAttribute('font-size', '7.5');
+  tSeason.textContent = `${season.name} : ${streakSaison}/${n}`;
+  svg.appendChild(tSeason);
 }
 
 // ════════════════════════════════════════════════════════════════
@@ -438,7 +483,14 @@ function init() {
   // 2. Construction du Cube de Métatron
   buildMetatronCube();
 
-  // 3. Données persistées
+  // 3. Migration calendrier + archivage des saisons passées
+  MatriceStorage.migrateFromLogs();
+  MatriceStorage.archiveSeasonIfNeeded();
+
+  // 4. Hook accueil — rebuild spiral quand on revient à l'accueil
+  screenHooks.accueil = { onEnter: loadStreak };
+
+  // 5. Données persistées
   loadStreak();
   displayPhaseLunaire();
 

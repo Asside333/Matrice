@@ -254,12 +254,8 @@ const ScreenCloture = (() => {
     }
 
     // Streak
-    const streak = MatriceStorage.incrementStreak();
+    const streak = MatriceStorage.incrementStreak(state.humeur || 3);
     if (streakEl) streakEl.textContent = streak;
-
-    // Mise à jour streak sur l'accueil
-    const mainStreak = document.getElementById('streak-number');
-    if (mainStreak) mainStreak.textContent = streak;
 
     // Sauvegarde du rituel dans le journal
     MatriceStorage.saveRitualLog({

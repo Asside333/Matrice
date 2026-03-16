@@ -222,11 +222,11 @@ const ModuleParametres = (() => {
     });
 
     document.getElementById('pm-reset-yes')?.addEventListener('click', () => {
-      // Réinitialiser
+      // Réinitialiser le calendrier ET l'ancien streak
+      localStorage.removeItem('matrice_calendar');
       localStorage.setItem('matrice_streak', JSON.stringify({ count: 0, lastDate: null }));
-      // Mettre à jour les affichages
-      const accueilStreak = document.getElementById('streak-number');
-      if (accueilStreak) accueilStreak.textContent = '0';
+      // Rebuild spiral sur l'accueil
+      if (typeof buildAccueilSpiral === 'function') buildAccueilSpiral();
       // Reset confirm UI
       if (confirmEl) confirmEl.hidden = true;
       if (resetBtn) {

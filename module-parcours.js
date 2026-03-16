@@ -76,30 +76,181 @@ const ModuleParcours = (() => {
     return `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${path}"/></svg>`;
   }
 
-  // ── Spirale dorée (Parcours) ──────────────────────────────────
+  // ── Couleurs humeur (dupliqué pour indépendance du module) ────
+  const MOOD_COLS_PA = ['', '#5a5a62', '#888899', '#B8860B', '#DAA520', '#FFD700'];
 
-  function buildFibSpiral(svgContainer) {
+  // ── Spirale saisonnière (Parcours, grande) ────────────────────
+
+  function buildSeasonSpiral(svgContainer, animate) {
     svgContainer.innerHTML = '';
-    const cx = 100, cy = 68;
-    const phi = Math.log(1.618) / (Math.PI / 2);
-    const a = 3;
 
-    const pts = [];
-    for (let t = -Math.PI * 3; t <= Math.PI * 1.8; t += 0.04) {
-      const r = a * Math.exp(phi * t);
-      const x = cx + r * Math.cos(t);
-      const y = cy - r * Math.sin(t);
-      if (x >= 2 && x <= 198 && y >= 2 && y <= 128) pts.push([x, y]);
+    const { streakConsecutif, streakSaison, season, seasonDays } =
+      MatriceStorage.getStreakData();
+    const cal   = MatriceStorage.getCalendar();
+    const today = new Date().toISOString().slice(0, 10);
+    const { cx, cy, a, tStart, tEnd } = SP;
+    const n = seasonDays.length;
+
+    // ── Tracé de la spirale ──
+    const pathPts = SpiralGold.path(cx, cy, a, tStart, tEnd, 400);
+    const d = 'M' + pathPts.map(([x, y]) => `${x.toFixed(2)},${y.toFixed(2)}`).join(' L');
+
+    const spiralPath = svgEl('path', {
+      d,
+      stroke: season.colorTrace,
+      'stroke-width': '1.5',
+      fill: 'none',
+      opacity: '0.5',
+      'stroke-linecap': 'round',
+      'stroke-linejoin': 'round',
+    });
+    svgContainer.appendChild(spiralPath);
+
+    // ── Animation stroke-dashoffset ──
+    if (animate) {
+      try {
+        const len = spiralPath.getTotalLength();
+        spiralPath.style.strokeDasharray  = len;
+        spiralPath.style.strokeDashoffset = len;
+        spiralPath.style.transition = 'stroke-dashoffset 2s ease-in-out';
+        requestAnimationFrame(() => requestAnimationFrame(() => {
+          spiralPath.style.strokeDashoffset = '0';
+        }));
+      } catch {}
     }
 
-    if (pts.length < 2) return;
+    // ── Points des jours complétés ──
+    const todayIdx = seasonDays.indexOf(today);
+    const dotDelay = animate ? (1500 / Math.max(n, 1)) : 0;
 
-    const path = svgEl('path', {
-      d: 'M' + pts.map(([x, y]) => `${x.toFixed(1)},${y.toFixed(1)}`).join(' L'),
-      stroke: '#B8860B', 'stroke-width': '1.8', fill: 'none',
-      'stroke-linecap': 'round', 'stroke-linejoin': 'round', opacity: '0.6',
+    seasonDays.forEach((dateStr, i) => {
+      if (dateStr > today) return;
+      const entry = cal[dateStr];
+      if (!entry?.completed) return;
+
+      const [x, y] = SpiralGold.dayPos(cx, cy, a, tStart, tEnd, i, n);
+      const isToday = i === todayIdx;
+
+      const dot = svgEl('circle', {
+        cx: x.toFixed(2),
+        cy: y.toFixed(2),
+        r:  isToday ? '4.5' : '3.2',
+        fill: MOOD_COLS_PA[entry.mood] || MOOD_COLS_PA[3],
+        stroke: isToday ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.08)',
+        'stroke-width': '0.8',
+      });
+
+      if (animate) {
+        dot.style.opacity    = '0';
+        dot.style.transition = 'opacity 0.25s ease';
+        setTimeout(() => { dot.style.opacity = '1'; }, 2100 + i * dotDelay);
+      }
+      svgContainer.appendChild(dot);
     });
-    svgContainer.appendChild(path);
+
+    // ── Texte central ──
+    const tCount = svgEl('text', {
+      x: cx, y: cy - 4,
+      'text-anchor': 'middle',
+      'dominant-baseline': 'middle',
+      fill: '#B8860B',
+      'font-family': "'Cormorant Garamond', Georgia, serif",
+      'font-size': '42',
+      'font-weight': '300',
+    });
+    tCount.textContent = streakConsecutif;
+    svgContainer.appendChild(tCount);
+
+    const tLabel = svgEl('text', {
+      x: cx, y: cy + 22,
+      'text-anchor': 'middle',
+      fill: 'rgba(184,134,11,0.65)',
+      'font-family': "'DM Sans', sans-serif",
+      'font-size': '9',
+      'letter-spacing': '2.5',
+    });
+    tLabel.textContent = 'JOURS';
+    svgContainer.appendChild(tLabel);
+
+    const tSeason = svgEl('text', {
+      x: cx, y: cy + 38,
+      'text-anchor': 'middle',
+      fill: 'rgba(184,134,11,0.48)',
+      'font-family': "'DM Sans', sans-serif",
+      'font-size': '8',
+    });
+    tSeason.textContent = `${season.name} : ${streakSaison} / ${n} jours`;
+    svgContainer.appendChild(tSeason);
+  }
+
+  // ── Miniatures des saisons archivées ─────────────────────────
+
+  function buildArchivedSeasons(container) {
+    const archived = MatriceStorage.getArchivedSeasons();
+    const section  = document.getElementById('pa-archived-section');
+
+    if (archived.length === 0) {
+      if (section) section.style.display = 'none';
+      return;
+    }
+    if (section) section.style.removeProperty('display');
+
+    container.innerHTML = '';
+    [...archived].reverse().forEach(arc => {
+      const card = document.createElement('div');
+      card.className = 'pa-season-card';
+
+      // Mini SVG (même viewBox 280×280, réduit par CSS)
+      const miniSvg = document.createElementNS(NS, 'svg');
+      miniSvg.setAttribute('viewBox', '0 0 280 280');
+      miniSvg.setAttribute('class', 'pa-season-mini-svg');
+      miniSvg.setAttribute('aria-hidden', 'true');
+      miniSvg.setAttribute('overflow', 'visible');
+
+      // Tracé spiral
+      const { cx, cy, a, tStart, tEnd } = SP;
+      const pathPts = SpiralGold.path(cx, cy, a, tStart, tEnd, 200);
+      const d = 'M' + pathPts.map(([x, y]) => `${x.toFixed(2)},${y.toFixed(2)}`).join(' L');
+      const p = svgEl('path', {
+        d,
+        stroke: arc.colorTrace,
+        'stroke-width': '1.8',
+        fill: 'none',
+        opacity: '0.4',
+        'stroke-linecap': 'round',
+      });
+      miniSvg.appendChild(p);
+
+      // Dots
+      if (arc.calendarData) {
+        const seasonDays = MatriceStorage.getSeasonDays({ start: arc.start, end: arc.end });
+        const n = seasonDays.length;
+        seasonDays.forEach((date, i) => {
+          const entry = arc.calendarData[date];
+          if (!entry?.completed) return;
+          const [x, y] = SpiralGold.dayPos(cx, cy, a, tStart, tEnd, i, n);
+          miniSvg.appendChild(svgEl('circle', {
+            cx: x.toFixed(2), cy: y.toFixed(2), r: '2.8',
+            fill: MOOD_COLS_PA[entry.mood] || MOOD_COLS_PA[3],
+          }));
+        });
+      }
+
+      card.appendChild(miniSvg);
+
+      const info = document.createElement('div');
+      info.className = 'pa-season-info';
+      const avgStr = arc.avgMood
+        ? '★'.repeat(Math.round(arc.avgMood)) + '☆'.repeat(5 - Math.round(arc.avgMood))
+        : '—';
+      info.innerHTML = `
+        <span class="pa-season-name">${escapeHtml(arc.name)} ${arc.start.slice(0, 4)}</span>
+        <span class="pa-season-days">${arc.completedDays} / ${arc.totalDays} jours</span>
+        <span class="pa-season-mood">${avgStr}</span>
+      `;
+      card.appendChild(info);
+      container.appendChild(card);
+    });
   }
 
   // ── Courbe d'humeur ────────────────────────────────────────────
@@ -314,15 +465,14 @@ const ModuleParcours = (() => {
 
   // ── Render ────────────────────────────────────────────────────
 
-  function render() {
-    // Streak
-    const count = MatriceStorage.getStreak().count;
-    const streakEl = document.getElementById('pa-streak-num');
-    if (streakEl) streakEl.textContent = count;
+  function render(animate) {
+    // Spirale saisonnière (grande)
+    const spiralSvg = document.getElementById('pa-spiral-svg');
+    if (spiralSvg) buildSeasonSpiral(spiralSvg, animate);
 
-    // Spirale
-    const fibSvg = document.getElementById('pa-fib-svg');
-    if (fibSvg) buildFibSpiral(fibSvg);
+    // Saisons archivées
+    const archivedEl = document.getElementById('pa-archived-seasons');
+    if (archivedEl) buildArchivedSeasons(archivedEl);
 
     // Courbe d'humeur
     const moodSvg = document.getElementById('pa-mood-svg');
@@ -344,7 +494,7 @@ const ModuleParcours = (() => {
   // ── Lifecycle ──────────────────────────────────────────────────
 
   function onEnter() {
-    render();
+    render(true); // animate = true à chaque ouverture
     const scroll = document.getElementById('pa-scroll');
     if (scroll) scroll.scrollTop = 0;
   }
