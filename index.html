@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, viewport-fit=cover">
   <meta name="theme-color" content="#B8860B" id="meta-theme">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -1201,6 +1201,12 @@
         <div class="pm-favs-list" id="pm-favs-list"></div>
       </div>
 
+      <!-- Thème -->
+      <div class="pm-section">
+        <h3 class="pm-section-title">Thème</h3>
+        <div id="pm-theme-section"></div>
+      </div>
+
       <!-- Notifications -->
       <div class="pm-section">
         <h3 class="pm-section-title">Notifications</h3>
@@ -1212,7 +1218,7 @@
   <!-- ═══════════════════════════════════════════
        BOUTON SOS GLOBAL (toujours visible)
   ═══════════════════════════════════════════ -->
-  <button class="btn-sos" id="btn-sos" aria-label="Mode SOS — aide immédiate">
+  <button class="btn-sos hidden" id="btn-sos" aria-label="Mode SOS — aide immédiate">
     SOS
   </button>
 
@@ -1242,6 +1248,17 @@
         </g>
       </svg>
       <span class="nav-label">Rituel</span>
+    </button>
+    <button class="nav-btn nav-sos" id="nav-sos-btn" aria-label="SOS — Ancrage d'urgence">
+      <div class="nav-sos-circle" aria-hidden="true">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" stroke-opacity="0"/>
+          <line x1="12" y1="8" x2="12" y2="12"/>
+          <line x1="12" y1="16" x2="12.01" y2="16"/>
+          <circle cx="12" cy="12" r="10"/>
+        </svg>
+      </div>
+      <span class="nav-label nav-sos-label">SOS</span>
     </button>
     <button class="nav-btn" data-screen="libre" aria-label="Studio — Mode libre">
       <svg class="nav-icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

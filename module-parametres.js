@@ -175,6 +175,38 @@ const ModuleParametres = (() => {
     });
   }
 
+  // ── Thème ──────────────────────────────────────────────────────
+
+  function renderThemeSection() {
+    const container = document.getElementById('pm-theme-section');
+    if (!container) return;
+
+    const current = localStorage.getItem('matrice_theme') || 'auto';
+
+    const options = [
+      { key: 'auto',  label: 'Automatique', hint: 'Sombre la nuit, clair le jour' },
+      { key: 'dark',  label: 'Toujours sombre', hint: '' },
+      { key: 'light', label: 'Toujours clair',  hint: '' },
+    ];
+
+    container.innerHTML = options.map(o => `
+      <button class="pm-theme-btn ${o.key === current ? 'pm-theme-btn--on' : ''}"
+              data-theme="${o.key}">
+        <span class="pm-theme-btn-label">${o.label}</span>
+        ${o.hint ? `<span class="pm-theme-btn-hint">${o.hint}</span>` : ''}
+      </button>
+    `).join('');
+
+    container.querySelectorAll('.pm-theme-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const choice = btn.dataset.theme;
+        localStorage.setItem('matrice_theme', choice);
+        if (typeof applyTheme === 'function') applyTheme();
+        renderThemeSection();
+      });
+    });
+  }
+
   // ── Événements ─────────────────────────────────────────────────
 
   function bindEvents() {
@@ -221,6 +253,7 @@ const ModuleParametres = (() => {
       resetBtn.textContent = 'Réinitialiser le streak';
     }
     renderFavorites();
+    renderThemeSection();
     renderNotifSection();
   }
 

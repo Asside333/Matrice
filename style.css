@@ -486,47 +486,41 @@ body::before {
   transform: scale(0.98);
 }
 
-/* ── Bouton SOS global ────────────────────────────────────────── */
+/* ── Bouton SOS flottant (pendant les modules du rituel) ────────── */
+/* Ne s'affiche qu'à gauche pour ne pas bloquer les boutons d'action */
 .btn-sos {
   position: fixed;
-  bottom: calc(var(--nav-height) + 16px);
-  right: 22px;
+  bottom: 24px;
+  left: 16px;
+  right: auto;
   z-index: 100;
-  width: 50px;
-  height: 50px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   background: var(--teal);
   border: none;
   color: rgba(255, 255, 255, 0.95);
   font-family: 'DM Sans', sans-serif;
-  font-size: 0.65rem;
+  font-size: 0.60rem;
   font-weight: 500;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   box-shadow:
-    0 0 16px rgba(15, 110, 86, 0.45),
-    0 4px 16px rgba(0, 0, 0, 0.3);
+    0 0 12px rgba(15, 110, 86, 0.40),
+    0 3px 12px rgba(0, 0, 0, 0.25);
   transition:
     transform 0.3s ease,
-    box-shadow 0.3s ease,
-    background-color 0.3s ease;
+    opacity 0.3s ease,
+    box-shadow 0.3s ease;
   -webkit-tap-highlight-color: transparent;
 }
 
-.btn-sos:hover {
-  background: var(--teal-hi);
-  transform: scale(1.08);
-  box-shadow:
-    0 0 24px rgba(23, 160, 122, 0.6),
-    0 4px 20px rgba(0, 0, 0, 0.3);
-}
-
 .btn-sos:active {
-  transform: scale(0.96);
+  transform: scale(0.93);
 }
 
 .btn-sos.hidden {
@@ -534,20 +528,52 @@ body::before {
   pointer-events: none;
 }
 
-/* Pulsation discrète */
-.btn-sos::after {
-  content: '';
-  position: absolute;
-  inset: -4px;
+/* Visible pendant le rituel (quand .hidden retiré) */
+.btn-sos:not(.hidden) {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* ── SOS dans la navigation ──────────────────────────────────────── */
+.nav-sos {
+  padding: 0;
+  min-width: 48px;
+  flex-shrink: 0;
+}
+
+.nav-sos-circle {
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
-  border: 1px solid var(--teal);
+  background: var(--teal);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.95);
+  box-shadow: 0 0 10px rgba(15,110,86,0.35);
+  transition: background-color 0.25s, transform 0.2s;
+  margin-bottom: 1px;
+  flex-shrink: 0;
+}
+
+.nav-sos:active .nav-sos-circle {
+  transform: scale(0.91);
+  background: var(--teal-hi);
+}
+
+.nav-sos-label {
+  color: var(--teal);
+  font-size: 0.60rem;
+}
+
+.nav-sos.hidden {
   opacity: 0;
-  animation: sos-pulse 3s ease-out 2s infinite;
+  pointer-events: none;
 }
 
 @keyframes sos-pulse {
-  0%   { opacity: 0.6; transform: scale(1); }
-  100% { opacity: 0;   transform: scale(1.5); }
+  0%   { opacity: 0.5; transform: scale(1); }
+  100% { opacity: 0;   transform: scale(1.45); }
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -579,11 +605,12 @@ body::before {
   background: none;
   border: none;
   cursor: pointer;
-  padding: 8px 18px;
+  padding: 8px 10px;
   color: var(--text-dim);
   transition: color 0.35s ease;
   -webkit-tap-highlight-color: transparent;
-  min-width: 56px;
+  min-width: 44px;
+  flex: 1;
 }
 
 .nav-btn.active {
@@ -629,8 +656,8 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 44px;
+  height: 44px;
   background: none;
   border: none;
   cursor: pointer;
@@ -4119,6 +4146,38 @@ body.light-mode .m1-toast {
   color: rgba(255,255,255,0.28);
 }
 
+.pm-theme-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  background: none;
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 8px;
+  padding: 12px 16px;
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.2s, background 0.2s;
+  font-family: inherit;
+  width: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
+.pm-theme-btn + .pm-theme-btn { margin-top: 6px; }
+.pm-theme-btn:active { background: rgba(184,134,11,0.06); }
+
+.pm-theme-btn--on {
+  border-color: rgba(184,134,11,0.55);
+  background: rgba(184,134,11,0.07);
+}
+.pm-theme-btn-label {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.70);
+}
+.pm-theme-btn--on .pm-theme-btn-label { color: var(--gold); }
+.pm-theme-btn-hint {
+  font-size: 0.70rem;
+  color: rgba(255,255,255,0.28);
+}
+
 .pm-action-btn {
   background: none;
   border: 1px solid rgba(255,255,255,0.12);
@@ -4217,10 +4276,13 @@ body.light-mode .m1-toast {
   font-style: italic;
 }
 
-/* Nav 5 onglets — petits ecrans */
+/* Nav 6 onglets — petits écrans ≤ 360px */
 @media (max-width: 360px) {
-  .nav-label { font-size: 9px; letter-spacing: 0; }
-  .nav-icon  { width: 20px; height: 20px; }
+  .nav-btn    { padding: 8px 4px; min-width: 40px; }
+  .nav-label  { font-size: 8px; letter-spacing: 0; }
+  .nav-icon   { width: 18px; height: 18px; }
+  .nav-sos-circle { width: 30px; height: 30px; }
+  .nav-sos-label  { font-size: 8px; }
 }
 
 /* ================================================================
@@ -4378,6 +4440,7 @@ body.light-mode .m1-toast {
   font-size: 0.72rem;
   letter-spacing: 0.06em;
   padding: 5px 10px;
+  min-height: 44px;
   border-radius: 12px;
   cursor: pointer;
   backdrop-filter: blur(8px);
@@ -4414,6 +4477,7 @@ body.light-mode .m1-toast {
   font-size: 0.78rem;
   letter-spacing: 0.05em;
   padding: 6px 14px;
+  min-height: 44px;
   border-radius: 8px;
   cursor: pointer;
   text-align: center;
@@ -4545,6 +4609,7 @@ body.easter-333::after {
   align-items: center;
   justify-content: space-between;
   padding: 10px 0;
+  min-height: 44px;
   border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 
@@ -5084,3 +5149,114 @@ body.easter-333::after {
   top: calc(env(safe-area-inset-top, 0px) + 16px);
   left: 16px;
 }
+
+/* ================================================================
+   CORRECTIONS MODE CLAIR — body.light-mode
+   Ciblées sur les éléments avec couleurs hardcodées
+   (les éléments utilisant var(--text), var(--gold), etc. s'adaptent déjà)
+   ================================================================ */
+
+/* ── Paramètres (tout hardcodé en blanc) ─────────────────────── */
+body.light-mode .pm-header {
+  border-bottom-color: rgba(28,22,8,0.08);
+}
+body.light-mode .pm-section-title {
+  color: rgba(28,22,8,0.42);
+}
+body.light-mode .pm-action-btn {
+  border-color: rgba(28,22,8,0.16);
+  color: rgba(28,22,8,0.72);
+}
+body.light-mode .pm-action-btn:hover {
+  border-color: rgba(154,110,10,0.45);
+  color: rgba(28,22,8,0.88);
+}
+body.light-mode .pm-confirm {
+  background: rgba(28,22,8,0.04);
+  border-color: rgba(28,22,8,0.10);
+}
+body.light-mode .pm-confirm-text { color: rgba(28,22,8,0.60); }
+body.light-mode .pm-confirm-yes {
+  border-color: rgba(180,50,50,0.35);
+  color: rgba(160,40,40,0.80);
+}
+body.light-mode .pm-confirm-no {
+  border-color: rgba(28,22,8,0.14);
+  color: rgba(28,22,8,0.55);
+}
+body.light-mode .pm-fav-item   { border-bottom-color: rgba(28,22,8,0.07); }
+body.light-mode .pm-fav-text   { color: rgba(28,22,8,0.65); }
+body.light-mode .pm-fav-remove { color: rgba(28,22,8,0.25); }
+body.light-mode .pm-fav-remove:hover { color: rgba(180,40,40,0.65); }
+body.light-mode .pm-empty      { color: rgba(28,22,8,0.30); }
+body.light-mode .pm-notif-row  { border-bottom-color: rgba(28,22,8,0.07); }
+body.light-mode .pm-notif-label { color: rgba(28,22,8,0.68); }
+body.light-mode .pm-notif-toggle { background: rgba(28,22,8,0.12); }
+body.light-mode .pm-notif-toggle::after { background: rgba(28,22,8,0.45); }
+body.light-mode .pm-notif-toggle--on { background: rgba(154,110,10,0.45); }
+body.light-mode .pm-notif-toggle--on::after { background: #9A6E0A; }
+body.light-mode .pm-notif-time-input {
+  background: rgba(28,22,8,0.05);
+  border-color: rgba(28,22,8,0.14);
+  color: rgba(28,22,8,0.75);
+}
+body.light-mode .pm-notif-time-input:focus { border-color: rgba(154,110,10,0.45); }
+body.light-mode .pm-notif-hint { color: rgba(28,22,8,0.35); }
+/* Sélecteur de thème */
+body.light-mode .pm-theme-btn  { border-color: rgba(28,22,8,0.14); }
+body.light-mode .pm-theme-btn--on {
+  border-color: rgba(154,110,10,0.55);
+  background: rgba(154,110,10,0.07);
+}
+body.light-mode .pm-theme-btn-label  { color: rgba(28,22,8,0.75); }
+body.light-mode .pm-theme-btn--on .pm-theme-btn-label { color: var(--gold); }
+body.light-mode .pm-theme-btn-hint   { color: rgba(28,22,8,0.40); }
+
+/* ── Check-in humeur ──────────────────────────────────────────── */
+body.light-mode .hm-hint { color: rgba(28,22,8,0.35); }
+
+/* ── Durée adaptative (hardcodé sombre) ───────────────────────── */
+body.light-mode .dur-sel-trigger {
+  background: rgba(245,237,214,0.92);
+  border-color: rgba(154,110,10,0.35);
+  color: rgba(28,22,8,0.65);
+}
+body.light-mode .dur-sel-trigger:hover {
+  border-color: rgba(154,110,10,0.6);
+  color: rgba(28,22,8,0.85);
+}
+body.light-mode .dur-sel-panel {
+  background: rgba(245,237,214,0.97);
+  border-color: rgba(154,110,10,0.28);
+}
+body.light-mode .dur-sel-btn { color: rgba(28,22,8,0.60); }
+body.light-mode .dur-sel-btn:hover {
+  background: rgba(154,110,10,0.10);
+  color: rgba(28,22,8,0.88);
+}
+body.light-mode .dur-sel-btn--active { color: var(--gold); }
+
+/* ── Parcours (hardcodé en blanc) ────────────────────────────── */
+body.light-mode .pa-ritual-row  { border-bottom-color: rgba(28,22,8,0.07); }
+body.light-mode .pa-rr-date     { color: rgba(28,22,8,0.42); }
+body.light-mode .pa-rr-mantra   { color: rgba(28,22,8,0.68); }
+body.light-mode .pa-soir-row    { border-bottom-color: rgba(28,22,8,0.06); }
+body.light-mode .pa-sr-date     { color: rgba(28,22,8,0.38); }
+body.light-mode .pa-sr-text     { color: rgba(28,22,8,0.65); }
+body.light-mode .pa-empty       { color: rgba(28,22,8,0.32); }
+body.light-mode .pa-tend-card   { background: rgba(28,22,8,0.04); }
+body.light-mode .pa-tend-label  { color: rgba(28,22,8,0.42); }
+body.light-mode .pa-tend-value  { color: rgba(28,22,8,0.82); }
+body.light-mode .pa-tend-empty  { color: rgba(28,22,8,0.28); }
+body.light-mode .pa-section-title { color: rgba(28,22,8,0.45); }
+body.light-mode .pa-streak-label  { color: rgba(28,22,8,0.45); }
+
+/* ── Clôture — citation ───────────────────────────────────────── */
+body.light-mode .cl-citation-text { color: rgba(28,22,8,0.60); }
+
+/* ── Accueil — bouton paramètres ─────────────────────────────── */
+body.light-mode .accueil-settings-btn       { color: rgba(28,22,8,0.38); }
+body.light-mode .accueil-settings-btn:hover { color: rgba(28,22,8,0.65); }
+
+/* Métatron & Graine de Vie utilisent var(--stroke) / var(--gdv-stroke)
+   qui s'adaptent déjà automatiquement en mode clair — pas de surcharge nécessaire */

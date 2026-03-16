@@ -38,6 +38,9 @@ const D_OUTER = 128;
 // ════════════════════════════════════════════════════════════════
 
 function getTheme() {
+  const saved = localStorage.getItem('matrice_theme');
+  if (saved === 'dark') return 'dark';
+  if (saved === 'light') return 'light';
   const h = new Date().getHours();
   return (h >= 7 && h < 19) ? 'light' : 'dark';
 }
@@ -91,10 +94,15 @@ function updateNavState(screenId) {
 }
 
 function updateSOSVisibility(screenId) {
+  // SOS dans la nav : caché uniquement sur l'écran SOS lui-même
+  const navSos = document.getElementById('nav-sos-btn');
+  if (navSos) navSos.classList.toggle('hidden', screenId === 'sos');
+
+  // SOS flottant (gauche) : visible uniquement pendant les modules du rituel
   const sos = document.getElementById('btn-sos');
   if (!sos) return;
-  const hideSOS = ['sos', 'humeur', 'parametres', 'nuit'].includes(screenId);
-  sos.classList.toggle('hidden', hideSOS);
+  const ritualScreens = ['rituel', 'm2', 'm3', 'm4', 'm5', 'm6'];
+  sos.classList.toggle('hidden', !ritualScreens.includes(screenId));
 }
 
 function updateNavVisibility(screenId) {
@@ -103,13 +111,6 @@ function updateNavVisibility(screenId) {
   const hideNav = ['humeur', 'rituel', 'm2', 'm3', 'm4', 'm5', 'm6', 'cloture', 'parametres', 'nuit'].includes(screenId);
   nav.style.opacity = hideNav ? '0' : '1';
   nav.style.pointerEvents = hideNav ? 'none' : 'auto';
-  // Repositionner le bouton SOS selon présence de la nav
-  const sos = document.getElementById('btn-sos');
-  if (sos) {
-    sos.style.bottom = hideNav
-      ? '24px'
-      : 'calc(var(--nav-height) + 16px)';
-  }
 }
 
 // ════════════════════════════════════════════════════════════════
@@ -368,7 +369,11 @@ function bindEvents() {
   document.getElementById('btn-nuit')
     ?.addEventListener('click', () => navigateTo('nuit'));
 
-  // Bouton SOS global
+  // Bouton SOS dans la nav
+  document.getElementById('nav-sos-btn')
+    ?.addEventListener('click', () => navigateTo('sos'));
+
+  // Bouton SOS flottant (rituel)
   document.getElementById('btn-sos')
     ?.addEventListener('click', () => navigateTo('sos'));
 
