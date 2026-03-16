@@ -81,7 +81,6 @@ function navigateTo(screenId) {
     updateNavState(screenId);
     updateSOSVisibility(screenId);
     updateNavVisibility(screenId);
-    DurSel?.show(screenId);
     // Hook d'entrée du nouvel écran
     screenHooks[screenId]?.onEnter?.();
   }, 180);
@@ -401,110 +400,6 @@ function bindEvents() {
 // INITIALISATION
 // ════════════════════════════════════════════════════════════════
 
-// ════════════════════════════════════════════════════════════════
-// DURÉE ADAPTATIVE
-// ════════════════════════════════════════════════════════════════
-
-const DurSel = (() => {
-  const RITUAL_SCREENS = new Set(['rituel', 'm2', 'm3', 'm4', 'm5', 'm6']);
-  let panelOpen = false;
-  let currentMins = 5;
-
-  const DURATIONS = [
-    { mins: 3,  label: '3 min' },
-    { mins: 5,  label: '5 min' },
-    { mins: 7,  label: '7 min' },
-    { mins: 10, label: '10 min' },
-    { mins: 15, label: '15 min' },
-  ];
-
-  function render() {
-    const wrap = document.getElementById('dur-sel-wrap');
-    if (!wrap) return;
-
-    const trigger = wrap.querySelector('.dur-sel-trigger');
-    if (trigger) trigger.textContent = currentMins + ' min';
-
-    wrap.querySelectorAll('.dur-sel-btn').forEach(btn => {
-      const m = parseInt(btn.dataset.min, 10);
-      btn.classList.toggle('dur-sel-btn--active', m === currentMins);
-    });
-  }
-
-  function select(mins) {
-    currentMins = mins;
-    // Propager à Module1 si exposé
-    if (typeof Module1 !== 'undefined' && Module1.setDuration) {
-      Module1.setDuration(mins);
-    }
-    // Stocker dans RITUAL_STATE pour usage général
-    if (typeof RITUAL_STATE !== 'undefined') {
-      RITUAL_STATE.durationMins = mins;
-    }
-    render();
-    closePanel();
-  }
-
-  function openPanel() {
-    panelOpen = true;
-    document.getElementById('dur-sel-panel')?.classList.add('dur-sel-panel--open');
-  }
-
-  function closePanel() {
-    panelOpen = false;
-    document.getElementById('dur-sel-panel')?.classList.remove('dur-sel-panel--open');
-  }
-
-  function show(screenId) {
-    const wrap = document.getElementById('dur-sel-wrap');
-    if (!wrap) return;
-    if (RITUAL_SCREENS.has(screenId)) {
-      wrap.classList.remove('dur-sel-wrap--hidden');
-    } else {
-      wrap.classList.add('dur-sel-wrap--hidden');
-      closePanel();
-    }
-  }
-
-  function init() {
-    // Créer le DOM
-    const wrap = document.createElement('div');
-    wrap.id = 'dur-sel-wrap';
-    wrap.className = 'dur-sel-wrap dur-sel-wrap--hidden';
-    wrap.setAttribute('aria-label', 'Durée du rituel');
-
-    const panel = document.createElement('div');
-    panel.id = 'dur-sel-panel';
-    panel.className = 'dur-sel-panel';
-
-    DURATIONS.forEach(({ mins, label }) => {
-      const btn = document.createElement('button');
-      btn.className = 'dur-sel-btn' + (mins === currentMins ? ' dur-sel-btn--active' : '');
-      btn.dataset.min = mins;
-      btn.textContent = label;
-      btn.addEventListener('click', () => select(mins));
-      panel.appendChild(btn);
-    });
-
-    const trigger = document.createElement('button');
-    trigger.className = 'dur-sel-trigger';
-    trigger.textContent = currentMins + ' min';
-    trigger.addEventListener('click', () => {
-      panelOpen ? closePanel() : openPanel();
-    });
-
-    wrap.appendChild(panel);
-    wrap.appendChild(trigger);
-    document.body.appendChild(wrap);
-
-    // Fermer le panel si clic en dehors
-    document.addEventListener('click', e => {
-      if (panelOpen && !wrap.contains(e.target)) closePanel();
-    }, true);
-  }
-
-  return { init, show, getCurrentMins: () => currentMins };
-})();
 
 function init() {
   // 1. Thème (avant tout rendu visible)
@@ -520,10 +415,7 @@ function init() {
   // 4. Événements
   bindEvents();
 
-  // 5. Durée adaptative
-  DurSel.init();
-
-  // 6. Masquer le splash
+  // 5. Masquer le splash
   hideSplash();
 
   // 7. Vérification du thème toutes les minutes

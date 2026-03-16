@@ -4414,79 +4414,74 @@ body.light-mode .m1-toast {
 }
 
 /* ================================================================
-   DURÉE ADAPTATIVE — Sélecteur flottant pendant rituel
+   SOS — Étape 0 : Sélecteur de durée intégré
    ================================================================ */
 
-.dur-sel-wrap {
-  position: fixed;
-  bottom: 72px;
-  right: 16px;
-  z-index: 120;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 6px;
-  pointer-events: auto;
-}
-
-.dur-sel-wrap--hidden {
-  display: none;
-}
-
-.dur-sel-trigger {
-  background: rgba(30,25,15,0.85);
-  border: 1px solid rgba(184,134,11,0.3);
-  color: rgba(255,255,255,0.5);
-  font-size: 0.72rem;
-  letter-spacing: 0.06em;
-  padding: 5px 10px;
-  min-height: 44px;
-  border-radius: 12px;
-  cursor: pointer;
-  backdrop-filter: blur(8px);
-  transition: all 0.15s;
-}
-
-.dur-sel-trigger:hover { border-color: rgba(184,134,11,0.6); color: rgba(255,255,255,0.8); }
-
-.dur-sel-panel {
-  background: rgba(20,16,8,0.95);
-  border: 1px solid rgba(184,134,11,0.25);
-  border-radius: 12px;
-  padding: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  backdrop-filter: blur(12px);
-  opacity: 0;
-  transform: translateY(6px) scale(0.96);
-  pointer-events: none;
-  transition: opacity 0.15s, transform 0.15s;
-}
-
-.dur-sel-panel--open {
-  opacity: 1;
-  transform: translateY(0) scale(1);
-  pointer-events: auto;
-}
-
-.dur-sel-btn {
-  background: none;
-  border: none;
-  color: rgba(255,255,255,0.45);
-  font-size: 0.78rem;
-  letter-spacing: 0.05em;
-  padding: 6px 14px;
-  min-height: 44px;
-  border-radius: 8px;
-  cursor: pointer;
+.sos-txt-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.8rem, 12vw, 4rem);
+  font-weight: 300;
+  letter-spacing: 0.22em;
+  color: var(--sos-teal-hi);
   text-align: center;
-  transition: all 0.1s;
-  white-space: nowrap;
 }
 
-.dur-sel-btn:hover { background: rgba(184,134,11,0.12); color: rgba(255,255,255,0.85); }
-.dur-sel-btn--active { color: #B8860B; font-weight: 600; }
+.sos-txt-sub {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--sos-text-dim);
+  text-align: center;
+}
+
+.sos-dur-row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 100%;
+  max-width: 320px;
+  margin-top: 8px;
+}
+
+.sos-dur-btn {
+  flex: 1;
+  min-width: 80px;
+  min-height: 72px;
+  background: rgba(15, 110, 86, 0.08);
+  border: 1px solid var(--sos-teal-dim);
+  border-radius: 14px;
+  color: var(--sos-text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, transform 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sos-dur-btn:active {
+  transform: scale(0.95);
+  background: var(--sos-teal-glow);
+  border-color: var(--sos-teal-hi);
+}
+
+.sos-dur-label {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.05rem;
+  font-weight: 400;
+  color: var(--sos-text);
+}
+
+.sos-dur-hint {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  color: var(--sos-text-dim);
+}
 
 /* ================================================================
    EASTER EGGS 333
@@ -5214,27 +5209,6 @@ body.light-mode .pm-theme-btn-hint   { color: rgba(28,22,8,0.40); }
 
 /* ── Check-in humeur ──────────────────────────────────────────── */
 body.light-mode .hm-hint { color: rgba(28,22,8,0.35); }
-
-/* ── Durée adaptative (hardcodé sombre) ───────────────────────── */
-body.light-mode .dur-sel-trigger {
-  background: rgba(245,237,214,0.92);
-  border-color: rgba(154,110,10,0.35);
-  color: rgba(28,22,8,0.65);
-}
-body.light-mode .dur-sel-trigger:hover {
-  border-color: rgba(154,110,10,0.6);
-  color: rgba(28,22,8,0.85);
-}
-body.light-mode .dur-sel-panel {
-  background: rgba(245,237,214,0.97);
-  border-color: rgba(154,110,10,0.28);
-}
-body.light-mode .dur-sel-btn { color: rgba(28,22,8,0.60); }
-body.light-mode .dur-sel-btn:hover {
-  background: rgba(154,110,10,0.10);
-  color: rgba(28,22,8,0.88);
-}
-body.light-mode .dur-sel-btn--active { color: var(--gold); }
 
 /* ── Parcours (hardcodé en blanc) ────────────────────────────── */
 body.light-mode .pa-ritual-row  { border-bottom-color: rgba(28,22,8,0.07); }
