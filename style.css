@@ -4053,9 +4053,9 @@ body.light-mode .m1-toast {
 
 .accueil-header-right {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
 }
 
 .accueil-theme-btn,
