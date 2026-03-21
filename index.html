@@ -1214,7 +1214,7 @@
       <div class="pa-section">
         <h3 class="pa-section-title">Humeur — 30 jours</h3>
         <svg class="pa-mood-svg" id="pa-mood-svg"
-             viewBox="0 0 300 160"
+             viewBox="0 0 300 200"
              xmlns="http://www.w3.org/2000/svg"
              preserveAspectRatio="none"
              aria-hidden="true"></svg>
@@ -1351,6 +1351,21 @@
     </button>
   </nav>
 
+  <!-- ═══════════════════════════════════════════
+       OVERLAY — LUNE
+  ═══════════════════════════════════════════ -->
+  <div class="moon-ov" id="moon-ov" hidden aria-modal="true" role="dialog" aria-label="Phase lunaire">
+    <div class="moon-ov-card">
+      <button class="moon-ov-close" id="moon-ov-close" aria-label="Fermer">✕</button>
+      <div class="moon-ov-icon" id="moon-ov-icon"></div>
+      <h2 class="moon-ov-phase" id="moon-ov-phase"></h2>
+      <p class="moon-ov-energie-label">Énergie du jour</p>
+      <p class="moon-ov-insight" id="moon-ov-insight"></p>
+      <div class="moon-ov-element" id="moon-ov-element"></div>
+      <div class="moon-ov-dates" id="moon-ov-dates"></div>
+    </div>
+  </div>
+
   <script src="storage.js"></script>
   <script src="data/moon.js"></script>
   <script src="app.js"></script>
@@ -1374,5 +1389,6 @@
   <script src="module-parcours.js"></script>
   <script src="module-parametres.js"></script>
   <script src="module-nuit.js"></script>
+  <script src="module-lune-overlay.js"></script>
 </body>
 </html>

@@ -263,8 +263,8 @@ const ModuleParcours = (() => {
     const byDate = {};
     humeurLog.forEach(e => { byDate[e.date] = e.humeur; });
 
-    const W = 300, H = 160;
-    const padL = 10, padR = 10, padT = 14, padB = 24;
+    const W = 300, H = 200;
+    const padL = 10, padR = 10, padT = 18, padB = 28;
     const chartW = W - padL - padR;
     const chartH = H - padT - padB;
 
