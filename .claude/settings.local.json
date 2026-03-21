@@ -9,7 +9,8 @@
       "Bash(grep:*)",
       "Bash(\"D:\\\\matrice\\\\Matrice\\\\style.css\":*)",
       "Bash(\"/d/matrice/Matrice/style.css\":*)",
-      "Bash(winget upgrade:*)"
+      "Bash(winget upgrade:*)",
+      "Skill(update-config)"
     ]
   }
 }

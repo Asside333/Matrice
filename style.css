@@ -228,26 +228,43 @@ body::before {
 /* ── Mini spirale — coin haut-gauche de l'écran accueil ─────── */
 .accueil-spiral-mini {
   position: absolute;
-  top: calc(var(--header-height) + 12px);
-  left: 18px;
+  top: 8px;           /* vit dans la zone header, évite le Métatron */
+  left: 12px;
   z-index: 3;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 5px;
-  cursor: default;
+  gap: 4px;
+  cursor: pointer;
   user-select: none;
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.2s;
+}
+
+.accueil-spiral-mini:hover {
+  opacity: 0.88;
+}
+
+@keyframes spiral-pulse {
+  0%   { transform: scale(1); }
+  45%  { transform: scale(1.07); }
+  100% { transform: scale(1); }
+}
+
+.accueil-spiral-mini.spiral-pulsing {
+  animation: spiral-pulse 0.45s ease-out;
+  transform-origin: center top;
 }
 
 #accueil-spiral-svg {
-  width: 110px;
-  height: 110px;
+  width: 120px;
+  height: 120px;
   overflow: visible;
   display: block;
 }
 
 .accueil-spiral-saison {
-  font-size: 0.54rem;
+  font-size: 0.58rem;
   letter-spacing: 0.04em;
   color: rgba(184,134,11,0.55);
   text-align: center;
@@ -1424,6 +1441,233 @@ body.light-mode .m1-toast {
 @media (prefers-reduced-motion: reduce) {
   .m1-seed-wrap { animation: none; }
   .m1-phase-label { transition: none; }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   MODULE 1 — CONFIG SCREEN
+   ════════════════════════════════════════════════════════════════ */
+
+.m1-config-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1rem;
+  font-weight: 300;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+}
+
+.m1-config-body {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 8px 18px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.m1-config-section {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.m1-config-label {
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+/* Grille binauraux : 2 colonnes */
+.m1-freq-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 7px;
+}
+
+/* Grille patterns : 1 colonne */
+.m1-pattern-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* Pattern en config : layout horizontal avec description */
+.m1-pattern-grid .m1-pattern-btn {
+  flex-direction: row;
+  align-items: flex-start;
+  justify-content: space-between;
+  max-width: none;
+  padding: 10px 12px;
+  gap: 8px;
+  text-align: left;
+}
+
+.m1-pattern-top {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex-shrink: 0;
+  min-width: 110px;
+}
+
+.m1-pattern-desc {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--text-dim);
+  opacity: 0.82;
+  line-height: 1.35;
+  flex: 1;
+  text-align: right;
+}
+
+.m1-pattern-btn--active .m1-pattern-desc {
+  color: var(--gold);
+  opacity: 0.9;
+}
+
+.m1-config-footer {
+  flex-shrink: 0;
+  padding: 14px 18px max(18px, env(safe-area-inset-bottom));
+}
+
+.m1-start-btn {
+  width: 100%;
+  padding: 15px;
+  background: var(--gold);
+  color: #1A1A2E;
+  border: none;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 0;
+  transition: opacity 0.25s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.m1-start-btn:active {
+  opacity: 0.8;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   MODULE 1 — SESSION PLEIN ÉCRAN
+   ════════════════════════════════════════════════════════════════ */
+
+.m1-session-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0;
+  padding-bottom: 0 !important;
+  background: var(--bg);
+}
+
+/* Texte de phase au-dessus */
+.m1-session-phase {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2rem, 9vw, 3rem);
+  font-weight: 300;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--breath-text, #AFA9EC);
+  transition: opacity 0.25s ease, color 1.4s ease;
+  padding-top: max(44px, env(safe-area-inset-top, 44px));
+  text-align: center;
+  flex-shrink: 0;
+}
+
+/* Graine de Vie grande — zone centrale */
+.m1-session-seed-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex: 1;
+  width: 100%;
+}
+
+.m1-session-seed-wrap .m1-breath-halo {
+  position: absolute;
+  width: min(80vmin, 380px);
+  height: min(80vmin, 380px);
+  border-radius: 50%;
+  pointer-events: none;
+  transition: background 1.8s ease;
+}
+
+.m1-session-seed-wrap #m1-seed-svg {
+  width: min(70vmin, 320px);
+  height: min(70vmin, 320px);
+  overflow: visible;
+  animation: seed-spin 100s linear infinite;
+  transform-origin: 50% 50%;
+}
+
+/* Compteur sous la Graine */
+.m1-session-count {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.2rem, 8vw, 3.4rem);
+  font-weight: 300;
+  line-height: 1;
+  color: var(--breath-text, #AFA9EC);
+  transition: color 1.4s ease;
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+/* Timer en bas */
+.m1-session-footer {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 14px 0 max(24px, env(safe-area-inset-bottom, 24px));
+}
+
+/* Bouton binaural persistant flottant (position:fixed) */
+.ritual-bin-btn {
+  position: fixed;
+  top: max(14px, env(safe-area-inset-top, 14px));
+  right: 16px;
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid var(--stroke-dim);
+  color: var(--violet);
+  border-radius: 20px;
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.70rem;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  backdrop-filter: blur(6px);
+  -webkit-tap-highlight-color: transparent;
+  transition: opacity 0.3s, border-color 0.3s;
+}
+
+.ritual-bin-btn--muted {
+  color: var(--text-faint);
+  border-color: transparent;
+  opacity: 0.6;
+}
+
+.ritual-bin-label {
+  font-size: 0.68rem;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .m1-session-seed-wrap #m1-seed-svg { animation: none; }
 }
 
 /* ════════════════════════════════════════════════════════════════

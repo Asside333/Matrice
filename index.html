@@ -49,7 +49,7 @@
     <div class="bg-glow" aria-hidden="true"></div>
 
     <!-- Mini spirale positionnée en absolu dans le coin haut-gauche -->
-    <div class="accueil-spiral-mini" role="img" aria-label="Spirale de progression">
+    <div class="accueil-spiral-mini" role="button" tabindex="0" aria-label="Voir mon parcours">
       <svg id="accueil-spiral-svg"
            viewBox="0 0 120 120"
            xmlns="http://www.w3.org/2000/svg"
@@ -134,88 +134,30 @@
   </section>
 
   <!-- ═══════════════════════════════════════════
-       ÉCRAN — MODULE 1 : SOUFFLE & FRÉQUENCES
+       ÉCRAN — MODULE 1 : CONFIG (Souffle & Fréquences)
   ═══════════════════════════════════════════ -->
-  <section id="screen-rituel" class="screen no-nav" aria-label="Module 1 — Souffle et Fréquences">
+  <section id="screen-rituel" class="screen no-nav" aria-label="Module 1 — Configuration">
 
-    <!-- En-tête compact -->
     <header class="m1-header">
       <button class="btn-back" data-target="accueil" aria-label="Quitter le rituel">
         <span class="back-arrow">←</span>
       </button>
       <div class="m1-module-info">
         <span class="m1-module-num">1 / 6</span>
-        <div class="m1-dots" aria-hidden="true">
-          <span class="m1-dot m1-dot--active"></span>
-          <span class="m1-dot"></span>
-          <span class="m1-dot"></span>
-          <span class="m1-dot"></span>
-          <span class="m1-dot"></span>
-          <span class="m1-dot"></span>
-        </div>
+        <span class="m1-config-title">Souffle &amp; Fréquences</span>
       </div>
-      <div class="m1-timer-ctrl">
-        <button class="m1-timer-adj" id="m1-timer-minus" aria-label="Réduire la durée">−</button>
-        <span class="m1-timer-display" id="m1-timer">2:00</span>
-        <button class="m1-timer-adj" id="m1-timer-plus" aria-label="Augmenter la durée">+</button>
-      </div>
+      <div style="width:72px"></div>
     </header>
 
-    <!-- Consigne — overlay au démarrage -->
-    <div class="m1-consigne" id="m1-consigne" aria-live="polite" aria-atomic="true">
-      <p class="m1-consigne-text" id="m1-consigne-text"></p>
-    </div>
+    <div class="m1-config-body">
 
-    <!-- Zone centrale : Graine de Vie + phase -->
-    <main class="m1-main">
-      <div class="m1-breath-halo" id="m1-halo" aria-hidden="true"></div>
-
-      <div class="m1-seed-wrap" aria-hidden="true">
-        <svg id="m1-seed-svg" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <filter id="seed-glow-f" x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" id="seed-blur-el"/>
-              <feMerge>
-                <feMergeNode in="blur"/>
-                <feMergeNode in="SourceGraphic"/>
-              </feMerge>
-            </filter>
-          </defs>
-          <!-- Cercles générés par app.js -->
-        </svg>
-      </div>
-
-      <div class="m1-phase-block" aria-live="polite" aria-atomic="true">
-        <p class="m1-phase-label" id="m1-phase-label">Inspire</p>
-        <p class="m1-phase-count" id="m1-phase-count">5</p>
-      </div>
-    </main>
-
-    <!-- Patterns de respiration -->
-    <div class="m1-patterns" role="group" aria-label="Rythme de respiration">
-      <button class="m1-pattern-btn m1-pattern-btn--active" data-pattern="coherence" aria-pressed="true">
-        <span class="m1-pattern-name">Cohérence</span>
-        <span class="m1-pattern-detail">5 · 5</span>
-      </button>
-      <button class="m1-pattern-btn" data-pattern="carre" aria-pressed="false">
-        <span class="m1-pattern-name">Carré</span>
-        <span class="m1-pattern-detail">4 · 2 · 4 · 2</span>
-      </button>
-      <button class="m1-pattern-btn" data-pattern="relaxant" aria-pressed="false">
-        <span class="m1-pattern-name">Relaxant</span>
-        <span class="m1-pattern-detail">4 · 7 · 8</span>
-      </button>
-    </div>
-
-    <!-- Contrôles audio -->
-    <div class="m1-audio-section">
-
-      <!-- Groupe binauraux + volume -->
-      <div class="m1-audio-group">
-        <div class="m1-binaural-row" role="group" aria-label="Fréquence binaural">
+      <!-- Binauraux -->
+      <div class="m1-config-section">
+        <p class="m1-config-label">Fréquence binaural</p>
+        <div class="m1-freq-grid" role="group" aria-label="Fréquence binaural">
           <button class="m1-freq-btn m1-freq-btn--active" data-freq="theta" aria-pressed="true">
             <span class="m1-freq-hz">Theta 6Hz</span>
-            <span class="m1-freq-mood">Ouverture</span>
+            <span class="m1-freq-mood">Ouverture / Introspection</span>
           </button>
           <button class="m1-freq-btn" data-freq="alpha" aria-pressed="false">
             <span class="m1-freq-hz">Alpha 10Hz</span>
@@ -223,67 +165,140 @@
           </button>
           <button class="m1-freq-btn" data-freq="gamma" aria-pressed="false">
             <span class="m1-freq-hz">Gamma 40Hz</span>
-            <span class="m1-freq-mood">Énergie</span>
+            <span class="m1-freq-mood">Énergie / Clarté</span>
           </button>
-        </div>
-        <div class="m1-vol-row">
-          <span class="m1-vol-icon" aria-hidden="true">
-            <!-- Icône casque / fréquence -->
-            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M2 9V8a6 6 0 0112 0v1" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
-              <rect x="1" y="9" width="3" height="4" rx="1" stroke="currentColor" stroke-width="1.1"/>
-              <rect x="12" y="9" width="3" height="4" rx="1" stroke="currentColor" stroke-width="1.1"/>
-            </svg>
-          </span>
-          <input type="range" class="m1-vol-slider" id="m1-vol-binaural"
-                 min="0" max="100" value="40"
-                 aria-label="Volume binauraux">
-          <span class="m1-vol-label">Binauraux</span>
+          <button class="m1-freq-btn" data-freq="none" aria-pressed="false">
+            <span class="m1-freq-hz">Aucun</span>
+            <span class="m1-freq-mood">Silence pur</span>
+          </button>
         </div>
       </div>
 
-      <!-- Groupe ambiance + volume -->
-      <div class="m1-audio-group">
+      <!-- Patterns -->
+      <div class="m1-config-section">
+        <p class="m1-config-label">Respiration</p>
+        <div class="m1-pattern-grid" role="group" aria-label="Pattern de respiration">
+          <button class="m1-pattern-btn m1-pattern-btn--active" data-pattern="coherence" aria-pressed="true">
+            <div class="m1-pattern-top">
+              <span class="m1-pattern-name">Cohérence cardiaque</span>
+              <span class="m1-pattern-detail">5 · 5</span>
+            </div>
+            <span class="m1-pattern-desc">Équilibre le système nerveux, réduit le stress</span>
+          </button>
+          <button class="m1-pattern-btn" data-pattern="carre" aria-pressed="false">
+            <div class="m1-pattern-top">
+              <span class="m1-pattern-name">Carré</span>
+              <span class="m1-pattern-detail">4 · 2 · 4 · 2</span>
+            </div>
+            <span class="m1-pattern-desc">Recentrage, concentration, calme mental</span>
+          </button>
+          <button class="m1-pattern-btn" data-pattern="relaxant" aria-pressed="false">
+            <div class="m1-pattern-top">
+              <span class="m1-pattern-name">Relaxant</span>
+              <span class="m1-pattern-detail">4 · 7 · 8</span>
+            </div>
+            <span class="m1-pattern-desc">Active le parasympathique, apaise l'anxiété</span>
+          </button>
+          <button class="m1-pattern-btn" data-pattern="profond" aria-pressed="false">
+            <div class="m1-pattern-top">
+              <span class="m1-pattern-name">Respiration profonde</span>
+              <span class="m1-pattern-detail">6 · 6</span>
+            </div>
+            <span class="m1-pattern-desc">Ancrage, ralentit le rythme cardiaque</span>
+          </button>
+          <button class="m1-pattern-btn" data-pattern="wimhof" aria-pressed="false">
+            <div class="m1-pattern-top">
+              <span class="m1-pattern-name">Wim Hof rapide</span>
+              <span class="m1-pattern-detail">2 · 2</span>
+            </div>
+            <span class="m1-pattern-desc">Énergie, éveil, oxygénation</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Ambiance -->
+      <div class="m1-config-section">
+        <p class="m1-config-label">Ambiance</p>
         <div class="m1-ambiance-row" role="group" aria-label="Sons d'ambiance">
           <button class="m1-amb-btn m1-amb-btn--active" data-amb="silence" aria-pressed="true">Silence</button>
           <button class="m1-amb-btn" data-amb="pluie" aria-pressed="false">Pluie</button>
           <button class="m1-amb-btn" data-amb="bols" aria-pressed="false">Bols</button>
           <button class="m1-amb-btn" data-amb="drone" aria-pressed="false">Drone</button>
         </div>
-        <div class="m1-vol-row">
-          <span class="m1-vol-icon" aria-hidden="true">
-            <!-- Icône onde sonore -->
-            <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path d="M1 8h2M13 8h2" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
-              <path d="M4 5c1-1 3-1 4 0s3 1 4 0" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
-              <path d="M4 11c1 1 3 1 4 0s3-1 4 0" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
-              <path d="M6 3c.5-1 2.5-1 4 0" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
-              <path d="M6 13c.5 1 2.5 1 4 0" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
-            </svg>
-          </span>
-          <input type="range" class="m1-vol-slider" id="m1-vol-ambiance"
-                 min="0" max="100" value="50"
-                 aria-label="Volume ambiance">
-          <span class="m1-vol-label">Ambiance</span>
+      </div>
+
+      <!-- Durée -->
+      <div class="m1-config-section">
+        <p class="m1-config-label">Durée</p>
+        <div class="m1-timer-ctrl">
+          <button class="m1-timer-adj" id="m1-cfg-minus" aria-label="Réduire la durée">−</button>
+          <span class="m1-timer-display" id="m1-cfg-timer">2:00</span>
+          <button class="m1-timer-adj" id="m1-cfg-plus" aria-label="Augmenter la durée">+</button>
         </div>
       </div>
 
     </div>
 
-    <!-- Pied de module -->
-    <div class="m1-footer">
-      <button class="m1-next-btn" id="m1-next-btn">
-        Module suivant
-        <span class="m1-next-arrow">→</span>
-      </button>
+    <div class="m1-config-footer">
+      <button class="m1-start-btn" id="m1-start-btn">Commencer</button>
     </div>
 
     <!-- Toast casque -->
     <div class="m1-toast" id="m1-toast" role="status" aria-live="polite">
-      🎧 Casque recommandé pour les binauraux
+      Casque recommandé pour les binauraux
     </div>
 
   </section>
+
+  <!-- ═══════════════════════════════════════════
+       ÉCRAN — MODULE 1 : SESSION PLEIN ÉCRAN
+  ═══════════════════════════════════════════ -->
+  <section id="screen-rituel-session" class="screen no-nav m1-session-screen" aria-label="Module 1 — Respiration">
+
+    <!-- Phase text au-dessus de la Graine -->
+    <p class="m1-session-phase" id="m1-phase-label" aria-live="polite" aria-atomic="true">Inspire</p>
+
+    <!-- Graine de Vie grande -->
+    <div class="m1-session-seed-wrap" aria-hidden="true">
+      <div class="m1-breath-halo" id="m1-halo"></div>
+      <svg id="m1-seed-svg" viewBox="0 0 240 240" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="seed-glow-f" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="2" result="blur" id="seed-blur-el"/>
+            <feMerge>
+              <feMergeNode in="blur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        <!-- Cercles générés par app.js -->
+      </svg>
+      <p class="m1-session-count" id="m1-phase-count" aria-live="polite">5</p>
+    </div>
+
+    <!-- Timer + ajustements en bas -->
+    <div class="m1-session-footer">
+      <button class="m1-timer-adj" id="m1-timer-minus" aria-label="Retirer 30 secondes">−</button>
+      <span class="m1-timer-display" id="m1-timer">2:00</span>
+      <button class="m1-timer-adj" id="m1-timer-plus" aria-label="Ajouter 30 secondes">+</button>
+    </div>
+
+    <!-- Consigne overlay au démarrage -->
+    <div class="m1-consigne" id="m1-consigne" aria-live="polite" aria-atomic="true">
+      <p class="m1-consigne-text" id="m1-consigne-text"></p>
+    </div>
+
+  </section>
+
+  <!-- Bouton binaural persistant pendant le rituel (position:fixed) -->
+  <button class="ritual-bin-btn" id="ritual-bin-btn" aria-label="Mute/Unmute binauraux" aria-pressed="false" hidden>
+    <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg" width="14" height="14" aria-hidden="true">
+      <path d="M2 9V8a6 6 0 0112 0v1" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"/>
+      <rect x="1" y="9" width="3" height="4" rx="1" stroke="currentColor" stroke-width="1.1"/>
+      <rect x="12" y="9" width="3" height="4" rx="1" stroke="currentColor" stroke-width="1.1"/>
+    </svg>
+    <span class="ritual-bin-label" id="ritual-bin-label">6Hz</span>
+  </button>
 
   <!-- ═══════════════════════════════════════════
        ÉCRAN — STUDIO / MODE LIBRE

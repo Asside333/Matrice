@@ -111,12 +111,22 @@ function updateThemeToggleBtn() {
 
 let currentScreen = 'accueil';
 
+const RITUAL_SCREENS = new Set(['rituel', 'rituel-session', 'm2', 'm3', 'm4', 'm5', 'm6', 'cloture']);
+
 function navigateTo(screenId) {
   if (screenId === currentScreen) return;
 
   const prev = document.getElementById(`screen-${currentScreen}`);
   const next = document.getElementById(`screen-${screenId}`);
   if (!next) return;
+
+  // Arrêt binaural + wake lock quand on quitte complètement le rituel
+  if (RITUAL_SCREENS.has(currentScreen) && !RITUAL_SCREENS.has(screenId)) {
+    if (typeof Module1 !== 'undefined') {
+      Module1.stopBinaural();
+      Module1.releaseWakeLock();
+    }
+  }
 
   // Hook de sortie de l'écran courant
   screenHooks[currentScreen]?.onLeave?.();
@@ -150,14 +160,21 @@ function updateSOSVisibility(screenId) {
   // SOS flottant (gauche) : visible uniquement pendant les modules du rituel
   const sos = document.getElementById('btn-sos');
   if (!sos) return;
-  const ritualScreens = ['rituel', 'm2', 'm3', 'm4', 'm5', 'm6'];
+  const ritualScreens = ['rituel', 'rituel-session', 'm2', 'm3', 'm4', 'm5', 'm6'];
   sos.classList.toggle('hidden', !ritualScreens.includes(screenId));
+
+  // Bouton binaural persistant : visible pendant la session et les modules suivants
+  const binBtn = document.getElementById('ritual-bin-btn');
+  if (binBtn) {
+    const showBin = ['rituel-session', 'm2', 'm3', 'm4', 'm5', 'm6'].includes(screenId);
+    binBtn.hidden = !showBin;
+  }
 }
 
 function updateNavVisibility(screenId) {
   const nav = document.getElementById('main-nav');
   if (!nav) return;
-  const hideNav = ['humeur', 'rituel', 'm2', 'm3', 'm4', 'm5', 'm6', 'cloture', 'parametres', 'nuit'].includes(screenId);
+  const hideNav = ['humeur', 'rituel', 'rituel-session', 'm2', 'm3', 'm4', 'm5', 'm6', 'cloture', 'parametres', 'nuit'].includes(screenId);
   nav.style.opacity = hideNav ? '0' : '1';
   nav.style.pointerEvents = hideNav ? 'none' : 'auto';
 }
@@ -419,6 +436,24 @@ function bindEvents() {
   document.getElementById('btn-nuit')
     ?.addEventListener('click', () => navigateTo('nuit'));
 
+  // Mini spirale accueil → parcours (avec pulse)
+  const spiralMini = document.querySelector('.accueil-spiral-mini');
+  if (spiralMini) {
+    const goToParcours = () => {
+      spiralMini.classList.remove('spiral-pulsing');
+      void spiralMini.offsetWidth; // reflow pour relancer l'anim si déjà active
+      spiralMini.classList.add('spiral-pulsing');
+      spiralMini.addEventListener('animationend', () => {
+        spiralMini.classList.remove('spiral-pulsing');
+        navigateTo('parcours');
+      }, { once: true });
+    };
+    spiralMini.addEventListener('click', goToParcours);
+    spiralMini.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goToParcours(); }
+    });
+  }
+
   // Bouton SOS dans la nav
   document.getElementById('nav-sos-btn')
     ?.addEventListener('click', () => navigateTo('sos'));
@@ -539,6 +574,14 @@ const Module1 = (() => {
       { id: 'hold-in',  label: 'Retiens', secs: 7 },
       { id: 'expire',   label: 'Expire',  secs: 8 },
     ],
+    profond: [
+      { id: 'inspire',  label: 'Inspire', secs: 6 },
+      { id: 'expire',   label: 'Expire',  secs: 6 },
+    ],
+    wimhof: [
+      { id: 'inspire',  label: 'Inspire', secs: 2 },
+      { id: 'expire',   label: 'Expire',  secs: 2 },
+    ],
   };
 
   // ── Couleurs par phase ─────────────────────────────────────────
@@ -556,28 +599,68 @@ const Module1 = (() => {
     gamma: { carrier: 200, beat: 40 },
   };
 
+  const FREQ_LABELS = { theta: '6Hz', alpha: '10Hz', gamma: '40Hz', none: '—' };
+
   // ── Géométrie Graine de Vie ────────────────────────────────────
   const GDV_CX = 120, GDV_CY = 120;
-  const GDV_R  = 54;   // rayon de chaque cercle = distance centre-à-centre
-  const SPREAD = 22;   // étalement max sur inspire (px) — bien perceptible
-  const R_GROW = 11;   // croissance max du rayon (px)
+  const GDV_R  = 54;
+  const SPREAD = 22;
+  const R_GROW = 11;
 
-  // ── État ──────────────────────────────────────────────────────
+  // ── Config (écran préparation) ─────────────────────────────────
+  let cfgFreq     = 'theta';
+  let cfgPattern  = 'coherence';
+  let cfgAmb      = 'silence';
+  let cfgSecs     = 120;
+
+  // ── État session ───────────────────────────────────────────────
   let running      = false;
   let pattern      = 'coherence';
   let phaseIdx     = 0;
-  let phaseStart   = 0;   // timestamp (ms) début phase courante
-  let sessionStart = 0;   // timestamp (ms) début session
-  let totalSecs    = 120; // durée totale en secondes
-  let currentFreq  = 'theta';
-  let currentAmb   = 'silence';
+  let phaseStart   = 0;
+  let sessionStart = 0;
+  let totalSecs    = 120;
   let animFrameId  = null;
-  let seedCircles  = [];  // références <circle> SVG
+  let seedCircles  = [];
+
+  // ── Wake Lock ─────────────────────────────────────────────────
+  let wakeLock = null;
+
+  async function requestWakeLock() {
+    if (!('wakeLock' in navigator)) { startNoSleep(); return; }
+    try {
+      wakeLock = await navigator.wakeLock.request('screen');
+      wakeLock.addEventListener('release', () => { wakeLock = null; });
+    } catch {
+      startNoSleep();
+    }
+  }
+
+  // Fallback NoSleep : vidéo invisible en boucle
+  let noSleepVideo = null;
+  function startNoSleep() {
+    if (noSleepVideo) return;
+    noSleepVideo = document.createElement('video');
+    noSleepVideo.setAttribute('playsinline', '');
+    noSleepVideo.setAttribute('muted', '');
+    noSleepVideo.style.cssText = 'position:fixed;width:1px;height:1px;opacity:0;pointer-events:none';
+    // Vidéo vide 1x1 pixel, loop
+    noSleepVideo.src = 'data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28ybXA0MQAAAAhmcmVlAAAA';
+    noSleepVideo.loop = true;
+    document.body.appendChild(noSleepVideo);
+    noSleepVideo.play().catch(() => {});
+  }
+
+  function releaseWakeLock() {
+    if (wakeLock) { try { wakeLock.release(); } catch {} wakeLock = null; }
+    if (noSleepVideo) { noSleepVideo.pause(); noSleepVideo.remove(); noSleepVideo = null; }
+  }
 
   // ── Audio ──────────────────────────────────────────────────────
-  let audioCtx     = null;
-  let binNodes     = null;  // { oscL, oscR, gainNode }
-  let ambNodes     = null;  // { sources[], masterGain }
+  let audioCtx = null;
+  let binNodes = null;
+  let ambNodes = null;
+  let binMuted = false;
 
   function ctx() {
     if (!audioCtx || audioCtx.state === 'closed') {
@@ -590,14 +673,13 @@ const Module1 = (() => {
   // ── Binauraux ─────────────────────────────────────────────────
   function startBinaural(freqKey) {
     stopBinaural();
+    if (!freqKey || freqKey === 'none') return;
     const ac = ctx();
     const { carrier, beat } = BINAURAL_DEF[freqKey];
 
     const gainNode = ac.createGain();
-    const sliderBin = document.getElementById('m1-vol-binaural');
-    const targetBin = sliderBin ? parseFloat(sliderBin.value) * 0.002 : 0.08;
     gainNode.gain.setValueAtTime(0, ac.currentTime);
-    gainNode.gain.linearRampToValueAtTime(targetBin, ac.currentTime + 1.8);
+    gainNode.gain.linearRampToValueAtTime(binMuted ? 0 : 0.08, ac.currentTime + 1.8);
     gainNode.connect(ac.destination);
 
     const panL = ac.createStereoPanner(); panL.pan.value = -1;
@@ -613,7 +695,7 @@ const Module1 = (() => {
 
     oscL.start(); oscR.start();
     binNodes = { oscL, oscR, gainNode };
-    showToastCasque();
+    updateBinBtn();
   }
 
   function stopBinaural() {
@@ -622,19 +704,28 @@ const Module1 = (() => {
       const ac = ctx();
       binNodes.gainNode.gain.linearRampToValueAtTime(0, ac.currentTime + 0.6);
       const snap = binNodes;
-      setTimeout(() => {
-        try { snap.oscL.stop(); snap.oscR.stop(); } catch {}
-      }, 700);
+      setTimeout(() => { try { snap.oscL.stop(); snap.oscR.stop(); } catch {} }, 700);
     } catch {}
     binNodes = null;
   }
 
-  function switchBinaural(freqKey) {
-    if (!binNodes) { startBinaural(freqKey); return; }
+  function toggleBinMute() {
+    if (!binNodes) return;
+    binMuted = !binMuted;
     const ac = ctx();
-    const { carrier, beat } = BINAURAL_DEF[freqKey];
-    binNodes.oscL.frequency.linearRampToValueAtTime(carrier,        ac.currentTime + 0.6);
-    binNodes.oscR.frequency.linearRampToValueAtTime(carrier + beat, ac.currentTime + 0.6);
+    binNodes.gainNode.gain.linearRampToValueAtTime(
+      binMuted ? 0 : 0.08, ac.currentTime + 0.3
+    );
+    updateBinBtn();
+  }
+
+  function updateBinBtn() {
+    const btn = document.getElementById('ritual-bin-btn');
+    const lbl = document.getElementById('ritual-bin-label');
+    if (!btn) return;
+    btn.setAttribute('aria-pressed', String(binMuted));
+    btn.classList.toggle('ritual-bin-btn--muted', binMuted);
+    if (lbl) lbl.textContent = binMuted ? 'Muet' : (FREQ_LABELS[cfgFreq] || '');
   }
 
   // ── Ambiance ──────────────────────────────────────────────────
@@ -644,15 +735,12 @@ const Module1 = (() => {
 
     const ac = ctx();
     const masterGain = ac.createGain();
-    const sliderAmb = document.getElementById('m1-vol-ambiance');
-    const targetAmb = sliderAmb ? parseFloat(sliderAmb.value) * 0.003 : 0.15;
     masterGain.gain.setValueAtTime(0, ac.currentTime);
-    masterGain.gain.linearRampToValueAtTime(targetAmb, ac.currentTime + 2.5);
+    masterGain.gain.linearRampToValueAtTime(0.15, ac.currentTime + 2.5);
     masterGain.connect(ac.destination);
     const sources = [];
 
     if (type === 'pluie') {
-      // Bruit blanc filtré passe-bas — simule la pluie
       const SR = ac.sampleRate;
       const buf = ac.createBuffer(2, SR * 4, SR);
       for (let ch = 0; ch < 2; ch++) {
@@ -668,12 +756,10 @@ const Module1 = (() => {
       sources.push(noise);
 
     } else if (type === 'bols') {
-      // Harmoniques sinusoïdales avec trémolo — bols tibétains
       [220, 275, 330, 440, 660].forEach((freq, i) => {
         const osc = ac.createOscillator();
         osc.type = 'sine'; osc.frequency.value = freq;
         const g = ac.createGain(); g.gain.value = 0.055 / (i + 1);
-        // LFO de trémolo lent
         const lfo = ac.createOscillator(); lfo.frequency.value = 0.25 + i * 0.07;
         const lfoG = ac.createGain(); lfoG.gain.value = g.gain.value * 0.35;
         lfo.connect(lfoG).connect(g.gain);
@@ -683,7 +769,6 @@ const Module1 = (() => {
       });
 
     } else if (type === 'drone') {
-      // Drone grave avec couches détunées
       [55, 82.5, 110, 165].forEach((freq, i) => {
         const osc = ac.createOscillator();
         osc.type = 'sine'; osc.frequency.value = freq;
@@ -728,7 +813,6 @@ const Module1 = (() => {
     g.setAttribute('class', 'gdv-circles');
     g.setAttribute('filter', 'url(#seed-glow-f)');
 
-    // Cercle central
     const center = document.createElementNS(NS, 'circle');
     center.setAttribute('cx', GDV_CX);
     center.setAttribute('cy', GDV_CY);
@@ -737,7 +821,6 @@ const Module1 = (() => {
     g.appendChild(center);
     seedCircles.push(center);
 
-    // 6 cercles extérieurs
     for (let i = 0; i < 6; i++) {
       const angle = (i * 60) * Math.PI / 180;
       const c = document.createElementNS(NS, 'circle');
@@ -761,18 +844,15 @@ const Module1 = (() => {
   // ── Animation — mise à jour SVG ────────────────────────────────
   function updateSeed(breathAmt, phaseId, ts) {
     const col = PHASE_COLOR[phaseId] || PHASE_COLOR['inspire'];
-
     const r = GDV_R + R_GROW * breathAmt;
     const d = GDV_R + SPREAD * breathAmt;
 
     seedCircles.forEach((c, i) => {
       if (i === 0) {
-        // Centre : micro-pulsation indépendante
         const micro = Math.sin(ts / 900) * 1.2 * breathAmt;
         c.setAttribute('r', (r + micro).toFixed(3));
       } else {
         const angle = parseFloat(c.dataset.angle);
-        // Ripple subtil par cercle (déphasage)
         const ripple = Math.sin(ts / 1400 + i * 1.047) * 1.8 * breathAmt;
         c.setAttribute('cx', (GDV_CX + (d + ripple) * Math.cos(angle)).toFixed(3));
         c.setAttribute('cy', (GDV_CY + (d + ripple) * Math.sin(angle)).toFixed(3));
@@ -780,26 +860,20 @@ const Module1 = (() => {
       }
     });
 
-    // Stroke-width : s'épaissit à l'inspire
     const sw = (0.7 + breathAmt * 0.8).toFixed(2);
     seedCircles.forEach(c => c.setAttribute('stroke-width', sw));
 
-    // Couleur via custom property sur le SVG parent
     const svg = document.getElementById('m1-seed-svg');
     if (svg) svg.style.setProperty('--gdv-stroke', col.stroke);
 
-    // Blur du filtre glow — plus intense à l'inspire
     const blurEl = document.getElementById('seed-blur-el');
     if (blurEl) blurEl.setAttribute('stdDeviation', (col.blur * breathAmt + 1.5).toFixed(1));
 
-    // Halo
     const halo = document.getElementById('m1-halo');
     if (halo) halo.style.background =
       `radial-gradient(ellipse at center, ${col.halo} 0%, transparent 68%)`;
 
-    // Couleur du texte de phase
-    const root = document.documentElement;
-    root.style.setProperty('--breath-text', col.text);
+    document.documentElement.style.setProperty('--breath-text', col.text);
   }
 
   // ── Boucle principale ──────────────────────────────────────────
@@ -814,17 +888,15 @@ const Module1 = (() => {
 
     if (remaining <= 0) { onEnd(); return; }
 
-    const phases      = PATTERNS[pattern];
-    const phase       = phases[phaseIdx];
+    const phases       = PATTERNS[pattern];
+    const phase        = phases[phaseIdx];
     const phaseElapsed = (ts - phaseStart) / 1000;
-    const progress    = Math.min(phaseElapsed / phase.secs, 1);
+    const progress     = Math.min(phaseElapsed / phase.secs, 1);
 
-    // Countdown entier
     const countdown = Math.max(1, Math.ceil(phase.secs - phaseElapsed));
     const cEl = document.getElementById('m1-phase-count');
     if (cEl && cEl.textContent !== String(countdown)) cEl.textContent = countdown;
 
-    // breathAmt : 0 = contracté, 1 = épanoui
     let breathAmt;
     switch (phase.id) {
       case 'inspire':  breathAmt = easeInOutCubic(progress);     break;
@@ -836,7 +908,6 @@ const Module1 = (() => {
 
     updateSeed(breathAmt, phase.id, ts);
 
-    // Passage à la phase suivante
     if (phaseElapsed >= phase.secs) {
       phaseIdx  = (phaseIdx + 1) % phases.length;
       phaseStart = ts;
@@ -861,7 +932,7 @@ const Module1 = (() => {
     const cEl = document.getElementById('m1-phase-count');
     if (lEl) {
       lEl.style.opacity = '0';
-      setTimeout(() => { lEl.textContent = phase.label; lEl.style.opacity = '1'; }, 120);
+      setTimeout(() => { lEl.textContent = phase.label.toUpperCase(); lEl.style.opacity = '1'; }, 120);
     }
     if (cEl) cEl.textContent = Math.ceil(phase.secs);
   }
@@ -894,127 +965,77 @@ const Module1 = (() => {
   function onEnd() {
     running = false;
     cancelAnimationFrame(animFrameId);
-    const btn = document.getElementById('m1-next-btn');
-    if (btn) {
-      btn.innerHTML = '✓ Complété — Module suivant <span class="m1-next-arrow">→</span>';
-      btn.style.color = 'var(--gold)';
+    exitFullscreen();
+    navigateTo('m2');
+  }
+
+  // ── Fullscreen ────────────────────────────────────────────────
+  function enterFullscreen() {
+    const el = document.documentElement;
+    if (el.requestFullscreen) el.requestFullscreen().catch(() => {});
+    else if (el.webkitRequestFullscreen) el.webkitRequestFullscreen();
+  }
+
+  function exitFullscreen() {
+    if (document.fullscreenElement || document.webkitFullscreenElement) {
+      if (document.exitFullscreen) document.exitFullscreen().catch(() => {});
+      else if (document.webkitExitFullscreen) document.webkitExitFullscreen();
     }
   }
 
-  // ── Liaison des événements UI ──────────────────────────────────
-  function bindEvents() {
-    // Patterns
-    document.querySelectorAll('.m1-pattern-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const p = btn.dataset.pattern;
-        if (p === pattern) return;
-        pattern  = p;
-        phaseIdx = 0;
-        phaseStart = performance.now();
-        setPhaseLabel(PATTERNS[p][0]);
-        document.querySelectorAll('.m1-pattern-btn').forEach(b => {
-          b.classList.toggle('m1-pattern-btn--active', b === btn);
-          b.setAttribute('aria-pressed', String(b === btn));
-        });
-      });
-    });
-
-    // Binauraux
-    document.querySelectorAll('.m1-freq-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const f = btn.dataset.freq;
-        const isActive = btn.classList.contains('m1-freq-btn--active');
-        if (isActive) {
-          // Toggle off
-          stopBinaural(); currentFreq = null;
-          document.querySelectorAll('.m1-freq-btn').forEach(b => {
-            b.classList.remove('m1-freq-btn--active');
-            b.setAttribute('aria-pressed', 'false');
-          });
-        } else {
-          currentFreq = f;
-          switchBinaural(f);
-          document.querySelectorAll('.m1-freq-btn').forEach(b => {
-            b.classList.toggle('m1-freq-btn--active', b === btn);
-            b.setAttribute('aria-pressed', String(b === btn));
-          });
-        }
-      });
-    });
-
-    // Ambiance
-    document.querySelectorAll('.m1-amb-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        const a = btn.dataset.amb;
-        currentAmb = a;
-        startAmbiance(a);
-        document.querySelectorAll('.m1-amb-btn').forEach(b => {
-          b.classList.toggle('m1-amb-btn--active', b === btn);
-          b.setAttribute('aria-pressed', String(b === btn));
-        });
-      });
-    });
-
-    // Timer −
-    document.getElementById('m1-timer-minus')?.addEventListener('click', () => {
-      const elapsed = sessionStart ? (performance.now() - sessionStart) / 1000 : 0;
-      totalSecs = Math.max(90, totalSecs - 30);
-      if (totalSecs < elapsed + 10) totalSecs = elapsed + 30;
-      updateTimerDisplay(Math.max(0, totalSecs - elapsed));
-    });
-
-    // Timer +
-    document.getElementById('m1-timer-plus')?.addEventListener('click', () => {
-      totalSecs = Math.min(900, totalSecs + 30);
-      const elapsed = sessionStart ? (performance.now() - sessionStart) / 1000 : 0;
-      updateTimerDisplay(totalSecs - elapsed);
-    });
-
-    // Slider volume binauraux
-    document.getElementById('m1-vol-binaural')?.addEventListener('input', e => {
-      const vol = parseFloat(e.target.value) * 0.002; // 0–100 → 0–0.20
-      if (binNodes) binNodes.gainNode.gain.setValueAtTime(vol, ctx().currentTime);
-    });
-
-    // Slider volume ambiance
-    document.getElementById('m1-vol-ambiance')?.addEventListener('input', e => {
-      const vol = parseFloat(e.target.value) * 0.003; // 0–100 → 0–0.30
-      if (ambNodes) ambNodes.masterGain.gain.setValueAtTime(vol, ctx().currentTime);
-    });
-
-    // Module suivant → Module 2
-    document.getElementById('m1-next-btn')?.addEventListener('click', () => {
-      navigateTo('m2');
-    });
+  // ── Config timer display ───────────────────────────────────────
+  function updateCfgTimerDisplay() {
+    const el = document.getElementById('m1-cfg-timer');
+    if (!el) return;
+    const m = Math.floor(cfgSecs / 60);
+    const s = cfgSecs % 60;
+    el.textContent = `${m}:${s.toString().padStart(2, '0')}`;
   }
 
-  // ── Start / Stop ───────────────────────────────────────────────
-  function start() {
-    buildSeedOfLife();
-
-    // Reset état
+  // ── Démarrer la session (depuis config) ───────────────────────
+  function startSession() {
+    pattern      = cfgPattern;
+    totalSecs    = cfgSecs;
     running      = true;
     phaseIdx     = 0;
     phaseStart   = 0;
     sessionStart = 0;
-    totalSecs    = 120;
+    binMuted     = false;
 
+    buildSeedOfLife();
     updateTimerDisplay(totalSecs);
     setPhaseLabel(PATTERNS[pattern][0]);
-    showConsigne();
 
-    // Démarrer binaural Theta par défaut
-    startBinaural(currentFreq || 'theta');
+    // Lancer audio
+    if (cfgFreq && cfgFreq !== 'none') startBinaural(cfgFreq);
+    startAmbiance(cfgAmb);
+
+    // Naviguer vers l'écran session
+    navigateTo('rituel-session');
+
+    // Plein écran + Wake Lock (après transition)
+    setTimeout(() => {
+      enterFullscreen();
+      requestWakeLock();
+      showConsigne();
+      if (cfgFreq !== 'none') showToastCasque();
+    }, 250);
 
     animFrameId = requestAnimationFrame(loop);
   }
 
-  function stop() {
+  // ── Stop session (leave hook) ──────────────────────────────────
+  function stopSession() {
     running = false;
     cancelAnimationFrame(animFrameId);
-    stopBinaural();
     stopAmbiance();
-    // Réinitialiser les cercles pour prochain démarrage
+    exitFullscreen();
+    // Binaural ne s'arrête PAS ici — persiste jusqu'à la clôture
+    // Wake Lock relâché seulement à la clôture du rituel complet
+    resetSeedCircles();
+  }
+
+  function resetSeedCircles() {
     seedCircles.forEach(c => {
       const i = parseInt(c.dataset.idx);
       if (i === 0) {
@@ -1028,20 +1049,109 @@ const Module1 = (() => {
     });
   }
 
-  // Enregistrement du hook de cycle de vie
-  screenHooks.rituel = { onEnter: start, onLeave: stop };
+  // ── Événements config ─────────────────────────────────────────
+  function bindConfigEvents() {
+    // Patterns
+    document.querySelectorAll('.m1-pattern-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        cfgPattern = btn.dataset.pattern;
+        document.querySelectorAll('.m1-pattern-btn').forEach(b => {
+          b.classList.toggle('m1-pattern-btn--active', b === btn);
+          b.setAttribute('aria-pressed', String(b === btn));
+        });
+      });
+    });
 
-  // Liaison des événements au chargement du DOM
-  document.addEventListener('DOMContentLoaded', bindEvents);
+    // Binauraux
+    document.querySelectorAll('.m1-freq-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        cfgFreq = btn.dataset.freq;
+        document.querySelectorAll('.m1-freq-btn').forEach(b => {
+          b.classList.toggle('m1-freq-btn--active', b === btn);
+          b.setAttribute('aria-pressed', String(b === btn));
+        });
+      });
+    });
 
-  function setDuration(mins) {
-    // Ne pas changer si session en cours
-    if (running) return;
-    totalSecs = Math.max(90, Math.min(900, mins * 60));
-    updateTimerDisplay(totalSecs);
+    // Ambiance
+    document.querySelectorAll('.m1-amb-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        cfgAmb = btn.dataset.amb;
+        document.querySelectorAll('.m1-amb-btn').forEach(b => {
+          b.classList.toggle('m1-amb-btn--active', b === btn);
+          b.setAttribute('aria-pressed', String(b === btn));
+        });
+      });
+    });
+
+    // Config timer
+    document.getElementById('m1-cfg-minus')?.addEventListener('click', () => {
+      cfgSecs = Math.max(60, cfgSecs - 30);
+      updateCfgTimerDisplay();
+    });
+    document.getElementById('m1-cfg-plus')?.addEventListener('click', () => {
+      cfgSecs = Math.min(900, cfgSecs + 30);
+      updateCfgTimerDisplay();
+    });
+
+    // Commencer
+    document.getElementById('m1-start-btn')?.addEventListener('click', startSession);
   }
 
-  return { start, stop, setDuration };
+  // ── Événements session ─────────────────────────────────────────
+  function bindSessionEvents() {
+    // Timer en session
+    document.getElementById('m1-timer-minus')?.addEventListener('click', () => {
+      const elapsed = sessionStart ? (performance.now() - sessionStart) / 1000 : 0;
+      totalSecs = Math.max(30, totalSecs - 30);
+      if (totalSecs < elapsed + 10) totalSecs = elapsed + 30;
+      updateTimerDisplay(Math.max(0, totalSecs - elapsed));
+    });
+    document.getElementById('m1-timer-plus')?.addEventListener('click', () => {
+      totalSecs = Math.min(900, totalSecs + 30);
+      const elapsed = sessionStart ? (performance.now() - sessionStart) / 1000 : 0;
+      updateTimerDisplay(totalSecs - elapsed);
+    });
+
+    // Bouton binaural flottant
+    document.getElementById('ritual-bin-btn')?.addEventListener('click', toggleBinMute);
+  }
+
+  // ── Init config screen ─────────────────────────────────────────
+  function initConfig() {
+    updateCfgTimerDisplay();
+    updateBinBtn();
+    // Reset sélection visuelle
+    document.querySelectorAll('.m1-freq-btn').forEach(b => {
+      const active = b.dataset.freq === cfgFreq;
+      b.classList.toggle('m1-freq-btn--active', active);
+      b.setAttribute('aria-pressed', String(active));
+    });
+    document.querySelectorAll('.m1-pattern-btn').forEach(b => {
+      const active = b.dataset.pattern === cfgPattern;
+      b.classList.toggle('m1-pattern-btn--active', active);
+      b.setAttribute('aria-pressed', String(active));
+    });
+    document.querySelectorAll('.m1-amb-btn').forEach(b => {
+      const active = b.dataset.amb === cfgAmb;
+      b.classList.toggle('m1-amb-btn--active', active);
+      b.setAttribute('aria-pressed', String(active));
+    });
+  }
+
+  // Enregistrement des hooks de cycle de vie
+  screenHooks.rituel = { onEnter: initConfig, onLeave: () => {} };
+  screenHooks['rituel-session'] = { onEnter: () => {}, onLeave: stopSession };
+
+  // Wake Lock relâché quand on quitte le rituel (détecté dans navigateTo)
+
+  // Liaison des événements au chargement du DOM
+  document.addEventListener('DOMContentLoaded', () => {
+    bindConfigEvents();
+    bindSessionEvents();
+  });
+
+  return { startBinaural, stopBinaural, toggleBinMute, releaseWakeLock };
 
 })();
 
