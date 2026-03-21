@@ -42,6 +42,13 @@ const MANTRAS = {
     "Créer est ma forme de prière. Chaque note, chaque geste est un acte de foi.",
     "Mon corps est le temple. Pas la prison.",
     "Le silence que je porte est une arme, pas une absence.",
+    "J'ai le droit d'être vu. Pas malgré ce que je suis — à cause de ce que je suis.",
+    "Réussir ne vole rien à personne. Ma lumière n'éteint pas celle des autres.",
+    "Ma fierté n'a pas besoin de bruit. Elle tient debout dans le silence.",
+    "Personne ne m'a formé. Je me suis construit à mains nues. C'est ma couronne.",
+    "Chaque note que je pose est une prière que personne ne m'a apprise.",
+    "Le matin gris n'est pas un mur. C'est un terreau. Les racines poussent dans le noir.",
+    "Survivre ne me suffit plus. Je choisis de vivre — entièrement, sans excuses.",
   ],
 
   ÉLAN: [
@@ -73,6 +80,13 @@ const MANTRAS = {
     "Ma douceur n'est pas une faiblesse. C'est ma forme la plus pure de courage.",
     "Le plaisir que je m'accorde nourrit tout ce que je construis.",
     "Je suis un homme en transformation exponentielle. Le meilleur accélère.",
+    "L'autodidacte qui persiste dépasse celui qui a été formé sans passion.",
+    "J'ai bâti sans filet. C'est la preuve que je n'en ai jamais eu besoin.",
+    "Ma musique est une arme douce. Elle touche ce que les mots n'atteignent pas.",
+    "J'ai le droit de briller sans m'excuser de la lumière que je projette.",
+    "La culpabilité de réussir est le dernier verrou. Je le fais sauter maintenant.",
+    "Le matin gris est un studio silencieux. Le beat arrive — il arrive toujours.",
+    "Je ne me transforme plus. Je suis la transformation. C'est devenu ma nature.",
   ],
 
   ANCRAGE: [
@@ -98,6 +112,12 @@ const MANTRAS = {
     "Ce que je ne contrôle pas n'a pas besoin de mon anxiété.",
     "Je suis la preuve qu'on peut tenir debout dans le brouillard.",
     "Ma patience est un muscle. Ce matin, je l'entraîne.",
+    "Le gris revient. Et moi aussi. On se connaît maintenant.",
+    "Le producteur attend le mix parfait. Il n'abandonne pas — il ajuste.",
+    "Je n'ai pas besoin d'aller bien pour rester debout. Debout suffit.",
+    "Mon corps porte ce que ma tête refuse de sentir. Je le remercie.",
+    "Ce matin pèse. Ce matin ne définit ni la journée ni la semaine.",
+    "Le doute de l'autodidacte est normal. Il prouve que je pense. Pas que je me trompe.",
   ],
 };
 

@@ -433,8 +433,9 @@ const ModuleSOS = (() => {
     binActive = false;
     updateBinBtn();
     resetSteps();
-    // Haptic fort — urgence SOS
+    // Haptic fort + Om 136.1Hz — urgence SOS
     if (typeof haptic === 'function') haptic(100);
+    if (typeof playOmSos === 'function') playOmSos();
     runFlow();
   }
 

@@ -62,6 +62,16 @@ const SORTS = {
       texte: "Le feu le plus intense n'est pas dans les flammes visibles — il est dans le regard de celui qui sait ce qu'il veut. Aujourd'hui, regarde chaque situation avec cette intensité calme.",
       geste: "Fixe un point devant toi sans ciller pendant 20 secondes. Pas d'agressivité — de la concentration pure. Sens ton regard devenir un laser. Emporte cette précision dans ta journée.",
     },
+    {
+      titre: "Le Mot de Pouvoir",
+      texte: "Il y a un mot en toi qui contient toute ta force. Un mot ancien, personnel, irréductible. Ce mot ne s'explique pas — il se crie. Il vibre dans ta cage thoracique avant de sortir. Aujourd'hui, donne-lui une voix.",
+      geste: "Choisis un mot — ton prénom, 'maintenant', 'debout', ou n'importe quel mot qui résonne. Inspire profondément. Crie-le une seule fois, du ventre, à pleine voix. Sens la vibration dans tout ton corps. Le silence qui suit est ton territoire.",
+    },
+    {
+      titre: "L'Oeil de la Flamme",
+      texte: "Le feu hypnotise parce qu'il est vivant. Il danse sans se répéter. Regarde une flamme assez longtemps et tu oublies le temps, le doute, le bruit. Il ne reste que la présence pure.",
+      geste: "Allume une bougie, un briquet, ou fixe l'image mentale d'une flamme. Regarde-la sans ciller pendant 30 secondes. Laisse tes yeux se détendre. La flamme nettoie ce qui encombre ton champ de vision intérieur.",
+    },
   ],
 
   terre: [
@@ -119,6 +129,16 @@ const SORTS = {
       titre: "Les Mains qui Savent",
       texte: "Tes mains construisent des choses depuis des années. Elles tirent des câbles, elles tournent des potentiomètres, elles tiennent ceux que tu aimes. Elles savent avant ta tête. Aujourd'hui, fais-leur confiance.",
       geste: "Penche-toi et pose tes deux paumes à plat sur le sol ou sur une surface en bois. Sens la matière. Presse doucement. Tes mains se rechargent au contact de la terre. Reste 30 secondes.",
+    },
+    {
+      titre: "La Marche Nue",
+      texte: "Il y a quelque chose que le béton nous a volé : le dialogue entre la plante des pieds et la terre vivante. L'herbe, le gravier, la terre battue — chaque texture parle un langage différent. Aujourd'hui, sors et écoute avec tes pieds.",
+      geste: "Sors dehors pieds nus — herbe, terre, gravier, peu importe. Marche lentement pendant 60 secondes. Sens chaque texture, chaque température. Chaque pas est une phrase dans une conversation millénaire entre ton corps et la planète.",
+    },
+    {
+      titre: "La Pierre de Poche",
+      texte: "Les anciens portaient des pierres. Pas par superstition — par ancrage. Un caillou dans la poche est un rappel constant : la terre est là, le sol est solide, tu es réel. Aujourd'hui, trouve ta pierre.",
+      geste: "Ramasse un caillou — n'importe lequel, celui qui attire ta main. Tiens-le dans ta paume fermée pendant 30 secondes. Sens son poids, sa température, sa texture. Glisse-le dans ta poche. Chaque fois que ta main le touche aujourd'hui, tu reviens à toi.",
     },
   ],
 
@@ -178,6 +198,16 @@ const SORTS = {
       texte: "Le vent ne peut entrer que dans un espace ouvert. Aujourd'hui, ouvre-toi — aux idées inattendues, aux rencontres imprévues, aux chemins que tu n'avais pas envisagés. La rigidité est l'ennemi. La souplesse est l'air.",
       geste: "Debout, ouvre les bras grand, paumes vers le ciel, tête légèrement relevée. Inspire profondément par le nez en élargissant la poitrine au maximum. Tiens 5 secondes. Expire en ramenant les bras lentement. Répète 3 fois.",
     },
+    {
+      titre: "Le Visage du Vent",
+      texte: "Le vent est invisible mais tu sais qu'il est là. Il touche ton visage avant que ta tête ne le comprenne. Aujourd'hui, laisse le monde te toucher avant de le penser. Ressens d'abord. Analyse ensuite.",
+      geste: "Sors dehors ou ouvre la fenêtre. Ferme les yeux. Tourne ton visage vers le courant d'air. Sens le vent sur ta peau — direction, température, force. Reste 30 secondes. Tu viens de te calibrer avec le monde extérieur.",
+    },
+    {
+      titre: "L'Oreille de l'Eau",
+      texte: "L'eau qui coule produit le son le plus ancien du monde. Avant les langues, avant la musique, il y avait ce son. Il calme le système nerveux comme rien d'autre parce que ton corps s'en souvient depuis toujours.",
+      geste: "Ouvre un robinet. Écoute l'eau couler pendant 60 secondes — pas en bruit de fond, en écoute active. Ferme les yeux. Suis les variations du son. Puis ferme le robinet. Le silence qui suit est plus profond qu'avant.",
+    },
   ],
 
   eau: [
@@ -236,6 +266,16 @@ const SORTS = {
       texte: "L'eau sur le visage est le rituel le plus ancien du monde. Chaque civilisation a compris que l'eau purifie, réinitialise, remet les compteurs à zéro. Ce matin, tu te baptises toi-même.",
       geste: "Va au robinet. Prends de l'eau fraîche dans tes mains en coupe. Passe-la sur ton visage lentement, du front au menton. Sens chaque goutte. Tu viens de renaître à cette journée.",
     },
+    {
+      titre: "Le Souffle sur l'Eau",
+      texte: "Souffler sur l'eau, c'est charger un élément avec un autre. L'air rencontre l'eau. L'intention rencontre l'émotion. Ce geste est plus vieux que toutes les religions — il est inscrit dans ton ADN.",
+      geste: "Remplis un verre d'eau. Tiens-le à deux mains devant ta bouche. Souffle doucement sur la surface — un souffle long, lent, chargé d'intention. Regarde les rides à la surface. Puis bois cette eau lentement. Tu viens de boire ton propre souffle.",
+    },
+    {
+      titre: "L'Éveil par le Froid",
+      texte: "L'eau froide ne ment pas. Elle coupe net toute rumination, toute hésitation, toute complaisance. Elle dit : tu es là, maintenant, vivant. Le choc du froid est un reset brutal et bienveillant.",
+      geste: "Ouvre le robinet d'eau froide. Plonge tes mains dedans jusqu'aux poignets. Tiens 30 secondes. Sens le froid remonter dans tes avant-bras. Ton coeur accélère. Ta respiration change. Tu es réveillé. Sèche tes mains lentement.",
+    },
   ],
 
   ether: [
@@ -293,6 +333,16 @@ const SORTS = {
       titre: "L'Écoute Pure",
       texte: "Il existe un son sous tous les sons — le bourdonnement de l'existence elle-même. Les mystiques l'appellent le Nada, le Son Primordial. Tu n'as pas besoin de le croire. Tu as besoin de l'écouter.",
       geste: "Bouche tes oreilles avec tes paumes, coudes relevés. Écoute le son intérieur — le sang, le souffle, le silence vivant. Reste 60 secondes. Ce que tu entends est toi, réduit à l'essentiel. Enlève les mains. Le monde extérieur revient, mais tu as touché le fond.",
+    },
+    {
+      titre: "Le Regard Immobile",
+      texte: "Les yeux bougent sans cesse — c'est le mental qui cherche. Quand les yeux s'immobilisent, le mental s'arrête. Ce n'est pas de la méditation. C'est de la mécanique : fixe le regard et le bruit intérieur baisse.",
+      geste: "Choisis un point fixe — un objet, une tache sur le mur, l'horizon. Fixe-le sans bouger les yeux pendant 60 secondes. Ne cligne pas si tu peux. Laisse ta vision périphérique s'estomper. Le monde se réduit à ce point. Et dans cette réduction, tout s'apaise.",
+    },
+    {
+      titre: "Le Son le Plus Lointain",
+      texte: "L'éther connecte tout. Le son le plus lointain que tu puisses percevoir est la preuve que tu es relié au monde bien au-delà de ton corps. Ton champ de perception est plus vaste que tu ne le crois.",
+      geste: "Ferme les yeux. Écoute. Repère le son le plus lointain que tu puisses percevoir — un avion, un oiseau, une route, le vent. Accroche-toi à ce son. Suis-le. Puis élargis encore. Cherche un son encore plus loin. Pendant 60 secondes, deviens une antenne. Tu es connecté à tout.",
     },
   ],
 };

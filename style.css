@@ -44,6 +44,10 @@ button:focus:not(:focus-visible) { outline: none; }
   --header-border:    rgba(184, 134, 11, 0.10);
   --splash-bg:        #1A1A2E;
 
+  /* Polices avec fallback offline */
+  --font-serif:       'Cormorant Garamond', Georgia, serif;
+  --font-sans:        'DM Sans', system-ui, sans-serif;
+
   /* Dimensions */
   --nav-height:       72px;
   --header-height:    88px;
@@ -58,7 +62,7 @@ button:focus:not(:focus-visible) { outline: none; }
 body.light-mode {
   --bg:               #FFF8E7;
   --bg2:              #F5EDD4;
-  --gold:             #9A6E0A;
+  --gold:             #946A0A;
   --gold-hi:          #B8860B;
   --gold-dim:         rgba(154, 110, 10, 0.18);
   --gold-glow:        rgba(154, 110, 10, 0.08);
@@ -122,16 +126,16 @@ body::before {
   transition: var(--t-theme);
 }
 
-/* ── Splash ───────────────────────────────────────────────────── */
+/* ── Splash — Ouverture du grimoire ───────────────────────────── */
 .splash {
   position: fixed;
   inset: 0;
-  background-color: var(--bg);
+  background-color: #000;
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 500;
-  transition: opacity 0.9s ease;
+  transition: opacity 1s ease;
 }
 
 .splash.fade-out {
@@ -143,50 +147,92 @@ body::before {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 20px;
-  animation: splash-appear 1.2s ease forwards;
+  gap: 24px;
+  position: relative;
 }
 
-/* Phase 1 — Digits 3·3·3 animés */
+/* Phase 1 — Caractères 3·3·3 avec fondus individuels */
 .splash-333-anim {
   font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 2.2rem;
+  font-size: 2.4rem;
   font-weight: 300;
-  letter-spacing: 0.3em;
-  color: var(--gold);
+  letter-spacing: 0.25em;
+  color: #B8860B;
   min-height: 3rem;
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.splash-333--dissolve {
+.sp-char {
   opacity: 0;
-  transform: translateY(-15px) scale(0.8);
-  filter: blur(4px);
+  transition: opacity 0.3s ease;
+  display: inline-block;
+}
+
+.sp-char.sp-dot {
+  transition: opacity 0.2s ease;
+}
+
+.sp-char.sp-visible {
+  opacity: 1;
+}
+
+/* Dissolution en particules */
+.splash-333-anim.sp-dissolving {
+  transition: opacity 0.6s ease, transform 0.6s ease, filter 0.6s ease;
+  opacity: 0;
+  transform: scale(0.85);
+  filter: blur(3px);
+}
+
+.splash-particles {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 200px;
+  height: 60px;
+  pointer-events: none;
+}
+
+.sp-particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: #B8860B;
+  border-radius: 50%;
+  opacity: 0;
+  animation: sp-fly 0.8s ease-out forwards;
+}
+
+@keyframes sp-fly {
+  0%   { opacity: 0.9; transform: translate(0, 0) scale(1); }
+  100% { opacity: 0; transform: translate(var(--sp-dx), var(--sp-dy)) scale(0); }
 }
 
 /* Phase 2 — Graine de Vie */
 .splash-seed {
-  width: 88px;
-  height: 88px;
-  color: var(--gold);
+  width: 96px;
+  height: 96px;
+  color: #B8860B;
+  opacity: 0;
 }
 
 .splash-circle {
   opacity: 0;
+  transition: opacity 0.2s ease;
 }
 
-.splash-name {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 1.6rem;
-  font-weight: 300;
-  letter-spacing: 0.55em;
-  color: var(--gold);
-  text-transform: uppercase;
+/* Pulse unique de la Graine */
+.splash-seed.sp-pulse {
+  animation: sp-seed-pulse 0.6s ease;
 }
 
-@keyframes splash-appear {
-  from { opacity: 0; transform: scale(0.92); }
-  to   { opacity: 1; transform: scale(1); }
+@keyframes sp-seed-pulse {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.08); }
+  100% { transform: scale(1); }
 }
 
 /* ── Écrans — base ────────────────────────────────────────────── */
@@ -198,8 +244,8 @@ body::before {
   background-color: var(--bg);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.32s ease, transform 0.32s ease;
-  transform: translateY(12px);
+  transition: opacity 0.35s ease-out, transform 0.35s ease-out;
+  transform: translateY(30px);
   padding-bottom: var(--nav-height);
   z-index: 10;
   overflow: hidden;
@@ -214,8 +260,8 @@ body::before {
 /* Écran sortant — monte + disparaît */
 .screen.screen--leaving {
   opacity: 0;
-  transform: translateY(-10px);
-  transition: opacity 0.28s ease, transform 0.28s ease;
+  transform: translateY(-30px);
+  transition: opacity 0.35s ease-in, transform 0.35s ease-in;
 }
 
 /* ── Arrière-plan lumineux ────────────────────────────────────── */
@@ -232,6 +278,13 @@ body::before {
     radial-gradient(ellipse 35% 25% at 15% 80%,
       rgba(15, 110, 86, 0.04) 0%, transparent 60%);
   transition: var(--t-theme);
+  animation: bg-glow-drift 12s ease-in-out infinite;
+  will-change: opacity;
+}
+
+@keyframes bg-glow-drift {
+  0%, 100% { opacity: 1; }
+  50%      { opacity: 0.85; }
 }
 
 /* ══════════════════════════════════════════════════════════════
@@ -279,6 +332,16 @@ body::before {
 .accueil-spiral-mini.spiral-pulsing {
   animation: spiral-pulse 0.45s ease-out;
   transform-origin: center top;
+}
+
+/* Streak pulse autonome (toutes les 5s via JS) */
+.accueil-spiral-mini.streak-breathing {
+  animation: streak-breathe 5s ease-in-out infinite;
+}
+
+@keyframes streak-breathe {
+  0%, 85%, 100% { transform: scale(1); opacity: 0.72; }
+  90%           { transform: scale(1.04); opacity: 0.88; }
 }
 
 #accueil-spiral-svg {
@@ -591,6 +654,12 @@ body::before {
   text-transform: uppercase;
   color: var(--text-dim);
   transition: var(--t-theme);
+  animation: subtitle-wave 10s ease-in-out infinite;
+}
+
+@keyframes subtitle-wave {
+  0%, 100% { opacity: 0.7; }
+  50%      { opacity: 1.0; }
 }
 
 /* Bouton Rituel */
@@ -1050,6 +1119,15 @@ body.easter-333 .mcube-333 {
 .m1-dot--active {
   background: var(--gold);
   box-shadow: 0 0 5px var(--gold-dim);
+}
+
+.m1-dot--spring {
+  animation: dot-spring 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+@keyframes dot-spring {
+  0%   { transform: scale(1.4); }
+  100% { transform: scale(1); }
 }
 
 /* Timer */
@@ -1802,7 +1880,7 @@ body.light-mode .m1-toast {
 
 /* Texte du mantra */
 .m2-mantra-text {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(1.25rem, 5vw, 1.7rem);
   font-weight: 400;
   font-style: italic;
@@ -2047,7 +2125,7 @@ body.light-mode .m1-toast {
 
 /* Question */
 .m3-question {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(1.15rem, 4.5vw, 1.5rem);
   font-weight: 400;
   font-style: italic;
@@ -2065,7 +2143,7 @@ body.light-mode .m1-toast {
   border: 1px solid rgba(184, 134, 11, 0.25);
   border-radius: 8px;
   color: var(--text);
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 1.05rem;
   padding: 14px 16px;
   resize: none;
@@ -2123,7 +2201,7 @@ body.light-mode .m1-toast {
 
 /* Texte utilisateur affiché au-dessus */
 .m3-user-text-display {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 0.92rem;
   font-style: italic;
   color: var(--text-dim);
@@ -2167,7 +2245,7 @@ body.light-mode .m1-toast {
 
 /* Texte de transmutation — centré, adaptatif */
 .m3-transmutation-text {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(1.125rem, 4vw, 1.35rem); /* min 18px */
   font-weight: 400;
   line-height: 1.65;
@@ -2307,7 +2385,7 @@ body.light-mode .m1-toast {
 .m3-dissolve-overlay {
   position: absolute;
   z-index: 5;
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 1.05rem;
   color: var(--text);
   text-align: center;
@@ -2961,16 +3039,16 @@ body.light-mode .m1-toast {
 }
 
 .m6-throw-btn--flash {
-  animation: m6-coin-fall 1.5s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
+  animation: m6-coin-breath 1.6s ease-in-out forwards;
+  pointer-events: none;
 }
 
-@keyframes m6-coin-fall {
-  0%   { transform: translateY(0) rotate(0); opacity: 1; }
-  30%  { transform: translateY(8px) rotate(180deg); opacity: 0.85; }
-  60%  { transform: translateY(3px) rotate(360deg); opacity: 0.9; }
-  80%  { transform: translateY(6px) rotate(540deg); opacity: 0.95; }
-  90%  { transform: translateY(2px) rotate(690deg); }
-  100% { transform: translateY(0) rotate(720deg); opacity: 1; }
+@keyframes m6-coin-breath {
+  0%   { transform: scale(1);    opacity: 1; }
+  20%  { transform: scale(0.94); opacity: 0.65; }
+  50%  { transform: scale(1.04); opacity: 0.45; }
+  75%  { transform: scale(0.97); opacity: 0.75; }
+  100% { transform: scale(1);    opacity: 1; }
 }
 
 
@@ -4375,6 +4453,7 @@ body.light-mode .m1-toast {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  overflow-y: auto;
   position: relative;
 }
 
@@ -4917,7 +4996,7 @@ body.light-mode .m1-toast {
 }
 
 .hm-question {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: clamp(1.7rem, 5vw, 2.4rem);
   font-weight: 300;
   text-align: center;
@@ -5017,7 +5096,7 @@ body.light-mode .m1-toast {
 }
 
 .pa-title {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 1.1rem;
   font-weight: 300;
   letter-spacing: 0.25em;
@@ -5059,7 +5138,7 @@ body.light-mode .m1-toast {
 }
 
 .pm-title {
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-size: 1.3rem;
   font-weight: 300;
   color: var(--gold);
@@ -5189,7 +5268,7 @@ body.light-mode .m1-toast {
 
 .pm-fav-text {
   flex: 1;
-  font-family: 'Cormorant Garamond', serif;
+  font-family: 'Cormorant Garamond', Georgia, serif;
   font-style: italic;
   font-size: 0.88rem;
   color: rgba(255,255,255,0.55);

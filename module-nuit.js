@@ -301,7 +301,12 @@ const ModuleNuit = (() => {
     running = false;
     clearInterval(timerInterval);
     cancelAnimationFrame(animFrameId);
-    if (!auto) stopAudio();
+    if (!auto) {
+      stopAudio();
+    } else {
+      // Le fade a été lancé par fadeOutAudio — stopper les oscillateurs après la fin du fade
+      setTimeout(stopAudio, 30000);
+    }
 
     const svg = document.getElementById('nuit-seed-svg');
     if (svg) svg.style.transform = 'scale(1)';
@@ -363,6 +368,23 @@ const ModuleNuit = (() => {
   function onLeave() {
     if (running) stopSession(false);
   }
+
+  // ── Visibilitychange : suspendre l'audio si onglet caché ─────
+  document.addEventListener('visibilitychange', () => {
+    if (!running) return;
+    if (document.hidden) {
+      try { if (audioCtx && audioCtx.state === 'running') audioCtx.suspend(); } catch (_) {}
+    } else {
+      try { if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); } catch (_) {}
+    }
+  });
+
+  // ── Fullscreenchange : Android back button quitte le fullscreen ─
+  document.addEventListener('fullscreenchange', () => {
+    if (running && !document.fullscreenElement) {
+      stopSession(false);
+    }
+  });
 
   bindEvents();
   screenHooks.nuit = { onEnter, onLeave };

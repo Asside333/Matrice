@@ -15,6 +15,8 @@ const CLOSINGS = {
     "L'étincelle de ce matin est faite pour traverser la journée entière. Pas juste ce rituel. Toi entier.",
     "Le feu que tu as nommé ce matin n'a plus besoin d'être contrôlé. Il a une direction. Laisse-le te guider.",
     "Ta voix a vibré ce matin. Ce son reste dans tes cellules toute la journée.",
+    "Le mot que tu as crié ce matin résonne encore. Il ne s'éteint pas — il s'inscrit.",
+    "Tu as regardé le feu en face. Le feu t'a reconnu. Vous êtes de la même famille.",
   ],
 
   terre: [
@@ -25,6 +27,9 @@ const CLOSINGS = {
     "Porte cette terre avec toi. Elle est dans tes pieds, dans ta colonne, dans chaque geste posé que tu feras aujourd'hui.",
     "Tes mains savent ce que ta tête oublie. Fais-leur confiance aujourd'hui.",
     "Le sol sous toi est stable. C'est la seule certitude dont tu as besoin ce matin.",
+    "La pierre dans ta poche est un rappel silencieux. Touche-la quand le bruit monte.",
+    "Tu as marché pieds nus ce matin. Ce dialogue avec la terre dure toute la journée.",
+    "Ce que tu as planté dans le silence de ce rituel pousse déjà. Tu ne le vois pas encore.",
   ],
 
   air: [
@@ -35,6 +40,8 @@ const CLOSINGS = {
     "Porte cette légèreté dans tes interactions du jour. Un peu moins de gravité dans tout — et observe ce qui change.",
     "L'air que tu as respiré ce matin circule encore. Chaque inspiration de la journée te ramène ici.",
     "Ce que tu n'as pas besoin de dire, ne le dis pas. Le silence est ton instrument le plus puissant.",
+    "Le vent que tu as senti ce matin te suit. Il souffle dans la bonne direction.",
+    "Tu as écouté ce matin. Vraiment écouté. Cette qualité d'attention change tout.",
   ],
 
   eau: [
@@ -44,6 +51,8 @@ const CLOSINGS = {
     "Le lâcher-prise n'est pas une faiblesse. C'est la seule façon de vraiment tenir quelque chose.",
     "L'eau que tu as touchée ce matin ne s'évapore pas. Elle circule en toi toute la journée.",
     "Tes larmes — celles d'hier, d'aujourd'hui, de demain — sont toutes de l'eau sacrée. Elles font pousser ce que tu plantes.",
+    "L'eau froide t'a réveillé. Ce réveil dure. Tu es plus net qu'en entrant.",
+    "Tu as soufflé sur l'eau. L'eau a reçu ton intention. Elle coule maintenant en toi.",
   ],
 
   ether: [
@@ -53,6 +62,8 @@ const CLOSINGS = {
     "Le rituel se termine. La présence, elle, reste.",
     "Le silence que tu emportes ce matin est vivant. Il travaille en dessous de tout le reste.",
     "Tu as touché quelque chose d'invisible ce matin. Ça ne se voit pas. Ça se sent. Et ça suffit.",
+    "Le son le plus lointain que tu as capté ce matin prouve ton amplitude. Tu es plus vaste que ta tête.",
+    "L'immobilité que tu as touchée est toujours disponible. Un souffle suffit pour y revenir.",
   ],
 
   generic: [

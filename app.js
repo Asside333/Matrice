@@ -79,6 +79,7 @@ function haptic(pattern) {
 
 let bellCtx = null;
 function playBell() {
+  if (!isSoundsEnabled()) return;
   try {
     if (!bellCtx || bellCtx.state === 'closed') {
       bellCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -102,6 +103,90 @@ function playBell() {
 }
 
 // ════════════════════════════════════════════════════════════════
+// SONS RITUELS — système audio sacré
+// ════════════════════════════════════════════════════════════════
+
+function isSoundsEnabled() {
+  try { return localStorage.getItem('matrice_sounds') !== 'off'; } catch { return true; }
+}
+
+/** Clôture : 528Hz + 396Hz, decay 3s */
+function playBellCloture() {
+  if (!isSoundsEnabled()) return;
+  try {
+    if (!bellCtx || bellCtx.state === 'closed') {
+      bellCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (bellCtx.state === 'suspended') bellCtx.resume();
+    const now = bellCtx.currentTime;
+    [528, 396].forEach(freq => {
+      const osc = bellCtx.createOscillator();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(freq, now);
+      const g = bellCtx.createGain();
+      g.gain.setValueAtTime(0.025, now);
+      g.gain.exponentialRampToValueAtTime(0.001, now + 3);
+      osc.connect(g); g.connect(bellCtx.destination);
+      osc.start(now); osc.stop(now + 3.5);
+    });
+  } catch (_) {}
+}
+
+/** SOS : 136.1Hz Om + vibrato LFO 4Hz, decay 4s */
+function playOmSos() {
+  if (!isSoundsEnabled()) return;
+  try {
+    if (!bellCtx || bellCtx.state === 'closed') {
+      bellCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (bellCtx.state === 'suspended') bellCtx.resume();
+    const now = bellCtx.currentTime;
+    const osc = bellCtx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(136.1, now);
+    const lfo = bellCtx.createOscillator();
+    lfo.frequency.setValueAtTime(4, now);
+    const lfoGain = bellCtx.createGain();
+    lfoGain.gain.setValueAtTime(3, now);
+    lfo.connect(lfoGain); lfoGain.connect(osc.frequency);
+    const g = bellCtx.createGain();
+    g.gain.setValueAtTime(0.035, now);
+    g.gain.exponentialRampToValueAtTime(0.001, now + 4);
+    osc.connect(g); g.connect(bellCtx.destination);
+    osc.start(now); lfo.start(now);
+    osc.stop(now + 4.5); lfo.stop(now + 4.5);
+  } catch (_) {}
+}
+
+/** Yi King : 3 clics brefs (bruit blanc filtré 2000-4000Hz) */
+function playYiKingCoins() {
+  if (!isSoundsEnabled()) return;
+  try {
+    if (!bellCtx || bellCtx.state === 'closed') {
+      bellCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (bellCtx.state === 'suspended') bellCtx.resume();
+    const now = bellCtx.currentTime;
+    for (let i = 0; i < 3; i++) {
+      const t = now + i * 0.12;
+      const bufSize = bellCtx.sampleRate * 0.06;
+      const buf = bellCtx.createBuffer(1, bufSize, bellCtx.sampleRate);
+      const data = buf.getChannelData(0);
+      for (let j = 0; j < bufSize; j++) data[j] = (Math.random() * 2 - 1);
+      const src = bellCtx.createBufferSource();
+      src.buffer = buf;
+      const bp = bellCtx.createBiquadFilter();
+      bp.type = 'bandpass'; bp.frequency.value = 3000; bp.Q.value = 1.5;
+      const g = bellCtx.createGain();
+      g.gain.setValueAtTime(0.04, t);
+      g.gain.exponentialRampToValueAtTime(0.001, t + 0.08);
+      src.connect(bp); bp.connect(g); g.connect(bellCtx.destination);
+      src.start(t); src.stop(t + 0.1);
+    }
+  } catch (_) {}
+}
+
+// ════════════════════════════════════════════════════════════════
 // THÈME ADAPTATIF
 // ════════════════════════════════════════════════════════════════
 
@@ -119,7 +204,7 @@ function applyTheme() {
 
   const metaTheme = document.getElementById('meta-theme');
   if (metaTheme) {
-    metaTheme.setAttribute('content', isLight ? '#9A6E0A' : '#B8860B');
+    metaTheme.setAttribute('content', isLight ? '#946A0A' : '#B8860B');
   }
 
   updateThemeToggleBtn();
@@ -147,16 +232,19 @@ function updateThemeToggleBtn() {
 
 let currentScreen = 'accueil';
 let _navTransitioning = false;
+let _navLastTime = 0;
 
 const RITUAL_SCREENS = new Set(['rituel', 'rituel-session', 'm2', 'm3', 'm4', 'm5', 'm6', 'cloture']);
 
 function navigateTo(screenId) {
-  if (screenId === currentScreen || _navTransitioning) return;
+  const now = performance.now();
+  if (screenId === currentScreen || _navTransitioning || (now - _navLastTime < 300)) return;
   _navTransitioning = true;
+  _navLastTime = now;
 
   const prev = document.getElementById(`screen-${currentScreen}`);
   const next = document.getElementById(`screen-${screenId}`);
-  if (!next) return;
+  if (!next) { _navTransitioning = false; return; }
 
   // Arrêt binaural + wake lock quand on quitte complètement le rituel
   if (RITUAL_SCREENS.has(currentScreen) && !RITUAL_SCREENS.has(screenId)) {
@@ -175,7 +263,7 @@ function navigateTo(screenId) {
     prev.classList.remove('active');
   }
 
-  // Phase 2 — Pause 200ms puis nouvel écran émerge du bas
+  // Phase 2 — Pause 150ms puis nouvel écran émerge du bas
   setTimeout(() => {
     if (prev) prev.classList.remove('screen--leaving');
     next.classList.add('active');
@@ -190,7 +278,7 @@ function navigateTo(screenId) {
 
     // Hook d'entrée du nouvel écran
     screenHooks[screenId]?.onEnter?.();
-  }, 220);
+  }, 150);
 }
 
 /**
@@ -200,6 +288,7 @@ function animateModuleDots(screenEl) {
   const dots = screenEl.querySelectorAll('.m1-dot');
   if (!dots.length) return;
   dots.forEach((dot, i) => {
+    dot.classList.remove('m1-dot--spring');
     dot.style.opacity = '0';
     dot.style.transform = 'scale(0.3)';
     dot.style.transition = 'none';
@@ -209,6 +298,10 @@ function animateModuleDots(screenEl) {
         dot.style.transitionDelay = (i * 60) + 'ms';
         dot.style.opacity = '1';
         dot.style.transform = 'scale(1)';
+        // Spring sur le dot actif
+        if (dot.classList.contains('m1-dot--active')) {
+          setTimeout(() => dot.classList.add('m1-dot--spring'), i * 60 + 260);
+        }
       });
     });
   });
@@ -430,11 +523,13 @@ function loadStreak() {
   if (streakConsecutif === 33) {
     setTimeout(() => {
       document.body.classList.add('easter-33');
+      haptic([50, 80, 50, 80, 50]); // triple pulse
       setTimeout(() => document.body.classList.remove('easter-33'), 2000);
     }, 800);
   }
   if (streakConsecutif === 333) {
     document.body.classList.add('easter-333');
+    haptic([200, 100, 200, 100, 200]); // longue vibration triple
     setTimeout(() => document.body.classList.remove('easter-333'), 3500);
   }
 
@@ -550,60 +645,72 @@ function hideSplash() {
   const splash = document.getElementById('splash');
   if (!splash) return;
 
-  const digits333 = document.getElementById('splash-333-anim');
-  const seedSvg   = document.getElementById('splash-seed');
-  const nameEl    = document.getElementById('splash-name');
-  const circles   = seedSvg?.querySelectorAll('.splash-circle') || [];
+  const digits333  = document.getElementById('splash-333-anim');
+  const seedSvg    = document.getElementById('splash-seed');
+  const particles  = document.getElementById('splash-particles');
+  const chars      = digits333 ? digits333.querySelectorAll('.sp-char') : [];
+  const circles    = seedSvg?.querySelectorAll('.splash-circle') || [];
 
-  // Phase 0 — cacher seed et nom
+  // Phase 0 — tout caché
   if (seedSvg) seedSvg.style.opacity = '0';
-  if (nameEl)  nameEl.style.opacity  = '0';
 
-  // Phase 1 — "3·3·3" digit par digit (0-800ms)
-  if (digits333) {
-    const chars = ['3', ' · ', '3', ' · ', '3'];
-    let idx = 0;
-    const typeDigit = () => {
-      if (idx < chars.length) {
-        digits333.textContent += chars[idx];
-        idx++;
-        setTimeout(typeDigit, 150);
+  // Phase 1 — Caractères "3 · 3 · 3" apparaissent un par un
+  // 3 fade 300ms → · fade 200ms → 3 fade 300ms → · fade 200ms → 3 fade 300ms
+  let t = 0;
+  const delays = [300, 200, 300, 200, 300]; // durée entre chaque apparition
+  chars.forEach((ch, i) => {
+    setTimeout(() => ch.classList.add('sp-visible'), t);
+    t += delays[i] || 300;
+  });
+
+  // Hold 1s après dernier caractère, puis dissolution + particules
+  const dissolveStart = t + 1000;
+
+  setTimeout(() => {
+    // Dissolution du texte 3·3·3
+    if (digits333) digits333.classList.add('sp-dissolving');
+
+    // Spawner des particules dorées
+    if (particles) {
+      for (let i = 0; i < 20; i++) {
+        const p = document.createElement('div');
+        p.className = 'sp-particle';
+        const angle = Math.random() * Math.PI * 2;
+        const dist  = 30 + Math.random() * 60;
+        p.style.setProperty('--sp-dx', `${Math.cos(angle) * dist}px`);
+        p.style.setProperty('--sp-dy', `${Math.sin(angle) * dist}px`);
+        p.style.left = `${90 + (Math.random() - 0.5) * 80}px`;
+        p.style.top  = `${25 + (Math.random() - 0.5) * 20}px`;
+        p.style.animationDelay = `${Math.random() * 0.3}s`;
+        particles.appendChild(p);
       }
-    };
-    typeDigit();
+    }
+  }, dissolveStart);
 
-    // Dissolve les digits
-    setTimeout(() => {
-      digits333.classList.add('splash-333--dissolve');
-    }, 1000);
-  }
-
-  // Phase 2 — Graine de Vie, cercle par cercle (1200-2000ms)
+  // Phase 2 — Graine de Vie, cercle par cercle (150ms chacun)
+  const seedStart = dissolveStart + 700;
   setTimeout(() => {
     if (seedSvg) {
       seedSvg.style.transition = 'opacity 0.3s ease';
       seedSvg.style.opacity = '1';
     }
     circles.forEach((c, i) => {
-      c.style.opacity = '0';
-      c.style.transition = 'opacity 0.25s ease';
-      setTimeout(() => { c.style.opacity = '0.9'; }, i * 90);
+      setTimeout(() => { c.style.opacity = '0.9'; }, i * 150);
     });
-  }, 1200);
 
-  // Phase 3 — Nom MATRICE apparaît (2200ms)
-  setTimeout(() => {
-    if (nameEl) {
-      nameEl.style.transition = 'opacity 0.5s ease';
-      nameEl.style.opacity = '1';
-    }
-  }, 2200);
+    // Pulse unique après tous les cercles
+    const pulseMoment = circles.length * 150 + 100;
+    setTimeout(() => {
+      if (seedSvg) seedSvg.classList.add('sp-pulse');
+    }, pulseMoment);
+  }, seedStart);
 
-  // Phase 4 — Fade-out total (3000ms)
+  // Phase 3 — Transition fluide vers accueil
+  const totalAnim = seedStart + circles.length * 150 + 800;
   setTimeout(() => {
     splash.classList.add('fade-out');
     setTimeout(() => splash.remove(), 1000);
-  }, 3000);
+  }, totalAnim);
 }
 
 // ════════════════════════════════════════════════════════════════
@@ -736,7 +843,11 @@ function init() {
   loadStreak();
   displayPhaseLunaire();
 
-  // 4. Événements
+  // Activer le streak breathing sur la spirale accueil
+  const spiralEl = document.querySelector('.accueil-spiral-mini');
+  if (spiralEl) spiralEl.classList.add('streak-breathing');
+
+  // 6. Événements
   bindEvents();
 
   // 5. Masquer le splash

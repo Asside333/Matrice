@@ -43,4 +43,13 @@ const SOIR_PHRASES = [
   "Ce qui est semé dans la fatigue germe dans le sommeil. Dors en confiance.",
   "Chaque nuit est une petite mort douce. Chaque matin, une résurrection. Ce cycle est sacré.",
   "Le monde continuera sans toi cette nuit. Et c'est exactement comme ça que ça doit être.",
+  "Ce que tu n'as pas fini aujourd'hui n'est pas un échec. C'est un rendez-vous avec demain.",
+  "Ton lit t'attend comme un allié. Il a porté des milliers de nuits. Il portera celle-ci aussi.",
+  "Le guerrier se repose entre les batailles. Ce n'est pas de la faiblesse — c'est de la stratégie.",
+  "Tous les bruits de la journée s'éteignent maintenant. Un par un. Laisse le silence s'installer.",
+  "Tu as le droit de ne rien comprendre ce soir. La clarté viendra avec le sommeil.",
+  "Chaque muscle de ton corps a travaillé aujourd'hui. Donne-leur la permission de se taire.",
+  "Le meilleur de demain se prépare dans le repos de ce soir. Pas dans l'inquiétude.",
+  "Tu n'as pas besoin de mériter le sommeil. Le sommeil n'a pas de conditions.",
+  "Ce soir, range les outils. Le chantier sera encore là demain. Toi aussi.",
 ];

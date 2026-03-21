@@ -45,8 +45,9 @@ const Module6 = (() => {
     const result = throwCoins();
     throws.push(result);
 
-    // Haptic feedback
+    // Haptic feedback + son pièces
     if (typeof haptic === 'function') haptic(50);
+    if (typeof playYiKingCoins === 'function') playYiKingCoins();
 
     const btn = document.getElementById('m6-throw-btn');
     const cntEl = document.getElementById('m6-throw-count');
@@ -59,7 +60,7 @@ const Module6 = (() => {
       updateThrowUI();
       if (cntEl) cntEl.textContent = `${throws.length} / 6`;
 
-      // 3) 500ms après l'apparition du trait, réactiver le bouton
+      // 3) 400ms après l'apparition du trait, réactiver le bouton
       setTimeout(() => {
         btn?.classList.remove('m6-throw-btn--flash');
 
@@ -69,8 +70,8 @@ const Module6 = (() => {
           setTimeout(revealHexagram, 600);
         }
         throwLocked = false;
-      }, 1100); // 600ms trait + 500ms pause
-    }, 2300); // 1500ms coin anim + 800ms pause
+      }, 1000); // 600ms trait + 400ms pause
+    }, 2000); // 1600ms breath anim + 400ms pause
   }
 
   // ── SVG de l'hexagramme ───────────────────────────────────────
@@ -374,8 +375,8 @@ const ScreenCloture = (() => {
     if (typeof Module1 !== 'undefined') Module1.fadeOutBinaural(3);
     // Haptic triple pulse — rituel scellé
     if (typeof haptic === 'function') haptic([50, 50, 50]);
-    // Cloche 528Hz — clôture
-    if (typeof playBell === 'function') playBell();
+    // Cloche 528Hz + 396Hz — clôture
+    if (typeof playBellCloture === 'function') playBellCloture();
 
     // ── Reveal séquentiel — cérémonie de clôture ──────────────
     const elements = [

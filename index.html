@@ -22,12 +22,20 @@
 <body>
 
   <!-- ═══════════════════════════════════════════
-       SPLASH
+       SPLASH — Ouverture du grimoire
   ═══════════════════════════════════════════ -->
   <div id="splash" class="splash" aria-hidden="true">
     <div class="splash-inner">
-      <!-- Phase 1 : 3·3·3 digit par digit -->
-      <p class="splash-333-anim" id="splash-333-anim" aria-hidden="true"></p>
+      <!-- Phase 1 : 3·3·3 caractère par caractère avec fondus individuels -->
+      <p class="splash-333-anim" id="splash-333-anim" aria-hidden="true">
+        <span class="sp-char" data-i="0">3</span>
+        <span class="sp-char sp-dot" data-i="1"> · </span>
+        <span class="sp-char" data-i="2">3</span>
+        <span class="sp-char sp-dot" data-i="3"> · </span>
+        <span class="sp-char" data-i="4">3</span>
+      </p>
+      <!-- Conteneur pour particules dorées de dissolution -->
+      <div class="splash-particles" id="splash-particles" aria-hidden="true"></div>
 
       <!-- Phase 2 : Graine de Vie (cercle par cercle) -->
       <svg class="splash-seed" id="splash-seed" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
@@ -41,9 +49,6 @@
           <circle cx="72" cy="80.8" r="24" class="splash-circle"/>
         </g>
       </svg>
-
-      <!-- Phase 3 : Nom -->
-      <p class="splash-name" id="splash-name">MATRICE</p>
     </div>
   </div>
 
@@ -99,7 +104,7 @@
 
       <!-- Call to action -->
       <div class="accueil-cta">
-        <p class="accueil-subtitle">Calibre ton champ</p>
+        <p class="accueil-subtitle" id="accueil-subtitle">Calibre ton champ</p>
 
         <button class="btn-rituel" id="btn-rituel" aria-label="Commencer le rituel du matin">
           <span class="btn-rituel-text">Commencer le rituel</span>
@@ -1165,11 +1170,11 @@
           <p class="nuit-cfg-group-label">Sons</p>
           <div class="nuit-toggle-row">
             <span class="nuit-toggle-label">Binauraux Delta</span>
-            <button class="nuit-toggle nuit-toggle--on" id="nuit-bin-toggle" aria-pressed="true" data-key="bin"></button>
+            <button class="nuit-toggle nuit-toggle--on" id="nuit-bin-toggle" aria-pressed="true" aria-label="Activer/Désactiver binauraux Delta" data-key="bin"></button>
           </div>
           <div class="nuit-toggle-row">
             <span class="nuit-toggle-label">Drone grave</span>
-            <button class="nuit-toggle nuit-toggle--on" id="nuit-drone-toggle" aria-pressed="true" data-key="drone"></button>
+            <button class="nuit-toggle nuit-toggle--on" id="nuit-drone-toggle" aria-pressed="true" aria-label="Activer/Désactiver drone grave" data-key="drone"></button>
           </div>
         </div>
 
@@ -1283,6 +1288,16 @@
       <div class="pm-section">
         <h3 class="pm-section-title">Thème</h3>
         <div id="pm-theme-section"></div>
+      </div>
+
+      <!-- Sons rituels -->
+      <div class="pm-section">
+        <h3 class="pm-section-title">Sons rituels</h3>
+        <div class="pm-notif-row">
+          <span class="pm-notif-label">Cloches &amp; bols sacrés</span>
+          <button class="pm-notif-toggle" id="pm-sounds-toggle" aria-pressed="true" aria-label="Activer/Désactiver les sons rituels"></button>
+        </div>
+        <p class="pm-notif-hint">Cloches 528Hz, bols tibétains, pièces Yi King</p>
       </div>
 
       <!-- Notifications -->

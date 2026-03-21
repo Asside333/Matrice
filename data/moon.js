@@ -21,6 +21,9 @@ const MoonSystem = (() => {
         "Le noir de la nouvelle lune est le noir de la terre avant la graine. Quelque chose pousse déjà que tu ne vois pas.",
         "Cette nuit sans lune est un studio d'enregistrement — le silence parfait avant le premier beat.",
         "L'absence de lumière n'est pas l'absence de vie. C'est la vie qui se concentre avant d'exploser.",
+        "La nouvelle lune est un coffre-fort vide. Ce que tu y déposes ce soir, tu le retrouveras multiplié dans 14 jours.",
+        "Ce noir est le même noir que celui d'avant ta naissance. Il n'est pas hostile — il est originel. Repose-toi dedans.",
+        "Quand la lune disparaît, les étoiles prennent leur revanche. Regarde ce qui brille quand le principal s'efface.",
       ],
     },
     {
@@ -35,6 +38,9 @@ const MoonSystem = (() => {
         "Le croissant est une lame. Il coupe le superflu pour ne garder que l'intention. Que gardes-tu ?",
         "Un archer ne bande pas son arc à moitié. Le premier croissant est ta flèche qui se prépare.",
         "Cette lumière est si fine qu'elle pourrait passer inaperçue. Comme les premiers signes d'un changement profond.",
+        "Le premier croissant est un ongle de lumière sur la joue du ciel. Petit, oui. Mais il contient la pleine lune en promesse.",
+        "Ce soir, la lune chuchote. Demain elle parlera. Après-demain elle chantera. Le crescendo a commencé.",
+        "La graine qui vient d'être plantée ne ressemble pas à l'arbre. Le croissant ne ressemble pas à la pleine lune. Fais confiance au processus.",
       ],
     },
     {
@@ -49,6 +55,9 @@ const MoonSystem = (() => {
         "La moitié est éclairée, l'autre dans l'ombre. Comme toi. Et c'est exactement ce qui fait ta force.",
         "Le premier quartier est un ring. L'obstacle est là — et toi aussi. Qui recule en premier ?",
         "Ce qui résiste ce soir n'est pas un mur. C'est un test. La lune te demande si tu es sérieux.",
+        "Le premier quartier est un sparring partner. Il ne te frappe pas pour te blesser — il te frappe pour te montrer tes failles.",
+        "Moitié lumière, moitié ombre. Comme un beat qui alterne kick et silence. Le groove naît de cette tension.",
+        "Ce soir tu es à la croisée. Le facile est à gauche, le nécessaire est à droite. La lune ne choisit pas pour toi.",
       ],
     },
     {
@@ -63,6 +72,9 @@ const MoonSystem = (() => {
         "La gibbeuse croissante est l'artisan qui ponce avant la finition. Le gros oeuvre est fait — maintenant, les détails.",
         "Tu sens que c'est proche. Ne gâche pas ce moment en accélérant. Le dernier kilomètre se court au même rythme.",
         "La lumière est presque complète. Ce qui manque encore n'est pas un défaut — c'est de l'espace pour la surprise.",
+        "La gibbeuse croissante est le mixdown avant le mastering. Le gros est fait. Maintenant, les détails qui changent tout.",
+        "Tu es à 80%. Les 20% restants ne demandent pas plus d'effort — ils demandent plus de précision. Affine.",
+        "Ce soir, ne cherche pas le parfait. Cherche le prêt. La différence entre les deux, c'est le courage de finir.",
       ],
     },
     {
@@ -77,6 +89,9 @@ const MoonSystem = (() => {
         "La pleine lune ne ment pas. Ce que tu vois ce soir — en toi, chez les autres — est la vérité nue. Accepte-la.",
         "Ce soir, l'eau monte. Les émotions sont au plus haut. Ne les combats pas — surfe dessus.",
         "La pleine lune est un projecteur braqué sur ta vie. Ce qui brille mérite ta fierté. Ce qui fait mal mérite ta compassion.",
+        "La pleine lune est un drop. Tout ce que tu as construit depuis la nouvelle lune culmine ici. Laisse le son remplir la salle.",
+        "Ce soir, la marée est haute. Les émotions débordent du cadre habituel. Ne construis pas de digue — surfe.",
+        "La pleine lune révèle les contours de tout ce que tu as semé. Regarde le champ. Il est plus riche que tu ne le pensais.",
       ],
     },
     {
@@ -91,6 +106,9 @@ const MoonSystem = (() => {
         "La gibbeuse décroissante est le moment de récolter les leçons avant qu'elles ne se perdent. Écris-les.",
         "Ce que tu as vécu ce cycle est déjà en train de devenir sagesse. Tu ne le sens pas encore — mais ton corps, lui, l'intègre.",
         "Le fruit est mûr. Il tombe de lui-même. Tu n'as rien à forcer ce soir.",
+        "La gibbeuse décroissante est le lendemain du concert. L'écho vibre encore, mais la scène se démonte. Laisse le souvenir se solidifier.",
+        "Ce que tu n'as pas pu dire pendant la pleine lune, tu peux l'écrire maintenant. L'encre est plus patiente que la voix.",
+        "Moins ne veut pas dire moins bien. La lune qui décroît affine. Elle retire le superflu pour ne garder que l'os.",
       ],
     },
     {
@@ -105,6 +123,9 @@ const MoonSystem = (() => {
         "Le dernier quartier est un tri sacré. Ce que tu gardes dans la valise pour le prochain cycle — choisis bien.",
         "Défais les noeuds ce soir. Pas avec violence — avec patience. Les noeuds se défont par la douceur.",
         "Ce qui encombre ta vie a une date de péremption. Ce soir, vérifie les étiquettes.",
+        "Le dernier quartier est un filtre. Ce qui passe à travers est essentiel. Le reste, laisse-le partir sans cérémonie.",
+        "Ce soir, fais le tri — pas dans tes affaires, dans tes pensées. Lesquelles emmènes-tu dans le prochain cycle ? Choisis peu.",
+        "La terre sous tes pieds absorbe ce que tu lâches. Elle sait quoi en faire. Toi, tu n'as qu'à ouvrir les mains.",
       ],
     },
     {
@@ -119,6 +140,9 @@ const MoonSystem = (() => {
         "Le dernier croissant est un murmure. Approche ton oreille. La lune te dit quelque chose que tu es le seul à pouvoir entendre.",
         "Presque rien. Presque invisible. Comme les choses les plus importantes de ta vie — celles que personne ne voit mais qui te portent.",
         "Cette fine lame de lumière est une signature. Le cycle signe son oeuvre. Toi aussi.",
+        "Le dernier croissant est un point de suspension, pas un point final. La phrase continue — ailleurs, autrement.",
+        "Ce soir, l'obscurité n'est pas une menace. C'est une couverture. Elle protège ce qui germe dans le noir.",
+        "Le dernier croissant est le souffle entre deux phrases de musique. Sans lui, la mélodie n'a pas de sens. Respecte la pause.",
       ],
     },
   ];

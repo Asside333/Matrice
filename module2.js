@@ -139,7 +139,8 @@ const Module2 = (() => {
         const btn = document.getElementById('m2-star-btn');
         btn?.classList.toggle('m2-star--active', nowFav);
         btn?.setAttribute('aria-pressed', nowFav ? 'true' : 'false');
-        // Micro-animation
+        // Micro-animation + haptic
+        if (typeof haptic === 'function') haptic(30);
         btn?.classList.add('m2-star--pulse');
         setTimeout(() => btn?.classList.remove('m2-star--pulse'), 400);
       });

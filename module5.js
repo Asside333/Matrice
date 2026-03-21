@@ -265,6 +265,7 @@ const Module5 = (() => {
     currentElement = elementKey;
     const el = ELEMENTS[elementKey];
     if (!el) return;
+    if (typeof haptic === 'function') haptic(50);
 
     // Badge avec icône SVG
     const badge = document.getElementById('m5-element-badge');

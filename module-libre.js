@@ -580,6 +580,24 @@ const ModuleLibre = (() => {
     if (running) stopSession();
   }
 
+  // ── Visibilitychange : suspendre l'audio si onglet caché ─────
+  document.addEventListener('visibilitychange', () => {
+    if (!running) return;
+    if (document.hidden) {
+      try { if (audioCtx && audioCtx.state === 'running') audioCtx.suspend(); } catch (_) {}
+    } else {
+      try { if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume(); } catch (_) {}
+    }
+  });
+
+  // ── Fullscreenchange : Android back button quitte le fullscreen ─
+  document.addEventListener('fullscreenchange', () => {
+    if (running && !document.fullscreenElement) {
+      stopSession();
+      navigateTo('libre');
+    }
+  });
+
   bindEvents();
   screenHooks.libre = { onEnter, onLeave };
   screenHooks['libre-session'] = { onEnter: () => {}, onLeave: onSessionLeave };

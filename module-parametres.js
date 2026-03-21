@@ -241,6 +241,21 @@ const ModuleParametres = (() => {
       if (confirmEl) confirmEl.hidden = true;
       if (resetBtn) resetBtn.style.opacity = '';
     });
+
+    // Toggle sons rituels
+    document.getElementById('pm-sounds-toggle')?.addEventListener('click', () => {
+      const on = localStorage.getItem('matrice_sounds') !== 'off';
+      try { localStorage.setItem('matrice_sounds', on ? 'off' : 'on'); } catch {}
+      renderSoundsToggle();
+    });
+  }
+
+  function renderSoundsToggle() {
+    const btn = document.getElementById('pm-sounds-toggle');
+    if (!btn) return;
+    const on = localStorage.getItem('matrice_sounds') !== 'off';
+    btn.classList.toggle('active', on);
+    btn.setAttribute('aria-pressed', String(on));
   }
 
   // ── Lifecycle ──────────────────────────────────────────────────
@@ -256,6 +271,7 @@ const ModuleParametres = (() => {
     renderFavorites();
     renderThemeSection();
     renderNotifSection();
+    renderSoundsToggle();
   }
 
   function onLeave() {}

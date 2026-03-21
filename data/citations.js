@@ -237,6 +237,63 @@ const CITATIONS = [
 
   // ── Confucius (ajout) ─────────────────────────────────────────
   { texte: "Il n'importe pas d'aller lentement, pourvu que l'on ne s'arrête pas.", auteur: "Confucius" },
+
+  // ── Nikola Tesla ────────────────────────────────────────────────
+  { texte: "Si tu veux comprendre l'univers, pense en termes d'énergie, de fréquence et de vibration.", auteur: "Nikola Tesla" },
+  { texte: "Le présent est à eux. Le futur, pour lequel j'ai vraiment travaillé, est à moi.", auteur: "Nikola Tesla" },
+  { texte: "Je ne me soucie pas qu'ils aient volé mon idée. Ce qui m'inquiète, c'est qu'ils n'en ont pas.", auteur: "Nikola Tesla" },
+
+  // ── Maya Angelou ────────────────────────────────────────────────
+  { texte: "Les gens oublieront ce que tu as dit, les gens oublieront ce que tu as fait, mais les gens n'oublieront jamais ce que tu leur as fait ressentir.", auteur: "Maya Angelou" },
+  { texte: "On ne peut pas épuiser la créativité. Plus on l'utilise, plus on en a.", auteur: "Maya Angelou" },
+  { texte: "Si tu n'aimes pas quelque chose, change-le. Si tu ne peux pas le changer, change ton attitude.", auteur: "Maya Angelou" },
+
+  // ── Nelson Mandela ──────────────────────────────────────────────
+  { texte: "Cela semble toujours impossible jusqu'à ce que ce soit fait.", auteur: "Nelson Mandela" },
+  { texte: "Je ne perds jamais. Soit je gagne, soit j'apprends.", auteur: "Nelson Mandela" },
+  { texte: "Le courage n'est pas l'absence de peur, mais la capacité de la vaincre.", auteur: "Nelson Mandela" },
+
+  // ── Martin Luther King Jr ───────────────────────────────────────
+  { texte: "La mesure ultime d'un homme n'est pas où il se tient dans les moments de confort, mais où il se tient dans les moments de défi.", auteur: "Martin Luther King Jr" },
+  { texte: "L'obscurité ne peut pas chasser l'obscurité — seule la lumière le peut.", auteur: "Martin Luther King Jr" },
+
+  // ── Nietzsche ───────────────────────────────────────────────────
+  { texte: "Il faut encore avoir du chaos en soi pour enfanter une étoile qui danse.", auteur: "Friedrich Nietzsche" },
+  { texte: "Deviens qui tu es.", auteur: "Friedrich Nietzsche" },
+  { texte: "Celui qui a un pourquoi peut supporter presque n'importe quel comment.", auteur: "Friedrich Nietzsche" },
+
+  // ── Oscar Wilde ─────────────────────────────────────────────────
+  { texte: "Soyez vous-même. Tous les autres sont déjà pris.", auteur: "Oscar Wilde" },
+  { texte: "Vivre est la chose la plus rare au monde. La plupart des gens se contentent d'exister.", auteur: "Oscar Wilde" },
+
+  // ── Socrate ─────────────────────────────────────────────────────
+  { texte: "Le secret du changement consiste à concentrer toute ton énergie non pas à lutter contre le passé, mais à construire l'avenir.", auteur: "Socrate" },
+  { texte: "Une vie sans examen ne vaut pas la peine d'être vécue.", auteur: "Socrate" },
+
+  // ── Jiddu Krishnamurti ──────────────────────────────────────────
+  { texte: "Ce n'est pas un signe de bonne santé que d'être bien adapté à une société profondément malade.", auteur: "Jiddu Krishnamurti" },
+  { texte: "L'observateur est l'observé.", auteur: "Jiddu Krishnamurti" },
+
+  // ── Ram Dass ────────────────────────────────────────────────────
+  { texte: "Sois ici maintenant.", auteur: "Ram Dass" },
+  { texte: "Nous sommes tous simplement en train de nous accompagner mutuellement vers la maison.", auteur: "Ram Dass" },
+
+  // ── Rabindranath Tagore ─────────────────────────────────────────
+  { texte: "Tu ne peux pas traverser la mer simplement en restant debout à contempler l'eau.", auteur: "Rabindranath Tagore" },
+  { texte: "Chaque enfant vient avec le message que Dieu n'est pas encore découragé de l'homme.", auteur: "Rabindranath Tagore" },
+
+  // ── Jorge Luis Borges ───────────────────────────────────────────
+  { texte: "Le temps est la substance dont je suis fait.", auteur: "Jorge Luis Borges" },
+
+  // ── Fernando Pessoa ─────────────────────────────────────────────
+  { texte: "Je porte en moi les blessures de toutes les batailles que j'ai évitées.", auteur: "Fernando Pessoa" },
+
+  // ── Kodo Sawaki ─────────────────────────────────────────────────
+  { texte: "Tu ne peux pas échanger ta vie avec celle d'un autre. Tu ne peux pas fuir ta réalité. Assieds-toi et regarde.", auteur: "Kodo Sawaki" },
+
+  // ── Proverbe soufi ──────────────────────────────────────────────
+  { texte: "Au-delà des idées de ce qui est juste et de ce qui est faux, il y a un champ. Je t'y retrouverai.", auteur: "Proverbe soufi" },
+  { texte: "L'or doit être brûlé, battu et poli avant de devenir bijou.", auteur: "Proverbe soufi" },
 ];
 
 /**
