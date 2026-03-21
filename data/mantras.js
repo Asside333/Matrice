@@ -35,6 +35,13 @@ const MANTRAS = {
     "Le silence intérieur n'est pas du vide. C'est de l'espace.",
     "Je ne suis pas ce qu'on a fait de moi. Je suis ce que je choisis d'en faire.",
     "Chaque cicatrice est la preuve d'une bataille gagnée.",
+    "Le temps ne me presse pas. Je suis celui qui donne le tempo.",
+    "La patience n'est pas de l'attente. C'est de la puissance au ralenti.",
+    "Mon plaisir n'est pas un vol. C'est un acte sacré.",
+    "La force douce est la seule qui ne se brise pas.",
+    "Créer est ma forme de prière. Chaque note, chaque geste est un acte de foi.",
+    "Mon corps est le temple. Pas la prison.",
+    "Le silence que je porte est une arme, pas une absence.",
   ],
 
   ÉLAN: [
@@ -59,6 +66,13 @@ const MANTRAS = {
     "Chaque jour je pose une pierre. La cathédrale se dessine.",
     "La peur dit stop. Mon corps dit encore.",
     "Je ne cherche pas la perfection. Je cherche le mouvement.",
+    "Le temps joue pour moi. Chaque jour composé multiplie ce que j'ai semé.",
+    "Ma musique est un portail. Chaque beat ouvre un monde.",
+    "La création n'attend pas l'inspiration. L'inspiration attend la création.",
+    "Ce qui monte en moi n'a pas besoin de permission pour exister.",
+    "Ma douceur n'est pas une faiblesse. C'est ma forme la plus pure de courage.",
+    "Le plaisir que je m'accorde nourrit tout ce que je construis.",
+    "Je suis un homme en transformation exponentielle. Le meilleur accélère.",
   ],
 
   ANCRAGE: [
@@ -78,6 +92,12 @@ const MANTRAS = {
     "Je plie sans rompre. C'est ma force.",
     "L'obscurité ne m'arrête pas. Elle m'apprend à voir autrement.",
     "Je suis ancré. Pas bloqué.",
+    "Le silence autour de moi n'est pas du vide. C'est de la concentration.",
+    "Mon corps sait des choses que ma tête refuse d'entendre. J'écoute mon corps.",
+    "La lenteur de ce matin est un rythme, pas un défaut.",
+    "Ce que je ne contrôle pas n'a pas besoin de mon anxiété.",
+    "Je suis la preuve qu'on peut tenir debout dans le brouillard.",
+    "Ma patience est un muscle. Ce matin, je l'entraîne.",
   ],
 };
 

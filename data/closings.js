@@ -13,6 +13,8 @@ const CLOSINGS = {
     "Cette journée est ta forge. Entre dedans avec tout ce que tu es.",
     "Garde cette chaleur dans tes paumes. Elle est disponible chaque fois que tu en as besoin — reviens y poser tes mains.",
     "L'étincelle de ce matin est faite pour traverser la journée entière. Pas juste ce rituel. Toi entier.",
+    "Le feu que tu as nommé ce matin n'a plus besoin d'être contrôlé. Il a une direction. Laisse-le te guider.",
+    "Ta voix a vibré ce matin. Ce son reste dans tes cellules toute la journée.",
   ],
 
   terre: [
@@ -21,6 +23,8 @@ const CLOSINGS = {
     "Tu repars avec les pieds ancrés et les mains ouvertes. C'est tout ce qu'il faut.",
     "Le rituel est terminé. Le travail continue, mais différemment — depuis le calme.",
     "Porte cette terre avec toi. Elle est dans tes pieds, dans ta colonne, dans chaque geste posé que tu feras aujourd'hui.",
+    "Tes mains savent ce que ta tête oublie. Fais-leur confiance aujourd'hui.",
+    "Le sol sous toi est stable. C'est la seule certitude dont tu as besoin ce matin.",
   ],
 
   air: [
@@ -29,6 +33,8 @@ const CLOSINGS = {
     "Tu as respiré, tu as vu, tu as entendu. C'est suffisant pour changer la direction d'une journée.",
     "Ce qui doit se dire se dira. Ce qui doit s'entendre s'entendra. Fais confiance au flux.",
     "Porte cette légèreté dans tes interactions du jour. Un peu moins de gravité dans tout — et observe ce qui change.",
+    "L'air que tu as respiré ce matin circule encore. Chaque inspiration de la journée te ramène ici.",
+    "Ce que tu n'as pas besoin de dire, ne le dis pas. Le silence est ton instrument le plus puissant.",
   ],
 
   eau: [
@@ -36,6 +42,8 @@ const CLOSINGS = {
     "Tout ce que tu as posé ce matin dans l'eau de la conscience — ça infuse. Sois patient.",
     "Tu n'as pas besoin de savoir comment. Tu as besoin d'avancer en direction de ce que tu sais.",
     "Le lâcher-prise n'est pas une faiblesse. C'est la seule façon de vraiment tenir quelque chose.",
+    "L'eau que tu as touchée ce matin ne s'évapore pas. Elle circule en toi toute la journée.",
+    "Tes larmes — celles d'hier, d'aujourd'hui, de demain — sont toutes de l'eau sacrée. Elles font pousser ce que tu plantes.",
   ],
 
   ether: [
@@ -43,6 +51,8 @@ const CLOSINGS = {
     "Tu es plus vaste que tes problèmes. Rappelle-toi-en une fois par heure.",
     "Tout est déjà là. Tu apprends à le voir.",
     "Le rituel se termine. La présence, elle, reste.",
+    "Le silence que tu emportes ce matin est vivant. Il travaille en dessous de tout le reste.",
+    "Tu as touché quelque chose d'invisible ce matin. Ça ne se voit pas. Ça se sent. Et ça suffit.",
   ],
 
   generic: [
@@ -57,6 +67,11 @@ const CLOSINGS = {
     "Tu portes quelque chose de différent en sortant qu'en entrant. Même si tu ne sais pas encore quoi.",
     "La cohérence est le plus grand luxe. Tu viens d'en prendre un peu. Garde-la.",
     "Chaque matin qui commence ici est un matin qui ne commence pas dans le bruit. C'est déjà un choix de vie.",
+    "333. Tu sais ce que ça veut dire. L'univers confirme.",
+    "Quelque chose de toi a changé ce matin. Même si tu ne sais pas encore quoi, fais-lui confiance.",
+    "Le Cube de Métatron te contient. Et tu le contiens. Ce rituel est la preuve.",
+    "Tu as honoré le matin. Le matin t'honore en retour. Va.",
+    "La plume de Maât est légère ce matin. Tu as vécu en vérité.",
   ],
 };
 

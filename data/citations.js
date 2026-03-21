@@ -178,6 +178,65 @@ const CITATIONS = [
   // ── Sun Tzu ─────────────────────────────────────────────────
   { texte: "Au milieu du chaos, il y a aussi une opportunité.", auteur: "Sun Tzu" },
   { texte: "Connais-toi toi-même, connais ton ennemi — et tu ne seras jamais en péril.", auteur: "Sun Tzu" },
+  { texte: "L'art suprême de la guerre est de soumettre l'ennemi sans combat.", auteur: "Sun Tzu" },
+
+  // ── Léonard de Vinci ──────────────────────────────────────────
+  { texte: "La simplicité est la sophistication suprême.", auteur: "Léonard de Vinci" },
+  { texte: "Celui qui ne punit pas le mal ordonne qu'il soit fait.", auteur: "Léonard de Vinci" },
+  { texte: "Qui pense peu, se trompe beaucoup.", auteur: "Léonard de Vinci" },
+  { texte: "J'ai été impressionné par l'urgence de faire. Savoir ne suffit pas — il faut appliquer. Vouloir ne suffit pas — il faut agir.", auteur: "Léonard de Vinci" },
+
+  // ── Michel-Ange ───────────────────────────────────────────────
+  { texte: "Le plus grand danger pour la plupart d'entre nous n'est pas que notre but soit trop élevé et que nous le manquions, mais qu'il soit trop bas et que nous l'atteignions.", auteur: "Michel-Ange" },
+  { texte: "J'ai vu l'ange dans le marbre et j'ai sculpté jusqu'à le libérer.", auteur: "Michel-Ange" },
+
+  // ── Bruce Lee ─────────────────────────────────────────────────
+  { texte: "Sois comme l'eau, mon ami.", auteur: "Bruce Lee" },
+  { texte: "Ne prie pas pour une vie facile. Prie pour avoir la force d'endurer une vie difficile.", auteur: "Bruce Lee" },
+  { texte: "Je ne crains pas l'homme qui a pratiqué 10 000 coups une fois. Je crains celui qui a pratiqué un coup 10 000 fois.", auteur: "Bruce Lee" },
+  { texte: "Le savoir ne suffit pas, il faut l'appliquer. La volonté ne suffit pas, il faut agir.", auteur: "Bruce Lee" },
+
+  // ── Bob Marley ────────────────────────────────────────────────
+  { texte: "Certains ressentent la pluie. D'autres se font juste mouiller.", auteur: "Bob Marley" },
+  { texte: "L'homme est un univers en lui-même.", auteur: "Bob Marley" },
+  { texte: "La grandeur d'un homme ne se mesure pas à la richesse qu'il acquiert, mais à son intégrité et à sa capacité à affecter positivement ceux qui l'entourent.", auteur: "Bob Marley" },
+
+  // ── Malcolm X ─────────────────────────────────────────────────
+  { texte: "L'éducation est le passeport pour l'avenir, car demain appartient à ceux qui s'y préparent aujourd'hui.", auteur: "Malcolm X" },
+  { texte: "Si tu ne défends rien, tu tomberas pour n'importe quoi.", auteur: "Malcolm X" },
+
+  // ── James Baldwin ─────────────────────────────────────────────
+  { texte: "Pas tout ce qui est affronté peut être changé. Mais rien ne peut être changé tant que ce n'est pas affronté.", auteur: "James Baldwin" },
+  { texte: "L'amour ne commence ni ne finit de la façon dont nous semblons le croire. L'amour est une bataille. L'amour est une guerre. L'amour est grandir.", auteur: "James Baldwin" },
+
+  // ── Eckhart Tolle ─────────────────────────────────────────────
+  { texte: "Réalise profondément que le moment présent est tout ce que tu as. Fais du Maintenant le point central de ta vie.", auteur: "Eckhart Tolle" },
+  { texte: "Ce à quoi tu résistes persiste.", auteur: "Eckhart Tolle" },
+
+  // ── Musashi (ajouts) ──────────────────────────────────────────
+  { texte: "Il n'y a rien en dehors de toi qui puisse jamais te permettre de devenir meilleur, plus fort, plus riche, plus rapide ou plus intelligent. Tout est en toi.", auteur: "Miyamoto Musashi" },
+  { texte: "Accepte tout tel que c'est. Ne cherche rien d'autre.", auteur: "Miyamoto Musashi" },
+
+  // ── Saint-Exupéry (ajout) ─────────────────────────────────────
+  { texte: "L'homme se découvre quand il se mesure avec l'obstacle.", auteur: "Antoine de Saint-Exupéry" },
+
+  // ── Camus (ajout) ─────────────────────────────────────────────
+  { texte: "Je tire de l'absurde trois conséquences : ma révolte, ma liberté et ma passion.", auteur: "Albert Camus" },
+
+  // ── Dostoïevski (ajout) ───────────────────────────────────────
+  { texte: "La beauté sauvera le monde.", auteur: "Fiodor Dostoïevski" },
+
+  // ── Hugo (ajout) ──────────────────────────────────────────────
+  { texte: "Ceux qui vivent sont ceux qui luttent.", auteur: "Victor Hugo" },
+
+  // ── Kahlo (ajout) ─────────────────────────────────────────────
+  { texte: "Je suis ma propre muse. Je suis le sujet que je connais le mieux.", auteur: "Frida Kahlo" },
+
+  // ── Garvey (ajout) ────────────────────────────────────────────
+  { texte: "Avec la confiance, tu as gagné avant de commencer.", auteur: "Marcus Garvey" },
+
+  // ── Confucius (ajout) ─────────────────────────────────────────
+  { texte: "Il n'importe pas d'aller lentement, pourvu que l'on ne s'arrête pas.", auteur: "Confucius" },
 ];
 
 /**

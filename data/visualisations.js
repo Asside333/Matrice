@@ -14,6 +14,8 @@ const VISUALISATIONS = {
     "Rappelle-toi la dernière fois où tu as fait quelque chose qui te faisait peur — et où tu t'en es sorti. Pas forcément bien — sorti. Cette expérience a déposé quelque chose dans ton corps. Une mémoire musculaire de survivance. Elle est encore là. Elle dit : tu as fait ça avant. Tu peux recommencer.",
     "Tu es debout dans une salle vide. Les murs sont couverts de tous les mots qu'on t'a jetés — 'pas assez', 'trop', 'jamais'. Tu lèves la main et, un par un, les mots tombent en poussière. Derrière, la lumière dorée de ta propre vérité apparaît.",
     "Imagine une armure invisible qui t'enveloppe. Pas rigide — souple, vivante. Elle filtre ce qui entre. Les critiques glissent, les encouragements passent. Tu es protégé par ta propre certitude.",
+    "Tu es dans un atelier souterrain, taillé dans la pierre. Au centre, une enclume. Tu y déposes le doute, le regard des autres, la peur de ne pas être à la hauteur. Tu frappes une fois. L'acier sonne clair. Ce son est ta voix — nette, décidée, inaltérable. À chaque frappe, la confiance prend forme. Tu forges ton propre bouclier.",
+    "Tu marches pieds nus sur un sentier de montagne à l'aube. L'air est frais, presque froid, mais chaque pas réchauffe la terre sous tes pieds. Tu sens la rosée, l'odeur de la roche humide. Au sommet, tu découvres que le brouillard est en dessous de toi. Tu es au-dessus des nuages. La clarté ici est absolue. Tu sais exactement qui tu es.",
   ],
 
   Abondance: [
@@ -24,6 +26,8 @@ const VISUALISATIONS = {
     "Vois-toi ouvrir les mains, paumes vers le haut. L'abondance tombe naturellement dans des mains ouvertes — pas dans des poings serrés. Aujourd'hui tu travailles, tu agis, tu contribues. Et tu fais confiance que ce que tu mérites trouve son chemin jusqu'à toi. Relâche le contrôle. Ouvre les mains.",
     "Visualise un arbre dont les racines plongent dans la terre et dont les branches touchent les nuages. Cet arbre, c'est toi. Chaque fruit qu'il porte est un projet, une relation, une idée. Les fruits mûrissent à leur rythme. Tu n'as pas besoin de les forcer.",
     "Tu marches dans un marché vibrant. Chaque étal déborde de possibilités. Tu n'as pas besoin de tout prendre — juste de savoir que tout est disponible. L'abondance n'est pas dans l'accumulation. Elle est dans la certitude qu'il y en a assez.",
+    "Tu te trouves dans une clairière baignée de lumière dorée. Au centre, un puits ancien. Tu regardes dedans : au fond, pas de l'eau noire — de la lumière liquide. Tu plonges les mains dedans. Ce que tu remontes brille entre tes doigts. C'est tout ce que tu as semé sans le savoir — les gestes justes, les heures données, les silences qui ont porté. La récolte monte.",
+    "Imagine un studio de musique dont chaque mur est fait de fréquences dorées. Les enceintes pulsent au rythme de ton coeur. Chaque beat que tu poses génère une onde qui se propage vers l'extérieur — la ville, le pays, le monde. Ton art est une monnaie qui circule sans perdre de valeur. Plus tu produis, plus l'univers te renvoie.",
   ],
 
   Connexion: [
@@ -35,6 +39,8 @@ const VISUALISATIONS = {
     "Vois-toi tendre la main à quelqu'un qui lutte en silence. Tu ne cherches pas à réparer. Tu dis simplement : je te vois. Ce geste minuscule — reconnaître la présence de l'autre — est l'acte le plus puissant de connexion humaine.",
     "Imagine un pont de lumière entre ton cœur et celui de quelqu'un que tu aimes. Ce pont n'a pas besoin de mots, pas besoin de distance. Il existe en ce moment. Il vibre de tout ce que vous partagez sans le dire.",
     "Tu es assis devant un feu de camp avec des étrangers. Les flammes éclairent les visages. Quelqu'un commence à parler de sa peur. Puis un autre. Puis toi. Dans ce cercle, personne ne juge. Tout le monde comprend. La connexion naît dans la vulnérabilité partagée.",
+    "Tu es dans la cuisine d'un appartement simple. Quelqu'un que tu aimes coupe des légumes en silence. La radio murmure une chanson que vous connaissez tous les deux. Personne ne parle. Vos corps bougent dans le même espace avec une fluidité naturelle. Ce moment banal contient plus d'amour que mille déclarations.",
+    "Tu es assis sur un toit la nuit, les jambes dans le vide. À côté de toi, quelqu'un que tu ne verras peut-être plus jamais. Vous regardez les lumières de la ville. L'un de vous dit quelque chose de vrai — une phrase qui ne sera jamais répétée. Ce moment ne durera pas. C'est exactement ce qui le rend sacré.",
   ],
 
   Créativité: [
@@ -45,6 +51,8 @@ const VISUALISATIONS = {
     "Imagine que ton travail créatif parle à quelqu'un que tu ne rencontreras jamais. Il le lit, l'entend ou le voit — et quelque chose en lui se déplace. Tu ne créeras peut-être jamais pour les masses. Mais ton œuvre peut changer une vie. Une seule. Est-ce que c'est suffisant ? Pour toi, la réponse est oui.",
     "Vois tes mains en train de façonner quelque chose — peu importe quoi. De l'argile, des mots, du code, de la musique. Tes mains savent. Elles ont une intelligence que ta tête ignore. Laisse-les guider.",
     "Tu entres dans un atelier silencieux. Tous tes outils sont là, rangés, prêts. Le temps n'existe pas dans cet espace. Il n'y a que toi et l'acte de créer. Commence par n'importe quoi. Le reste suivra.",
+    "Tu es devant ta DAW, casque sur les oreilles. Le monde extérieur n'existe plus. Un kick pulse dans ton sternum. Un sub gronde sous tes pieds. Les breaks se construisent seuls, comme si la musique savait déjà où aller. Tu ne composes pas — tu canalises. Quand tu relèves la tête, trois heures ont passé en ce qui semblait être dix minutes.",
+    "Tu es dans une bibliothèque circulaire, infinie. Chaque livre contient une idée que tu n'as pas encore eue. Tu en ouvres un au hasard : la première page est blanche. Puis les mots apparaissent sous tes yeux — c'est ton écriture. Tu es à la fois le lecteur et l'auteur. Tout ce que tu cherches est déjà en toi, attendant d'être formulé.",
   ],
 
   Paix: [
@@ -55,6 +63,8 @@ const VISUALISATIONS = {
     "Imagine que le conflit intérieur qui t'agite en ce moment se dépose comme de la poussière dans un verre d'eau qu'on laisse reposer. Tu ne forces rien. Tu attends. Les particules descendent. L'eau s'éclaircit. La solution ou l'acceptation viendra d'elle-même — pas en cherchant plus fort, mais en cherchant moins.",
     "Tu es allongé dans une prairie. L'herbe est tiède. Le ciel est immense. Tu n'as rien à être, rien à prouver, nulle part où aller. Ce moment de rien est le moment le plus plein de ta journée.",
     "Imagine que chaque expiration emporte un peu du bruit intérieur. Pas de force. Juste le souffle qui fait le ménage. Après quelques respirations, le silence n'est plus vide — il est spacieux.",
+    "Tu es au fond de l'océan. Pas de peur — une paix totale. La lumière du soleil descend en rayons obliques, silencieux, mouvants. Les bruits du monde sont devenus un bourdonnement lointain, presque doux. Tu flottes entre deux eaux, ni tombant ni montant. Le temps ici n'a aucune prise. Tu sens ton corps se relâcher fibre par fibre.",
+    "Tu es dans un jardin japonais au crépuscule. L'eau d'un bassin reflète les dernières lueurs. Un poisson rouge passe sous la surface sans bruit. Le gravier est ratissé en cercles parfaits. Tu t'assieds sur une pierre tiède et tu ne penses à rien. Pas par effort — par débordement de calme. Le monde s'organise tout seul quand tu cesses de le forcer.",
   ],
 
   Puissance: [
@@ -65,6 +75,8 @@ const VISUALISATIONS = {
     "Vois-toi dans un an. Tu as maintenu le cap. Tu as fait ce que tu avais dit que tu ferais. Pas parfaitement — mais tu as continué. Les gens qui doutaient ont eu tort. Et ceux qui croyaient en toi avaient raison depuis le début. Cette personne existe. Elle est l'extension naturelle de qui tu es ce matin.",
     "Imagine un volcan en toi — pas destructeur, mais créateur. La lave coule lentement, façonne de nouvelles terres. Ta puissance n'a pas besoin d'exploser. Elle a besoin de couler, de construire, de transformer.",
     "Tu te tiens au sommet d'une montagne que tu as gravie seul. Le vent souffle. Tu ne cries pas victoire — tu observes. La vue depuis le sommet ne montre pas seulement où tu es. Elle montre tout le chemin parcouru.",
+    "Tu es dans une arène vide. Pas de public, pas de juges. Juste toi et le silence. Tu sens chaque muscle de ton corps prêt. Tes pieds grippent le sol. Tes bras sont détendus. Tu n'as pas d'adversaire parce que tu as déjà gagné le seul combat qui compte — celui contre l'envie d'abandonner. L'arène est vide parce que tu n'as besoin de personne pour te valider.",
+    "Imagine que tu te tiens devant un mur immense, couvert de toutes les raisons pour lesquelles tu ne devrais pas y arriver. Tu lis chaque ligne. Puis tu poses ta main à plat sur le mur. Il est chaud. Il vibre. Et sous ta paume, une fissure apparaît. Pas la violence — la pression constante. Le mur cède parce que tu refuses de reculer.",
   ],
 };
 

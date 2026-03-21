@@ -18,6 +18,9 @@ const MoonSystem = (() => {
         "Nouvelle lune : le champ est vierge. Qu'est-ce que tu veux magnétiser ?",
         "Dans l'obscurité totale, les étoiles parlent plus fort.",
         "Ce soir, rien ne doit être prouvé. Sois seulement.",
+        "Le noir de la nouvelle lune est le noir de la terre avant la graine. Quelque chose pousse déjà que tu ne vois pas.",
+        "Cette nuit sans lune est un studio d'enregistrement — le silence parfait avant le premier beat.",
+        "L'absence de lumière n'est pas l'absence de vie. C'est la vie qui se concentre avant d'exploser.",
       ],
     },
     {
@@ -29,6 +32,9 @@ const MoonSystem = (() => {
         "Commence. Même petit. Le mouvement appelle le mouvement.",
         "Le feu est encore bas — souffle doucement dessus.",
         "Ce que tu inities maintenant porte la trace de la lune naissante.",
+        "Le croissant est une lame. Il coupe le superflu pour ne garder que l'intention. Que gardes-tu ?",
+        "Un archer ne bande pas son arc à moitié. Le premier croissant est ta flèche qui se prépare.",
+        "Cette lumière est si fine qu'elle pourrait passer inaperçue. Comme les premiers signes d'un changement profond.",
       ],
     },
     {
@@ -40,6 +46,9 @@ const MoonSystem = (() => {
         "L'obstacle n'est pas un signe d'arrêt. C'est un test de cohérence.",
         "Premier quartier : décide et avance. La clarté viendra après.",
         "Tu n'as pas besoin de voir tout le chemin, juste le prochain pas.",
+        "La moitié est éclairée, l'autre dans l'ombre. Comme toi. Et c'est exactement ce qui fait ta force.",
+        "Le premier quartier est un ring. L'obstacle est là — et toi aussi. Qui recule en premier ?",
+        "Ce qui résiste ce soir n'est pas un mur. C'est un test. La lune te demande si tu es sérieux.",
       ],
     },
     {
@@ -51,6 +60,9 @@ const MoonSystem = (() => {
         "Gibbeuse croissante : perfectionne sans te perdre dans le détail.",
         "L'énergie monte — utilise-la pour cibler, pas pour disperser.",
         "Ce que tu construis prend corps. Reste concentré.",
+        "La gibbeuse croissante est l'artisan qui ponce avant la finition. Le gros oeuvre est fait — maintenant, les détails.",
+        "Tu sens que c'est proche. Ne gâche pas ce moment en accélérant. Le dernier kilomètre se court au même rythme.",
+        "La lumière est presque complète. Ce qui manque encore n'est pas un défaut — c'est de l'espace pour la surprise.",
       ],
     },
     {
@@ -62,6 +74,9 @@ const MoonSystem = (() => {
         "La lumière totale révèle ce qui était caché. Regarde.",
         "Pleine lune : culminer, pas forcer. Être dans le flot, pas contre.",
         "Ce soir, la gratitude est une force, pas une politesse.",
+        "La pleine lune ne ment pas. Ce que tu vois ce soir — en toi, chez les autres — est la vérité nue. Accepte-la.",
+        "Ce soir, l'eau monte. Les émotions sont au plus haut. Ne les combats pas — surfe dessus.",
+        "La pleine lune est un projecteur braqué sur ta vie. Ce qui brille mérite ta fierté. Ce qui fait mal mérite ta compassion.",
       ],
     },
     {
@@ -73,6 +88,9 @@ const MoonSystem = (() => {
         "La descente est aussi un mouvement. Laisse partir.",
         "Qu'est-ce que ce cycle t'a appris ? Note-le avant d'oublier.",
         "Moins d'action, plus de digestion. Le vide qui vient est fertile.",
+        "La gibbeuse décroissante est le moment de récolter les leçons avant qu'elles ne se perdent. Écris-les.",
+        "Ce que tu as vécu ce cycle est déjà en train de devenir sagesse. Tu ne le sens pas encore — mais ton corps, lui, l'intègre.",
+        "Le fruit est mûr. Il tombe de lui-même. Tu n'as rien à forcer ce soir.",
       ],
     },
     {
@@ -84,6 +102,9 @@ const MoonSystem = (() => {
         "Ce qui doit partir, laisse-le partir sans cérémonie.",
         "Mi-chemin vers le vide — c'est là que le courage est réel.",
         "Terre : ancre-toi avant la prochaine naissance.",
+        "Le dernier quartier est un tri sacré. Ce que tu gardes dans la valise pour le prochain cycle — choisis bien.",
+        "Défais les noeuds ce soir. Pas avec violence — avec patience. Les noeuds se défont par la douceur.",
+        "Ce qui encombre ta vie a une date de péremption. Ce soir, vérifie les étiquettes.",
       ],
     },
     {
@@ -95,6 +116,9 @@ const MoonSystem = (() => {
         "Ce qui reste est ce qui compte vraiment.",
         "Laisse le cycle se terminer pleinement avant d'en commencer un autre.",
         "L'obscurité qui vient n'est pas une absence — c'est une gestation.",
+        "Le dernier croissant est un murmure. Approche ton oreille. La lune te dit quelque chose que tu es le seul à pouvoir entendre.",
+        "Presque rien. Presque invisible. Comme les choses les plus importantes de ta vie — celles que personne ne voit mais qui te portent.",
+        "Cette fine lame de lumière est une signature. Le cycle signe son oeuvre. Toi aussi.",
       ],
     },
   ];
@@ -126,8 +150,9 @@ const MoonSystem = (() => {
     const storageKey = 'matrice_moon_insight_' + phase.key;
     let used = [];
     try { used = JSON.parse(localStorage.getItem(storageKey) || '[]'); } catch {}
-    let pool = [0, 1, 2, 3, 4].filter(i => !used.includes(i));
-    if (pool.length === 0) { used = []; pool = [0, 1, 2, 3, 4]; }
+    const total = phase.insights.length;
+    let pool = Array.from({length: total}, (_, i) => i).filter(i => !used.includes(i));
+    if (pool.length === 0) { used = []; pool = Array.from({length: total}, (_, i) => i); }
     const pick = pool[Math.floor(Math.random() * pool.length)];
     used.push(pick);
     try { localStorage.setItem(storageKey, JSON.stringify(used)); } catch {}

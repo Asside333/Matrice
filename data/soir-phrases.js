@@ -34,4 +34,13 @@ const SOIR_PHRASES = [
   "Le meilleur geste que tu puisses faire maintenant, c'est de te reposer.",
   "Toutes les choses que tu n'as pas dites aujourd'hui peuvent attendre.",
   "Bonne nuit. Tu as été là. C'est tout ce qui comptait.",
+  "Ce soir, tu n'as rien à porter. Dépose le sac. Le sol est solide.",
+  "La gratitude ne demande pas de raison spectaculaire. Être là suffit.",
+  "Ton corps a travaillé aujourd'hui — même quand ta tête l'a oublié. Remercie-le.",
+  "Ce soir, le silence n'est pas vide. Il est plein de tout ce que tu as vécu.",
+  "Le repos est un acte de création. Ce que tu rêves cette nuit prépare demain.",
+  "Tu n'as pas besoin d'avoir été parfait. Tu as besoin d'avoir été présent.",
+  "Ce qui est semé dans la fatigue germe dans le sommeil. Dors en confiance.",
+  "Chaque nuit est une petite mort douce. Chaque matin, une résurrection. Ce cycle est sacré.",
+  "Le monde continuera sans toi cette nuit. Et c'est exactement comme ça que ça doit être.",
 ];

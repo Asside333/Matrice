@@ -52,6 +52,16 @@ const SORTS = {
       texte: "Le forgeron ne craint pas le métal brûlant. Il sait que ce qui résiste au marteau prend la meilleure forme. Ce qui te résiste aujourd'hui te forge.",
       geste: "Frappe doucement un poing dans l'autre paume, trois fois. Chaque frappe est une décision. La dernière est un engagement.",
     },
+    {
+      titre: "Le Cri Silencieux",
+      texte: "Il y a des choses que tu portes sans les dire. Aujourd'hui, donne-leur une voix — pas un cri de douleur, mais un cri de naissance. Ce qui sort de ta gorge est plus vieux que toi.",
+      geste: "Prononce à voix haute un son grave, long, depuis le ventre — un 'OM' ou simplement un 'AAAH'. Tiens 10 secondes. Sens la vibration dans ta poitrine et ton crâne.",
+    },
+    {
+      titre: "Le Regard qui Brûle",
+      texte: "Le feu le plus intense n'est pas dans les flammes visibles — il est dans le regard de celui qui sait ce qu'il veut. Aujourd'hui, regarde chaque situation avec cette intensité calme.",
+      geste: "Fixe un point devant toi sans ciller pendant 20 secondes. Pas d'agressivité — de la concentration pure. Sens ton regard devenir un laser. Emporte cette précision dans ta journée.",
+    },
   ],
 
   terre: [
@@ -99,6 +109,16 @@ const SORTS = {
       titre: "Sel de la Terre",
       texte: "Le sel préserve, purifie, donne saveur. Tu es le sel de ton environnement — ta présence change la composition de chaque pièce où tu entres.",
       geste: "Frotte tes paumes ensemble puis passe-les sur tes bras, de l'épaule au poignet. Tu te nettoies. Tu te prépares.",
+    },
+    {
+      titre: "Contact Originel",
+      texte: "Tes ancêtres marchaient pieds nus. La terre sous eux n'était pas un sol — c'était un dialogue. Aujourd'hui, rétablis ce contact. Le béton a coupé la ligne. Tu la reconnectes.",
+      geste: "Retire tes chaussures. Pose tes pieds nus sur le sol — même à l'intérieur. Sens la température, la texture. Reste 60 secondes en pleine conscience de ce contact. La terre te parle à travers tes pieds.",
+    },
+    {
+      titre: "Les Mains qui Savent",
+      texte: "Tes mains construisent des choses depuis des années. Elles tirent des câbles, elles tournent des potentiomètres, elles tiennent ceux que tu aimes. Elles savent avant ta tête. Aujourd'hui, fais-leur confiance.",
+      geste: "Penche-toi et pose tes deux paumes à plat sur le sol ou sur une surface en bois. Sens la matière. Presse doucement. Tes mains se rechargent au contact de la terre. Reste 30 secondes.",
     },
   ],
 
@@ -148,6 +168,16 @@ const SORTS = {
       texte: "L'aigle vole si haut qu'il voit le paysage entier. Aujourd'hui, prends de la hauteur. Ce qui semble un obstacle vu de près est un détail vu d'en haut.",
       geste: "Lève les yeux vers le point le plus haut que tu peux voir. Reste 10 secondes. Ton champ de vision s'élargit. Ta perspective aussi.",
     },
+    {
+      titre: "Le Souffle sur les Paumes",
+      texte: "L'air que tu expires porte ton énergie, tes intentions, ta chaleur intérieure. Ce n'est pas du vent — c'est du toi rendu visible. Aujourd'hui, charge tes mains de cette énergie avant chaque action importante.",
+      geste: "Rapproche tes paumes à 5 cm l'une de l'autre. Souffle doucement entre elles, un souffle long et chaud. Sens la chaleur humide. Frotte tes paumes ensemble. L'air que tu viens de charger est dans tes mains.",
+    },
+    {
+      titre: "L'Ouverture Totale",
+      texte: "Le vent ne peut entrer que dans un espace ouvert. Aujourd'hui, ouvre-toi — aux idées inattendues, aux rencontres imprévues, aux chemins que tu n'avais pas envisagés. La rigidité est l'ennemi. La souplesse est l'air.",
+      geste: "Debout, ouvre les bras grand, paumes vers le ciel, tête légèrement relevée. Inspire profondément par le nez en élargissant la poitrine au maximum. Tiens 5 secondes. Expire en ramenant les bras lentement. Répète 3 fois.",
+    },
   ],
 
   eau: [
@@ -196,6 +226,16 @@ const SORTS = {
       texte: "Sous la surface de ta journée ordinaire coule un courant plus profond. L'intuition, le pressentiment, la sagesse du corps. Aujourd'hui, écoute ce courant.",
       geste: "Pose ta main sur ton ventre. Ferme les yeux. Demande : 'Qu'est-ce que mon corps sait que ma tête ignore ?' Attends la réponse.",
     },
+    {
+      titre: "Les Larmes du Guerrier",
+      texte: "Les larmes ne sont pas une faiblesse. Elles sont de l'eau sacrée — elles nettoient ce que les mots ne peuvent pas atteindre. Le guerrier qui pleure est plus fort que celui qui retient, parce qu'il a le courage de se vider pour se remplir à nouveau.",
+      geste: "Ferme les yeux. Si l'émotion monte, laisse-la venir. Si tes yeux s'humidifient, ne les essuie pas. Si rien ne vient, pose simplement les doigts sous tes yeux et imagine l'eau couler. Reste 30 secondes dans cette permission.",
+    },
+    {
+      titre: "Le Baptême du Matin",
+      texte: "L'eau sur le visage est le rituel le plus ancien du monde. Chaque civilisation a compris que l'eau purifie, réinitialise, remet les compteurs à zéro. Ce matin, tu te baptises toi-même.",
+      geste: "Va au robinet. Prends de l'eau fraîche dans tes mains en coupe. Passe-la sur ton visage lentement, du front au menton. Sens chaque goutte. Tu viens de renaître à cette journée.",
+    },
   ],
 
   ether: [
@@ -243,6 +283,16 @@ const SORTS = {
       titre: "L'Infini dans l'Instant",
       texte: "Ce moment précis — maintenant — contient tout ce dont tu as besoin. Le passé est un souvenir, le futur une projection. Le seul point de pouvoir est ici, maintenant, dans ce souffle.",
       geste: "Arrête tout pendant 5 secondes. Ne bouge pas. Ne pense pas. Juste... être. Ces 5 secondes sont l'éternité compressée.",
+    },
+    {
+      titre: "L'Immobilité Absolue",
+      texte: "Avant le Big Bang, il y avait l'immobilité parfaite. Toute création naît du point zéro. Aujourd'hui, avant de créer, avant d'agir, avant de parler — trouve ce point zéro en toi. L'immobilité n'est pas l'absence d'énergie. C'est l'énergie compressée à l'infini.",
+      geste: "Assieds-toi ou tiens-toi debout. Ne bouge absolument rien — pas les doigts, pas les yeux, pas la mâchoire. Respire le plus lentement possible. Reste dans cette immobilité totale pendant 2 minutes. Tu es le centre immobile autour duquel le monde tourne.",
+    },
+    {
+      titre: "L'Écoute Pure",
+      texte: "Il existe un son sous tous les sons — le bourdonnement de l'existence elle-même. Les mystiques l'appellent le Nada, le Son Primordial. Tu n'as pas besoin de le croire. Tu as besoin de l'écouter.",
+      geste: "Bouche tes oreilles avec tes paumes, coudes relevés. Écoute le son intérieur — le sang, le souffle, le silence vivant. Reste 60 secondes. Ce que tu entends est toi, réduit à l'essentiel. Enlève les mains. Le monde extérieur revient, mais tu as touché le fond.",
     },
   ],
 };

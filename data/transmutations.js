@@ -17,6 +17,9 @@ const TRANSMUTATIONS = {
     "Certains matins, le simple fait de s'habiller et de partir est un acte de courage. C'est en être un aujourd'hui. Et c'est suffisant.",
     "Ce que tu construis au travail n'est pas juste un salaire. C'est une preuve vivante de ta capacité à créer dans l'adversité.",
     "Tu n'es pas prisonnier de cet environnement. Tu es un visiteur conscient qui en extrait ce dont il a besoin pour la suite.",
+    "La fatigue physique du chantier est honnête. Elle dit que tu as donné quelque chose de réel aujourd'hui. Ton corps est fatigué parce qu'il a servi. C'est noble.",
+    "La fierté des mains qui travaillent ne se discute pas. Ce que tu construis avec tes mains existe dans le monde réel — pas dans une abstraction. Chaque câble tiré, chaque tableau posé est une signature.",
+    "Les gens difficiles sont des meules à aiguiser. Ils ne savent pas qu'ils t'entraînent, mais c'est exactement ce qu'ils font. Chaque interaction tendue te rend plus précis dans tes limites.",
   ],
 
   corps: [
@@ -27,6 +30,9 @@ const TRANSMUTATIONS = {
     "Le corps qui te porte ce matin est le même qui escalade, qui crée, qui tient debout. Il mérite ton respect.",
     "Chaque inspiration est la preuve que ton corps te choisit. Chaque jour. Malgré tout.",
     "Ton corps porte la mémoire de tout ce que tu as surmonté. Chaque muscle, chaque souffle est un testament de résilience.",
+    "L'acceptation du corps n'est pas un événement. C'est un chemin. Ce matin tu fais un pas de plus dessus. Tu n'as pas besoin d'arriver — tu as besoin de marcher.",
+    "Chaque mouvement que tu fais est une reconquête. Monter un escalier, porter un sac, respirer profondément. Ton corps te répond quand tu lui parles avec respect.",
+    "Le sport n'est pas une punition pour ton corps. C'est une conversation avec lui. Aujourd'hui, demande-lui ce qu'il veut bouger, et écoute.",
   ],
 
   deuil: [
@@ -37,6 +43,9 @@ const TRANSMUTATIONS = {
     "Tu as bâti la vie qu'elle aurait voulu vivre. C'est la preuve : tu mérites d'être ici.",
     "La douleur de la perte prouve la profondeur du lien. Ce lien ne s'est pas brisé — il a changé de forme.",
     "Ceux qui sont partis ne demandent pas ta tristesse. Ils demandent ta lumière. Brille pour eux.",
+    "La mémoire d'Émilie ne se fige pas dans la douleur. Elle se transforme en élan. Chaque chose belle que tu vis porte sa trace — pas comme un poids, comme un souffle.",
+    "Tu as le droit de rire. Tu as le droit de jouir de cette vie. Ce n'est pas un manque de respect envers ceux qui sont partis — c'est la preuve que leur amour a porté des fruits.",
+    "Vivre pleinement est le plus grand hommage. Pas la douleur constante — la vie vécue avec l'intensité qu'ils méritaient.",
   ],
 
   mental: [
@@ -48,6 +57,9 @@ const TRANSMUTATIONS = {
     "Le mental qui s'emballe cherche à te protéger. Remercie-le. Puis reprends le volant.",
     "Les pensées ne sont pas des faits. Elles sont des nuages. Tu es le ciel.",
     "Le doute est un gardien dépassé. Tu n'as plus besoin de sa protection.",
+    "L'insomnie est le mental qui refuse de lâcher le volant. Tu n'as pas à piloter dans le noir. Pose le volant. Laisse le corps reprendre les commandes.",
+    "La comparaison est un poison lent. Tu ne connais pas le chemin de l'autre — seulement le highlight reel. Ton chemin est incomparable parce qu'il n'existe qu'une fois.",
+    "Le syndrome de l'imposteur est la preuve que tu joues dans une ligue supérieure. Ceux qui ne progressent pas ne ressentent jamais ça. Ce malaise est un bon signe.",
   ],
 
   general: [
@@ -68,6 +80,9 @@ const TRANSMUTATIONS = {
     "Ce poids n'est pas une faiblesse. C'est la gravité qui accompagne ceux qui portent quelque chose de vrai.",
     "Tu n'as pas besoin d'être réparé. Tu es en train de te révéler.",
     "Le chaos que tu ressens est la matière première de ta prochaine transformation.",
+    "L'ennui n'est pas le vide. C'est le silence avant que quelque chose de neuf ne germe. Ne le remplis pas trop vite — il travaille pour toi.",
+    "L'attente est une forme de force que personne ne reconnaît. Tu ne stagnes pas en attendant. Tu mûris. Le fruit tombe quand il est prêt, pas quand on tire dessus.",
+    "Le sentiment d'être en retard est un mensonge. Tu es exactement dans ton timing. Ce que tu vois chez les autres est leur surface, pas leur horloge interne.",
   ],
 };
 
@@ -78,7 +93,7 @@ const POOL_KEYWORDS = {
   pro:    ['travail', 'boulot', 'collègue', 'patron', 'mission', 'intérim', 'chantier', 'client', 'entreprise', 'bureau', 'job', 'chef'],
   corps:  ['corps', 'honte', 'souffle', 'odeur', 'peau', 'poids', 'sueur', 'laid', 'gros', 'moche', 'ventre', 'physique', 'douleur'],
   deuil:  ['émilie', 'sœur', 'mort', 'deuil', 'perte', 'partie', 'absente', 'disparue', 'manque', 'perdu', 'décès', 'absence'],
-  mental: ['peur', 'angoisse', 'tribunal', 'voix', 'boucle', 'pensée', 'fou', 'spirale', 'tête', 'cerveau', 'mental', 'anxiété', 'doute', 'rumination'],
+  mental: ['peur', 'angoisse', 'tribunal', 'voix', 'boucle', 'pensée', 'fou', 'spirale', 'tête', 'cerveau', 'mental', 'anxiété', 'doute', 'rumination', 'insomnie', 'dormir', 'sommeil', 'comparaison', 'imposteur', 'jaloux'],
 };
 
 /**
