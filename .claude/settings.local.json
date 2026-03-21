@@ -11,7 +11,12 @@
       "Bash(\"/d/matrice/Matrice/style.css\":*)",
       "Bash(winget upgrade:*)",
       "Skill(update-config)",
-      "Bash(where.exe node:*)"
+      "Bash(where.exe node:*)",
+      "Bash(while read:*)",
+      "Bash(do grep:*)",
+      "Bash(sed -n \"$linep\")",
+      "Bash(done)",
+      "Bash(wc -c data/*.js style.css app.js)"
     ]
   }
 }

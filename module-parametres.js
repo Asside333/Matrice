@@ -37,7 +37,7 @@ const ModuleParametres = (() => {
   }
 
   function saveNotifSettings(s) {
-    localStorage.setItem(NOTIF_KEY, JSON.stringify(s));
+    try { localStorage.setItem(NOTIF_KEY, JSON.stringify(s)); } catch {}
   }
 
   function scheduleNotifications(s) {
@@ -199,7 +199,7 @@ const ModuleParametres = (() => {
     container.querySelectorAll('.pm-theme-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         const choice = btn.dataset.theme;
-        localStorage.setItem('matrice_theme', choice);
+        try { localStorage.setItem('matrice_theme', choice); } catch {}
         if (typeof applyTheme === 'function') applyTheme();
         renderThemeSection();
       });
@@ -222,8 +222,10 @@ const ModuleParametres = (() => {
 
     document.getElementById('pm-reset-yes')?.addEventListener('click', () => {
       // Réinitialiser le calendrier ET l'ancien streak
-      localStorage.removeItem('matrice_calendar');
-      localStorage.setItem('matrice_streak', JSON.stringify({ count: 0, lastDate: null }));
+      try {
+        localStorage.removeItem('matrice_calendar');
+        localStorage.setItem('matrice_streak', JSON.stringify({ count: 0, lastDate: null }));
+      } catch {}
       // Rebuild spiral sur l'accueil
       if (typeof buildAccueilSpiral === 'function') buildAccueilSpiral();
       // Reset confirm UI

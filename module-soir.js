@@ -12,6 +12,7 @@ const ModuleSoir = (() => {
 
   // ── État ──────────────────────────────────────────────────────
   let format = 'rapide'; // 'rapide' | 'complet'
+  let _twTimers = []; // typewriter timers to cleanup
 
   // ── Sélection de phrase sans répétition ──────────────────────
   function pickPhrase() {
@@ -134,6 +135,7 @@ const ModuleSoir = (() => {
         clearInterval(interval);
       }
     }, 45);
+    _twTimers.push(interval);
   }
 
   function hideSealedZone() {
@@ -294,18 +296,19 @@ const ModuleSoir = (() => {
   function typewritePrompt() {
     const el = document.getElementById('sv-prompt-rapide');
     if (!el) return;
-    const text = el.textContent;
+    const fullText = 'Qu\u2019est-ce que tu retiens de cette journ\u00E9e ?';
     el.textContent = '';
     el.style.visibility = 'visible';
     let i = 0;
     const interval = setInterval(() => {
-      if (i < text.length) {
-        el.textContent += text[i];
+      if (i < fullText.length) {
+        el.textContent += fullText[i];
         i++;
       } else {
         clearInterval(interval);
       }
     }, 40);
+    _twTimers.push(interval);
   }
 
   function onEnter() {
@@ -332,6 +335,8 @@ const ModuleSoir = (() => {
 
   function onLeave() {
     closeHistory();
+    _twTimers.forEach(t => clearInterval(t));
+    _twTimers = [];
   }
 
   bindEvents();

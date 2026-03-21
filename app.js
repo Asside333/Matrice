@@ -146,11 +146,13 @@ function updateThemeToggleBtn() {
 // ════════════════════════════════════════════════════════════════
 
 let currentScreen = 'accueil';
+let _navTransitioning = false;
 
 const RITUAL_SCREENS = new Set(['rituel', 'rituel-session', 'm2', 'm3', 'm4', 'm5', 'm6', 'cloture']);
 
 function navigateTo(screenId) {
-  if (screenId === currentScreen) return;
+  if (screenId === currentScreen || _navTransitioning) return;
+  _navTransitioning = true;
 
   const prev = document.getElementById(`screen-${currentScreen}`);
   const next = document.getElementById(`screen-${screenId}`);
@@ -178,6 +180,7 @@ function navigateTo(screenId) {
     if (prev) prev.classList.remove('screen--leaving');
     next.classList.add('active');
     currentScreen = screenId;
+    _navTransitioning = false;
     updateNavState(screenId);
     updateSOSVisibility(screenId);
     updateNavVisibility(screenId);
@@ -623,13 +626,15 @@ function bindEvents() {
 
   // Lune accueil → check-in humeur (navigation directe)
   document.getElementById('moon-block')
-    ?.addEventListener('click', () => navigateTo('humeur'));
+    ?.addEventListener('click', () => {
+      if (typeof MoonOverlay !== 'undefined') MoonOverlay.show();
+    });
 
   // Toggle thème rapide sur l'accueil (soleil/lune)
   document.getElementById('btn-theme-toggle')
     ?.addEventListener('click', () => {
       const isLight = document.body.classList.contains('light-mode');
-      localStorage.setItem('matrice_theme', isLight ? 'dark' : 'light');
+      try { localStorage.setItem('matrice_theme', isLight ? 'dark' : 'light'); } catch {}
       applyTheme();
     });
 
@@ -708,7 +713,24 @@ function init() {
   MatriceStorage.archiveSeasonIfNeeded();
 
   // 4. Hook accueil — rebuild spiral quand on revient à l'accueil
-  screenHooks.accueil = { onEnter: loadStreak };
+  screenHooks.accueil = {
+    onEnter: () => {
+      loadStreak();
+      if (!metatronParticleTimer) {
+        const svg = document.getElementById('metatron-svg');
+        if (svg) {
+          const pts = computeMetatronPoints();
+          startMetatronParticles(svg, pts);
+        }
+      }
+    },
+    onLeave: () => {
+      if (metatronParticleTimer) {
+        clearInterval(metatronParticleTimer);
+        metatronParticleTimer = null;
+      }
+    }
+  };
 
   // 5. Données persistées
   loadStreak();
@@ -1018,7 +1040,7 @@ const Module1 = (() => {
   // ── Toast casque ───────────────────────────────────────────────
   function showToastCasque() {
     if (localStorage.getItem('matrice_casque_shown')) return;
-    localStorage.setItem('matrice_casque_shown', '1');
+    try { localStorage.setItem('matrice_casque_shown', '1'); } catch {}
     const t = document.getElementById('m1-toast');
     if (!t) return;
     t.classList.add('visible');
@@ -1283,6 +1305,7 @@ const Module1 = (() => {
 
   // ── Démarrer la session (depuis config) ───────────────────────
   function startSession() {
+    if (running) return;
     pattern      = cfgPattern;
     totalSecs    = cfgSecs;
     running      = true;

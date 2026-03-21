@@ -10,6 +10,18 @@
   padding: 0;
 }
 
+/* ── Focus visible — accessibilité clavier ──────────────────── */
+button:focus-visible,
+[role="button"]:focus-visible,
+[tabindex="0"]:focus-visible,
+a:focus-visible,
+textarea:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--gold, #B8860B);
+  outline-offset: 2px;
+}
+button:focus:not(:focus-visible) { outline: none; }
+
 /* ── Variables — Mode sombre (défaut) ─────────────────────────── */
 :root {
   --bg:               #1A1A2E;
@@ -356,17 +368,7 @@ body::before {
   text-transform: uppercase;
 }
 
-/* Lune — header soir */
-.sv-moon {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  opacity: 0.55;
-  color: var(--gold);
-}
-
-.sv-moon .moon-icon { opacity: 1; }
-
+/* Lune — nom de phase */
 .sv-moon-name {
   font-family: var(--font-sans);
   font-size: 0.68rem;
@@ -635,8 +637,9 @@ body::before {
 .btn-rituel-shine {
   position: absolute;
   top: 0;
-  left: -80%;
+  left: 0;
   width: 60%;
+  will-change: transform, opacity;
   height: 100%;
   background: linear-gradient(90deg,
     transparent 0%,
@@ -648,10 +651,10 @@ body::before {
 }
 
 @keyframes btn-shine {
-  0%    { left: -80%; opacity: 0; }
+  0%    { transform: translateX(-140%); opacity: 0; }
   10%   { opacity: 1; }
-  40%   { left: 140%; opacity: 0; }
-  100%  { left: 140%; opacity: 0; }
+  40%   { transform: translateX(240%); opacity: 0; }
+  100%  { transform: translateX(240%); opacity: 0; }
 }
 
 .btn-rituel:hover::before,
@@ -4361,7 +4364,7 @@ body.light-mode .m1-toast {
   --sv-accent-hi:  #D4A843;
   --sv-accent-dim: rgba(184, 134, 11, 0.18);
   --sv-text:       #E4DCF0;
-  --sv-text-dim:   rgba(228, 220, 240, 0.55);
+  --sv-text-dim:   rgba(228, 220, 240, 0.72);
   --sv-field-bg:   rgba(13, 27, 62, 0.85);
   --sv-field-border: rgba(184, 134, 11, 0.35);
   --sv-star:       rgba(228, 220, 240, 0.7);
