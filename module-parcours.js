@@ -263,29 +263,29 @@ const ModuleParcours = (() => {
     const byDate = {};
     humeurLog.forEach(e => { byDate[e.date] = e.humeur; });
 
-    const W = 300, H = 100;
-    const padL = 14, padR = 14, padT = 10, padB = 18;
+    const W = 300, H = 160;
+    const padL = 10, padR = 10, padT = 14, padB = 24;
     const chartW = W - padL - padR;
     const chartH = H - padT - padB;
 
-    const xOf = i => padL + (i / 29) * chartW;
     const yOf = h => padT + (5 - h) / 4 * chartH;
+    const yRef = yOf(3);
 
-    // Grille horizontale subtile
-    [1, 2, 3, 4, 5].forEach(h => {
-      svgContainer.appendChild(svgEl('line', {
-        x1: padL, y1: yOf(h), x2: W - padR, y2: yOf(h),
-        stroke: 'rgba(255,255,255,0.04)', 'stroke-width': '1',
-      }));
-    });
+    // ── Ligne de référence humeur 3 (discrète, tiretée)
+    svgContainer.appendChild(svgEl('line', {
+      x1: padL, y1: yRef, x2: W - padR, y2: yRef,
+      stroke: 'rgba(184,134,11,0.20)', 'stroke-width': '1',
+      'stroke-dasharray': '4,5',
+    }));
 
-    const pts = days.map((date, i) => {
+    // ── Points valides, espacés régulièrement sur toute la largeur
+    const rawPts = [];
+    days.forEach(date => {
       const h = byDate[date];
-      return h ? { x: xOf(i), y: yOf(h), h, i } : null;
+      if (h) rawPts.push({ h });
     });
-    const valid = pts.filter(Boolean);
 
-    if (valid.length === 0) {
+    if (rawPts.length === 0) {
       const t = svgEl('text', {
         x: W / 2, y: H / 2, 'text-anchor': 'middle',
         fill: 'rgba(255,255,255,0.18)', 'font-size': '9',
@@ -295,69 +295,64 @@ const ModuleParcours = (() => {
       return;
     }
 
-    // Dégradé sous la courbe
+    const n = rawPts.length;
+    const xOf = idx => n <= 1 ? padL + chartW / 2 : padL + (idx / (n - 1)) * chartW;
+    const pts = rawPts.map((p, i) => ({ x: xOf(i), y: yOf(p.h), h: p.h }));
+
+    // ── Dégradé sous la courbe
     const defs = svgEl('defs', {});
     const grad = svgEl('linearGradient', { id: 'pa-mood-grad', x1: '0', y1: '0', x2: '0', y2: '1' });
-    grad.appendChild(svgEl('stop', { offset: '0%', 'stop-color': '#B8860B', 'stop-opacity': '0.3' }));
+    grad.appendChild(svgEl('stop', { offset: '0%', 'stop-color': '#B8860B', 'stop-opacity': '0.22' }));
     grad.appendChild(svgEl('stop', { offset: '100%', 'stop-color': '#B8860B', 'stop-opacity': '0' }));
     defs.appendChild(grad);
     svgContainer.insertBefore(defs, svgContainer.firstChild);
 
-    if (valid.length >= 2) {
-      const areaD = `M${valid[0].x},${H - padB} ` +
-        valid.map(p => `L${p.x},${p.y}`).join(' ') +
-        ` L${valid[valid.length - 1].x},${H - padB} Z`;
-      svgContainer.appendChild(svgEl('path', { d: areaD, fill: 'url(#pa-mood-grad)', stroke: 'none' }));
+    if (pts.length >= 2) {
+      // Courbe lisse : Catmull-Rom → Bézier cubique
+      const tension = 0.4;
+      let curveParts = '';
+      for (let i = 0; i < pts.length - 1; i++) {
+        const p0 = i > 0 ? pts[i - 1] : pts[i];
+        const p1 = pts[i];
+        const p2 = pts[i + 1];
+        const p3 = i + 2 < pts.length ? pts[i + 2] : p2;
+        const cp1x = p1.x + (p2.x - p0.x) * tension;
+        const cp1y = p1.y + (p2.y - p0.y) * tension;
+        const cp2x = p2.x - (p3.x - p1.x) * tension;
+        const cp2y = p2.y - (p3.y - p1.y) * tension;
+        curveParts += `C${cp1x.toFixed(1)},${cp1y.toFixed(1)} ${cp2x.toFixed(1)},${cp2y.toFixed(1)} ${p2.x.toFixed(1)},${p2.y.toFixed(1)} `;
+      }
 
-      svgContainer.appendChild(svgEl('polyline', {
-        points: valid.map(p => `${p.x},${p.y}`).join(' '),
-        stroke: '#B8860B', 'stroke-width': '1.5', fill: 'none',
-        'stroke-linejoin': 'round', 'stroke-linecap': 'round',
+      const curveD = `M${pts[0].x.toFixed(1)},${pts[0].y.toFixed(1)} ${curveParts.trim()}`;
+      const areaD  = `M${pts[0].x.toFixed(1)},${(H - padB).toFixed(1)} L${pts[0].x.toFixed(1)},${pts[0].y.toFixed(1)} ${curveParts.trim()} L${pts[n - 1].x.toFixed(1)},${(H - padB).toFixed(1)} Z`;
+
+      svgContainer.appendChild(svgEl('path', { d: areaD, fill: 'url(#pa-mood-grad)', stroke: 'none' }));
+      svgContainer.appendChild(svgEl('path', {
+        d: curveD,
+        stroke: '#B8860B', 'stroke-width': '2', fill: 'none',
+        'stroke-linecap': 'round', 'stroke-linejoin': 'round',
       }));
     }
 
-    // Points colorés
-    valid.forEach(p => {
+    // ── Points : tons or au-dessus de 3, tons gris en dessous
+    pts.forEach(p => {
+      const col = p.h >= 3
+        ? (p.h >= 5 ? '#FFD700' : p.h >= 4 ? '#DAA520' : '#B8860B')
+        : (p.h >= 2 ? '#888899' : '#5a5a62');
       svgContainer.appendChild(svgEl('circle', {
-        cx: p.x, cy: p.y, r: '3',
-        fill: HUMEUR_COLORS[p.h] || '#555',
-        stroke: '#B8860B', 'stroke-width': '0.8',
-      }));
-    });
-
-    // Petits traits d'axe (1 tous les 7 jours)
-    [0, 7, 14, 21, 29].forEach(i => {
-      svgContainer.appendChild(svgEl('line', {
-        x1: xOf(i), y1: H - padB + 2, x2: xOf(i), y2: H - padB + 5,
+        cx: p.x.toFixed(1), cy: p.y.toFixed(1), r: '6',
+        fill: col,
         stroke: 'rgba(255,255,255,0.15)', 'stroke-width': '1',
       }));
     });
 
-    // Label "auj." + "-30j"
-    const tAuj = svgEl('text', { x: xOf(29), y: H - 2, 'text-anchor': 'middle', fill: 'rgba(255,255,255,0.25)', 'font-size': '7' });
+    // ── Labels axe
+    const tAuj = svgEl('text', { x: W - padR, y: H - 6, 'text-anchor': 'end', fill: 'rgba(255,255,255,0.25)', 'font-size': '8' });
     tAuj.textContent = 'auj.';
     svgContainer.appendChild(tAuj);
-    const t30 = svgEl('text', { x: padL, y: H - 2, 'text-anchor': 'start', fill: 'rgba(255,255,255,0.18)', 'font-size': '7' });
+    const t30 = svgEl('text', { x: padL, y: H - 6, 'text-anchor': 'start', fill: 'rgba(255,255,255,0.18)', 'font-size': '8' });
     t30.textContent = '−30j';
     svgContainer.appendChild(t30);
-
-    // Marqueurs lunaires : nouvelle lune ◯ et pleine lune ● en haut de chart
-    if (typeof MoonSystem !== 'undefined') {
-      days.forEach((dateStr, i) => {
-        const phase = MoonSystem.getMoonPhase(dateStr);
-        if (phase.idx === 0 || phase.idx === 4) {
-          const x = xOf(i);
-          const isNew = phase.idx === 0;
-          const circ = svgEl('circle', {
-            cx: x, cy: padT - 3, r: '2.5',
-            fill: isNew ? 'none' : 'rgba(184,134,11,0.55)',
-            stroke: 'rgba(184,134,11,0.45)',
-            'stroke-width': '0.8',
-          });
-          svgContainer.appendChild(circ);
-        }
-      });
-    }
   }
 
   // ── Tendances (3 cartes horizontales) ─────────────────────────

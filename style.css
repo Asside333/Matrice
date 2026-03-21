@@ -5401,8 +5401,9 @@ body.easter-333::after {
 
 /* ── Parcours — Courbe d'humeur ──────────────────────────────── */
 .pa-mood-svg {
-  width: 100%;
-  height: 80px;
+  width: calc(100% + 20px);
+  margin-left: -10px;
+  min-height: 200px;
   display: block;
 }
 
