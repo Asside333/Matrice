@@ -43,8 +43,8 @@ const Module6 = (() => {
     throws.push(result);
     updateThrowUI();
 
-    // Vibration mobile
-    if (navigator.vibrate) navigator.vibrate(30);
+    // Haptic feedback
+    if (typeof haptic === 'function') haptic(50);
 
     // Mettre à jour le compteur
     const cntEl = document.getElementById('m6-throw-count');
@@ -274,10 +274,7 @@ const ScreenCloture = (() => {
     // ── Mantra (6 premiers mots)
     const mantraEl = document.getElementById('cl-mantra-val');
     if (mantraEl) {
-      const words = (state.mantra || '').split(' ').filter(Boolean);
-      mantraEl.textContent = words.length === 0 ? '—'
-        : words.length > 6 ? words.slice(0, 6).join(' ') + '\u202F…'
-        : words.join(' ');
+      mantraEl.textContent = state.mantra || '—';
     }
 
     // ── Élément + icône + sort (5 premiers mots)
@@ -359,14 +356,89 @@ const ScreenCloture = (() => {
       ?.addEventListener('click', () => navigateTo('accueil'));
   }
 
+  let clTimers = [];
+
   function onEnter() {
     buildSummary();
     document.getElementById('cl-scroll')?.scrollTo(0, 0);
-    document.getElementById('screen-cloture')?.classList.add('cloture-reveal');
     if (typeof Module1 !== 'undefined') Module1.fadeOutBinaural(3);
+    // Haptic triple pulse — rituel scellé
+    if (typeof haptic === 'function') haptic([50, 50, 50]);
+    // Cloche 528Hz — clôture
+    if (typeof playBell === 'function') playBell();
+
+    // ── Reveal séquentiel — cérémonie de clôture ──────────────
+    const elements = [
+      { sel: '.cl-title',         delay: 0,    halo: true },
+      { sel: '.cl-summary .cl-sum-row:nth-child(1)', delay: 1300 },
+      { sel: '.cl-summary .cl-sum-row:nth-child(2)', delay: 1600 },
+      { sel: '.cl-summary .cl-sum-row:nth-child(3)', delay: 1900 },
+      { sel: '.cl-summary .cl-sum-row:nth-child(4)', delay: 2200 },
+      { sel: '.cl-closing',       delay: 2800 },
+      { sel: '.cl-citation-wrap', delay: 3400 },
+      { sel: '.cl-moon-wrap',     delay: 4000 },
+      { sel: '.cl-streak-block',  delay: 4600, spiral: true },
+      { sel: '.cl-finish-btn',    delay: 5200 },
+    ];
+
+    const screen = document.getElementById('screen-cloture');
+    if (!screen) return;
+
+    // Masquer tous les éléments
+    elements.forEach(({ sel }) => {
+      const el = screen.querySelector(sel);
+      if (el) {
+        el.style.opacity = '0';
+        el.style.transform = 'translateY(12px)';
+        el.style.transition = 'none';
+      }
+    });
+
+    // Masquer aussi les séparateurs
+    screen.querySelectorAll('.cl-sep').forEach(s => {
+      s.style.opacity = '0';
+      s.style.transition = 'none';
+    });
+
+    // Reveal séquentiel
+    elements.forEach(({ sel, delay, halo, spiral }) => {
+      const t = setTimeout(() => {
+        const el = screen.querySelector(sel);
+        if (!el || el.hidden) return;
+
+        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+        el.style.opacity = '1';
+        el.style.transform = 'translateY(0)';
+
+        // Halo doré sur le titre
+        if (halo) {
+          el.classList.add('cl-title--halo');
+          setTimeout(() => el.classList.remove('cl-title--halo'), 2500);
+        }
+
+        // Animation spirale sur le streak
+        if (spiral) {
+          const spiralSvg = el.querySelector('.cl-streak-spiral');
+          if (spiralSvg) spiralSvg.classList.add('cl-spiral--animate');
+        }
+      }, delay);
+      clTimers.push(t);
+    });
+
+    // Reveal séparateurs
+    screen.querySelectorAll('.cl-sep').forEach((s, i) => {
+      const t = setTimeout(() => {
+        s.style.transition = 'opacity 0.4s ease';
+        s.style.opacity = '1';
+      }, 2600 + i * 600);
+      clTimers.push(t);
+    });
   }
 
-  function onLeave() {}
+  function onLeave() {
+    clTimers.forEach(clearTimeout);
+    clTimers = [];
+  }
 
   bindEvents();
   screenHooks.cloture = { onEnter, onLeave };

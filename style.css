@@ -135,11 +135,32 @@ body::before {
   animation: splash-appear 1.2s ease forwards;
 }
 
-.splash-cube {
+/* Phase 1 — Digits 3·3·3 animés */
+.splash-333-anim {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 2.2rem;
+  font-weight: 300;
+  letter-spacing: 0.3em;
+  color: var(--gold);
+  min-height: 3rem;
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.splash-333--dissolve {
+  opacity: 0;
+  transform: translateY(-15px) scale(0.8);
+  filter: blur(4px);
+}
+
+/* Phase 2 — Graine de Vie */
+.splash-seed {
   width: 88px;
   height: 88px;
   color: var(--gold);
-  animation: splash-rotate 8s linear infinite, splash-appear 1.2s ease forwards;
+}
+
+.splash-circle {
+  opacity: 0;
 }
 
 .splash-name {
@@ -151,26 +172,9 @@ body::before {
   text-transform: uppercase;
 }
 
-.splash-333 {
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.65rem;
-  letter-spacing: 0.35em;
-  color: var(--text-dim);
-  opacity: 0;
-  animation: splash-333-appear 0.6s ease 0.8s forwards;
-}
-
 @keyframes splash-appear {
   from { opacity: 0; transform: scale(0.92); }
   to   { opacity: 1; transform: scale(1); }
-}
-
-@keyframes splash-rotate {
-  to { transform: rotate(360deg); }
-}
-
-@keyframes splash-333-appear {
-  to { opacity: 1; }
 }
 
 /* ── Écrans — base ────────────────────────────────────────────── */
@@ -182,8 +186,8 @@ body::before {
   background-color: var(--bg);
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.35s ease, transform 0.35s ease;
-  transform: translateY(6px);
+  transition: opacity 0.32s ease, transform 0.32s ease;
+  transform: translateY(12px);
   padding-bottom: var(--nav-height);
   z-index: 10;
   overflow: hidden;
@@ -193,6 +197,13 @@ body::before {
   opacity: 1;
   pointer-events: auto;
   transform: translateY(0);
+}
+
+/* Écran sortant — monte + disparaît */
+.screen.screen--leaving {
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: opacity 0.28s ease, transform 0.28s ease;
 }
 
 /* ── Arrière-plan lumineux ────────────────────────────────────── */
@@ -473,26 +484,68 @@ body::before {
 .mcube-lines .line-io  { opacity: 0.40; }  /* inner–outer */
 .mcube-lines .line-oo  { opacity: 0.30; }  /* outer–outer */
 
-/* Cercles du Cube */
+/* Cercles du Cube — pulsation vivante à rythmes différents */
 .mcube-circles circle {
   fill: none;
   stroke: var(--stroke);
   transition: stroke 2.5s ease;
+  will-change: opacity;
 }
 
 .mcube-circles .mcube-center {
   stroke-width: 1.6;
-  opacity: 1.0;
+  animation: mcube-pulse-center 4s ease-in-out infinite;
 }
 
 .mcube-circles .mcube-inner {
   stroke-width: 1.2;
-  opacity: 0.90;
+  animation: mcube-pulse-inner 5.5s ease-in-out infinite;
 }
+
+/* Chaque cercle inner décalé pour effet organique */
+.mcube-circles .mcube-inner:nth-of-type(2) { animation-delay: -0.9s; }
+.mcube-circles .mcube-inner:nth-of-type(3) { animation-delay: -1.8s; }
+.mcube-circles .mcube-inner:nth-of-type(4) { animation-delay: -2.7s; }
+.mcube-circles .mcube-inner:nth-of-type(5) { animation-delay: -3.6s; }
+.mcube-circles .mcube-inner:nth-of-type(6) { animation-delay: -4.5s; }
+.mcube-circles .mcube-inner:nth-of-type(7) { animation-delay: -0.5s; }
 
 .mcube-circles .mcube-outer {
   stroke-width: 1.0;
-  opacity: 0.65;
+  animation: mcube-pulse-outer 7s ease-in-out infinite;
+}
+
+.mcube-circles .mcube-outer:nth-of-type(8)  { animation-delay: -1.2s; }
+.mcube-circles .mcube-outer:nth-of-type(9)  { animation-delay: -2.3s; }
+.mcube-circles .mcube-outer:nth-of-type(10) { animation-delay: -3.5s; }
+.mcube-circles .mcube-outer:nth-of-type(11) { animation-delay: -4.7s; }
+.mcube-circles .mcube-outer:nth-of-type(12) { animation-delay: -5.8s; }
+.mcube-circles .mcube-outer:nth-of-type(13) { animation-delay: -0.8s; }
+
+@keyframes mcube-pulse-center {
+  0%, 100% { opacity: 0.95; stroke-width: 1.6; }
+  50%      { opacity: 1;    stroke-width: 2.0; filter: drop-shadow(0 0 3px var(--gold)); }
+}
+
+@keyframes mcube-pulse-inner {
+  0%, 100% { opacity: 0.75; }
+  50%      { opacity: 0.95; filter: drop-shadow(0 0 2px rgba(184,134,11,0.3)); }
+}
+
+@keyframes mcube-pulse-outer {
+  0%, 100% { opacity: 0.50; }
+  50%      { opacity: 0.72; }
+}
+
+/* Touch pulse — flash au tap */
+.mcube-touch-pulse {
+  animation: mcube-tap-flash 0.6s ease forwards !important;
+}
+
+@keyframes mcube-tap-flash {
+  0%   { filter: drop-shadow(0 0 0 transparent); opacity: 1; }
+  30%  { filter: drop-shadow(0 0 8px var(--gold)); opacity: 1; }
+  100% { filter: none; }
 }
 
 /* Easter egg 333 */
@@ -936,7 +989,7 @@ body.easter-333 .mcube-333 {
 @media (prefers-reduced-motion: reduce) {
   .metatron-spinner,
   .metatron-glow,
-  .splash-cube,
+  .splash-seed,
   .btn-rituel-shine,
   .placeholder-geom {
     animation: none;
@@ -2181,18 +2234,103 @@ body.light-mode .m1-toast {
   pointer-events: auto;
 }
 
-/* ── Pulse du fond M3 — double battement de cœur ───────────────── */
+/* ── Pulse du fond M3 — cosmic heartbeat (lent, profond) ──────── */
 @keyframes m3-bg-pulse {
   0%   { background-color: var(--bg); }
-  12%  { background-color: rgba(4, 2, 12, 1); }
-  24%  { background-color: var(--bg); }
-  36%  { background-color: rgba(4, 2, 12, 0.9); }
-  60%  { background-color: var(--bg); }
+  15%  { background-color: rgba(4, 2, 12, 1); }
+  30%  { background-color: var(--bg); }
+  45%  { background-color: rgba(4, 2, 12, 0.92); }
+  70%  { background-color: var(--bg); }
   100% { background-color: var(--bg); }
 }
 
 #screen-m3.m3-pulse {
-  animation: m3-bg-pulse 0.75s ease;
+  animation: m3-bg-pulse 1.1s ease;
+}
+
+/* ── Teal glow ambiant sur le fond ──────────────────────────────── */
+#screen-m3.m3-teal-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at center,
+    rgba(15, 110, 86, 0.12) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  animation: m3-teal-fade 1.8s ease forwards;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes m3-teal-fade {
+  0%   { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.light-mode #screen-m3.m3-teal-glow::before {
+  background: radial-gradient(ellipse at center,
+    rgba(15, 110, 86, 0.06) 0%,
+    transparent 70%
+  );
+}
+
+/* ── Conteneur de particules dorées ─────────────────────────────── */
+.m3-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+  overflow: hidden;
+}
+
+/* ── Particule individuelle ─────────────────────────────────────── */
+.m3-particle {
+  position: absolute;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--gold) 30%, rgba(184, 134, 11, 0) 100%);
+  opacity: 0;
+  animation: m3-particle-rise ease-out forwards;
+  will-change: transform, opacity;
+}
+
+@keyframes m3-particle-rise {
+  0%   { opacity: 0.9; transform: translate(0, 0) scale(1); }
+  30%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.2); }
+}
+
+/* ── Overlay de dissolution (texte temporaire) ──────────────────── */
+.m3-dissolve-overlay {
+  position: absolute;
+  z-index: 5;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
+  color: var(--text);
+  text-align: center;
+  padding: 14px 16px;
+  line-height: 1.5;
+  pointer-events: none;
+}
+
+/* ── Lettre en cours de dissolution ─────────────────────────────── */
+.m3-dissolve-letter {
+  display: inline;
+  transition: opacity 0.4s ease, transform 0.5s ease, filter 0.4s ease;
+  will-change: transform, opacity;
+}
+
+.m3-dissolve-letter--gone {
+  opacity: 0;
+  transform: translateY(-30px) scale(0.5);
+  filter: blur(3px);
+  color: var(--gold);
+}
+
+/* ── Input fading (semi-transparent pendant dissolution) ─────── */
+.m3-phase--fading {
+  opacity: 0.15 !important;
+  transition: opacity 0.5s ease !important;
 }
 
 /* ── Flash de lumière teal après la dissolution ──────────────────── */
@@ -2220,31 +2358,40 @@ body.light-mode .m1-toast {
   border-radius: 10px;
 }
 
-/* position/overflow définis dans la règle principale ci-dessous */
-
 .m3-result-box.m3-result--sweep::after {
   animation: m3-light-sweep 1.1s ease forwards;
 }
 
-/* ── Yin Yang — flash d'intensité pendant la transmutation ───────── */
+/* ── Yin Yang — flash + quart de rotation fluide ────────────────── */
 @keyframes m3-yy-flash {
-  0%   { opacity: 1; }
-  30%  { opacity: 1; filter: brightness(4) saturate(2); }
-  60%  { opacity: 1; filter: brightness(1.5); }
-  100% { opacity: 1; filter: none; }
+  0%   { filter: brightness(1); }
+  25%  { filter: brightness(3.5) saturate(2); }
+  50%  { filter: brightness(2); }
+  100% { filter: brightness(1); }
 }
 
 .m3-yinyang.m3-yy--flash {
   animation: m3-yy-rotate 120s linear infinite,
-             m3-yy-flash 1s ease forwards;
+             m3-yy-flash 1.2s ease forwards;
+}
+
+/* Quart de tour additionnel — transition fluide */
+.m3-yinyang.m3-yy--quarter {
+  animation: m3-yy-rotate-quarter 120s linear infinite;
+}
+
+@keyframes m3-yy-rotate-quarter {
+  from { transform: rotate(90deg); }
+  to   { transform: rotate(450deg); }
 }
 
 /* ── Plume — glow intense pendant la transmutation ──────────────── */
 .m3-feather.m3-feather--lit {
-  filter: drop-shadow(0 0 8px rgba(184, 134, 11, 0.9))
-          drop-shadow(0 0 22px rgba(184, 134, 11, 0.55))
-          drop-shadow(0 0 40px rgba(184, 134, 11, 0.25));
+  filter: drop-shadow(0 0 10px rgba(184, 134, 11, 1))
+          drop-shadow(0 0 25px rgba(184, 134, 11, 0.7))
+          drop-shadow(0 0 50px rgba(184, 134, 11, 0.3));
   color: var(--gold-hi);
+  transition: filter 0.3s ease;
 }
 
 /* Mode clair — ajustements M3 */
@@ -2273,6 +2420,45 @@ body.light-mode .m1-toast {
     rgba(154, 110, 10, 0.08) 100%
   );
   border-color: rgba(15, 110, 86, 0.35);
+}
+
+/* Light mode — M3 pulse adapté */
+.light-mode #screen-m3.m3-pulse {
+  animation: m3-bg-pulse-light 1.1s ease;
+}
+
+@keyframes m3-bg-pulse-light {
+  0%   { background-color: var(--bg); }
+  15%  { background-color: rgba(230, 220, 200, 1); }
+  30%  { background-color: var(--bg); }
+  45%  { background-color: rgba(230, 220, 200, 0.9); }
+  70%  { background-color: var(--bg); }
+  100% { background-color: var(--bg); }
+}
+
+/* Light mode — dissolution letter color */
+.light-mode .m3-dissolve-letter--gone {
+  color: #9A6E0A;
+}
+
+/* Light mode — particules */
+.light-mode .m3-particle {
+  background: radial-gradient(circle, #9A6E0A 30%, transparent 100%);
+}
+
+/* Light mode — SOS flash crack atténué */
+.light-mode .sos-flash-crack {
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.light-mode #screen-sos.sos-screen-pulse {
+  animation: sos-bg-pulse-light 0.8s ease;
+}
+
+@keyframes sos-bg-pulse-light {
+  0%   { background-color: var(--sos-bg); }
+  25%  { background-color: rgba(200, 240, 230, 0.95); }
+  100% { background-color: var(--sos-bg); }
 }
 
 /* Header right placeholder (pour aligner le header M2/M3) */
@@ -2955,6 +3141,32 @@ body.light-mode .m1-toast {
   letter-spacing: 0.06em;
   text-align: center;
   margin: 0 0 20px;
+  position: relative;
+}
+
+/* Halo doré autour du titre lors du reveal */
+.cl-title--halo {
+  text-shadow: 0 0 20px rgba(184, 134, 11, 0.6),
+               0 0 40px rgba(184, 134, 11, 0.3),
+               0 0 60px rgba(184, 134, 11, 0.15);
+  animation: cl-halo-pulse 2.5s ease forwards;
+}
+
+@keyframes cl-halo-pulse {
+  0%   { text-shadow: 0 0 30px rgba(184, 134, 11, 0.8), 0 0 60px rgba(184, 134, 11, 0.4); }
+  50%  { text-shadow: 0 0 20px rgba(184, 134, 11, 0.5), 0 0 40px rgba(184, 134, 11, 0.2); }
+  100% { text-shadow: none; }
+}
+
+/* Spirale animée (streak) — dessin progressif */
+.cl-spiral--animate path {
+  stroke-dasharray: 80;
+  stroke-dashoffset: 80;
+  animation: cl-spiral-draw 1.5s ease forwards;
+}
+
+@keyframes cl-spiral-draw {
+  to { stroke-dashoffset: 0; }
 }
 
 /* Résumé compact */
@@ -3105,6 +3317,35 @@ body.light-mode .m1-toast {
   background: var(--sos-bg);
   overflow: hidden;
   padding-bottom: 0;
+  position: relative;
+}
+
+/* Flash blanc "crack" entre phases SOS */
+.sos-flash-crack {
+  position: absolute;
+  inset: 0;
+  background: white;
+  opacity: 0;
+  z-index: 100;
+  pointer-events: none;
+  animation: sos-crack 0.45s ease-out forwards;
+}
+
+@keyframes sos-crack {
+  0%   { opacity: 0.85; }
+  15%  { opacity: 0.6; }
+  100% { opacity: 0; }
+}
+
+/* Pulse écran entre phases SOS */
+#screen-sos.sos-screen-pulse {
+  animation: sos-bg-pulse 0.8s ease;
+}
+
+@keyframes sos-bg-pulse {
+  0%   { background-color: var(--sos-bg); }
+  25%  { background-color: rgba(0, 60, 50, 0.95); }
+  100% { background-color: var(--sos-bg); }
 }
 
 /* ── Contrôles flottants permanents ──────────────────────────── */
@@ -4857,6 +5098,9 @@ body.light-mode .m1-toast {
   font-size: 0.88rem;
   color: rgba(255,255,255,0.55);
   line-height: 1.4;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .pm-fav-remove {
@@ -5075,20 +5319,7 @@ body.easter-333::after {
   100% { opacity: 0; }
 }
 
-/* Splash 3·3·3 : animation légère */
-.splash-333 {
-  opacity: 0;
-  animation: splash333-appear 0.8s ease-out 0.4s forwards;
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 0.75rem;
-  letter-spacing: 0.3em;
-  color: rgba(184,134,11,0.5);
-}
-
-@keyframes splash333-appear {
-  from { opacity: 0; transform: translateY(4px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
+/* (ancien splash-333 statique supprimé — remplacé par splash-333-anim) */
 
 /* (ancien .streak-block / .streak-fib-svg supprimés — remplacés par .accueil-spiral-block) */
 
@@ -5579,7 +5810,7 @@ body.easter-333::after {
 .pa-ritual-row {
   display: grid;
   grid-template-columns: 52px 10px 1fr 18px;
-  align-items: center;
+  align-items: start;
   gap: 8px;
   padding: 8px 0;
   border-bottom: 1px solid rgba(255,255,255,0.04);
@@ -5606,10 +5837,10 @@ body.easter-333::after {
   font-style: italic;
   font-size: 0.85rem;
   color: rgba(255,255,255,0.70);
-  line-height: 1.3;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  line-height: 1.4;
+  white-space: normal;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .pa-rr-elem {

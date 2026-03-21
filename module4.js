@@ -121,6 +121,7 @@ const Module4 = (() => {
       chip.addEventListener('click', () => {
         const label = chip.dataset.intention;
         const isActive = chip.classList.toggle('m4-chip--active');
+        if (typeof haptic === 'function') haptic(50);
         if (isActive) {
           if (!selectedChips.includes(label)) selectedChips.push(label);
         } else {

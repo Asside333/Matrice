@@ -32,6 +32,9 @@ const MANTRAS = {
     "La culpabilité n'a plus de place ici. La responsabilité, oui.",
     "Je transforme le doute en carburant.",
     "Ce qui est cassé en moi est en train de se reconstruire autrement.",
+    "Le silence intérieur n'est pas du vide. C'est de l'espace.",
+    "Je ne suis pas ce qu'on a fait de moi. Je suis ce que je choisis d'en faire.",
+    "Chaque cicatrice est la preuve d'une bataille gagnée.",
   ],
 
   ÉLAN: [
@@ -53,6 +56,9 @@ const MANTRAS = {
     "Mon élan ne dépend de personne d'autre que moi.",
     "L'impossible d'hier est le possible d'aujourd'hui.",
     "Je suis la preuve vivante que ça peut changer.",
+    "Chaque jour je pose une pierre. La cathédrale se dessine.",
+    "La peur dit stop. Mon corps dit encore.",
+    "Je ne cherche pas la perfection. Je cherche le mouvement.",
   ],
 
   ANCRAGE: [
@@ -70,6 +76,8 @@ const MANTRAS = {
     "Je choisis de ne pas fuir ce que je ressens.",
     "Ce matin est difficile. Ce matin n'est pas éternel.",
     "Je plie sans rompre. C'est ma force.",
+    "L'obscurité ne m'arrête pas. Elle m'apprend à voir autrement.",
+    "Je suis ancré. Pas bloqué.",
   ],
 };
 

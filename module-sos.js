@@ -47,11 +47,52 @@ const ModuleSOS = (() => {
     return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
   }
 
+  // ── Flash blanc "crack" entre phases ──────────────────────────
+  function flashCrack() {
+    const screen = document.getElementById('screen-sos');
+    if (!screen) return;
+    const flash = document.createElement('div');
+    flash.className = 'sos-flash-crack';
+    screen.appendChild(flash);
+    after(500, () => flash.remove());
+  }
+
+  // ── Effet typewriter pour texte SOS ──────────────────────────
+  function typewriterEffect(element, text, charDelay, callback) {
+    if (!element) { callback?.(); return; }
+    element.textContent = '';
+    element.style.opacity = '1';
+    let i = 0;
+    function type() {
+      if (i < text.length) {
+        element.textContent += text[i];
+        i++;
+        const t = setTimeout(type, charDelay);
+        timers.push(t);
+      } else {
+        callback?.();
+      }
+    }
+    type();
+  }
+
+  // ── Pulse écran subtil entre phases ─────────────────────────
+  function screenPulse() {
+    const screen = document.getElementById('screen-sos');
+    if (!screen) return;
+    screen.classList.add('sos-screen-pulse');
+    after(800, () => screen.classList.remove('sos-screen-pulse'));
+  }
+
   // ── Transition entre étapes ───────────────────────────────────
   function gotoStep(fromId, toId, done) {
     const fromEl = document.getElementById(fromId);
     const toEl   = document.getElementById(toId);
     if (!fromEl || !toEl) { done?.(); return; }
+
+    // Flash blanc "crack" à la transition
+    flashCrack();
+    screenPulse();
 
     // Fade-out de l'étape actuelle
     fromEl.style.transition = 'opacity 0.7s ease';
@@ -248,6 +289,13 @@ const ModuleSOS = (() => {
 
   // ── Flux principal ────────────────────────────────────────────
   function runFlow() {
+    // Typewriter pour le texte d'entrée
+    const s1text = document.getElementById('sos-s1-text');
+    if (s1text) {
+      s1text.innerHTML = '';
+      typewriterEffect(s1text, 'Serre les poings. Fort.', 30);
+    }
+
     // Étape 1 — Corps (8 s)
     after(5000, () => {
       const el = document.getElementById('sos-s1-text');
@@ -255,7 +303,7 @@ const ModuleSOS = (() => {
         el.style.transition = 'opacity 0.6s ease';
         el.style.opacity = '0';
         after(600, () => {
-          if (el) { el.innerHTML = 'Relâche.'; el.style.opacity = '1'; }
+          if (el) typewriterEffect(el, 'Relâche.', 30);
         });
       }
     });
@@ -285,9 +333,9 @@ const ModuleSOS = (() => {
               const response = getResponse(word);
 
               gotoStep('sos-s3', 'sos-s4', () => {
-                // Étape 4 — Réponse (10 s)
+                // Étape 4 — Réponse avec typewriter (10 s)
                 const s4 = document.getElementById('sos-s4-text');
-                if (s4) s4.textContent = response;
+                typewriterEffect(s4, response, 30);
 
                 after(10000, () => {
                   gotoStep('sos-s4', 'sos-s5', () => {
@@ -385,6 +433,8 @@ const ModuleSOS = (() => {
     binActive = false;
     updateBinBtn();
     resetSteps();
+    // Haptic fort — urgence SOS
+    if (typeof haptic === 'function') haptic(100);
     runFlow();
   }
 

@@ -132,6 +132,52 @@ const CITATIONS = [
   { texte: "Si tu comprends, les choses sont telles qu'elles sont. Si tu ne comprends pas, les choses sont telles qu'elles sont.", auteur: "Proverbe zen" },
   { texte: "Assieds-toi. Ne fais rien. Regarde.", auteur: "Proverbe zen" },
   { texte: "Le meilleur moment pour planter un arbre, c'était il y a vingt ans. Le second meilleur moment, c'est maintenant.", auteur: "Proverbe zen" },
+
+  // ── Miyamoto Musashi ────────────────────────────────────────
+  { texte: "La voie est dans l'entraînement.", auteur: "Miyamoto Musashi" },
+  { texte: "Ne crains pas la mort — crains la vie non vécue.", auteur: "Miyamoto Musashi" },
+  { texte: "Perçois ce qui est invisible aux yeux.", auteur: "Miyamoto Musashi" },
+
+  // ── Marcus Garvey ───────────────────────────────────────────
+  { texte: "Un peuple sans connaissance de son histoire est comme un arbre sans racines.", auteur: "Marcus Garvey" },
+  { texte: "Si tu n'as aucune confiance en toi, tu es deux fois vaincu dans la course de la vie.", auteur: "Marcus Garvey" },
+
+  // ── Frida Kahlo ─────────────────────────────────────────────
+  { texte: "Pieds, pourquoi ai-je besoin de vous si j'ai des ailes pour voler ?", auteur: "Frida Kahlo" },
+  { texte: "À la fin de la journée, nous pouvons endurer bien plus que ce que nous pensons.", auteur: "Frida Kahlo" },
+
+  // ── Antoine de Saint-Exupéry ────────────────────────────────
+  { texte: "On ne voit bien qu'avec le cœur. L'essentiel est invisible pour les yeux.", auteur: "Antoine de Saint-Exupéry" },
+  { texte: "Fais de ta vie un rêve, et d'un rêve, une réalité.", auteur: "Antoine de Saint-Exupéry" },
+
+  // ── Victor Hugo ─────────────────────────────────────────────
+  { texte: "Même la nuit la plus sombre prendra fin et le soleil se lèvera.", auteur: "Victor Hugo" },
+  { texte: "La suprême sagesse, c'est d'avoir des rêves assez grands pour ne pas les perdre de vue.", auteur: "Victor Hugo" },
+
+  // ── Albert Camus ────────────────────────────────────────────
+  { texte: "Au milieu de l'hiver, j'ai découvert en moi un invincible été.", auteur: "Albert Camus" },
+  { texte: "Il faut imaginer Sisyphe heureux.", auteur: "Albert Camus" },
+  { texte: "La vraie générosité envers l'avenir consiste à tout donner au présent.", auteur: "Albert Camus" },
+
+  // ── Fiodor Dostoïevski ──────────────────────────────────────
+  { texte: "La souffrance est la seule cause de la conscience.", auteur: "Fiodor Dostoïevski" },
+  { texte: "L'âme est guérie par la fréquentation des enfants.", auteur: "Fiodor Dostoïevski" },
+
+  // ── Paulo Coelho ────────────────────────────────────────────
+  { texte: "Quand tu veux quelque chose, tout l'univers conspire à te permettre de réaliser ton désir.", auteur: "Paulo Coelho" },
+  { texte: "Il n'y a qu'une chose qui puisse rendre un rêve impossible : la peur d'échouer.", auteur: "Paulo Coelho" },
+
+  // ── Hafiz ───────────────────────────────────────────────────
+  { texte: "Même après tout ce temps, le soleil ne dit jamais à la terre : 'Tu me dois.' Regarde ce qui arrive avec un amour comme ça — il illumine le ciel entier.", auteur: "Hafiz" },
+  { texte: "La peur est l'ennemi le plus insipide du monde. Elle ne donne rien de bon.", auteur: "Hafiz" },
+
+  // ── Confucius ───────────────────────────────────────────────
+  { texte: "Notre plus grande gloire n'est pas de ne jamais tomber, mais de nous relever chaque fois que nous tombons.", auteur: "Confucius" },
+  { texte: "Celui qui déplace une montagne commence par déplacer de petites pierres.", auteur: "Confucius" },
+
+  // ── Sun Tzu ─────────────────────────────────────────────────
+  { texte: "Au milieu du chaos, il y a aussi une opportunité.", auteur: "Sun Tzu" },
+  { texte: "Connais-toi toi-même, connais ton ennemi — et tu ne seras jamais en péril.", auteur: "Sun Tzu" },
 ];
 
 /**

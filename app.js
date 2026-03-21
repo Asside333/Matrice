@@ -66,6 +66,42 @@ const D_INNER = 64;
 const D_OUTER = 128;
 
 // ════════════════════════════════════════════════════════════════
+// HAPTIC FEEDBACK — vibration légère
+// ════════════════════════════════════════════════════════════════
+
+function haptic(pattern) {
+  try { navigator.vibrate?.(pattern); } catch (_) {}
+}
+
+// ════════════════════════════════════════════════════════════════
+// CLOCHE 528Hz — sine avec fast decay
+// ════════════════════════════════════════════════════════════════
+
+let bellCtx = null;
+function playBell() {
+  try {
+    if (!bellCtx || bellCtx.state === 'closed') {
+      bellCtx = new (window.AudioContext || window.webkitAudioContext)();
+    }
+    if (bellCtx.state === 'suspended') bellCtx.resume();
+    const now = bellCtx.currentTime;
+
+    const osc = bellCtx.createOscillator();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(528, now);
+
+    const gain = bellCtx.createGain();
+    gain.gain.setValueAtTime(0.03, now);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + 2.5);
+
+    osc.connect(gain);
+    gain.connect(bellCtx.destination);
+    osc.start(now);
+    osc.stop(now + 3);
+  } catch (_) {}
+}
+
+// ════════════════════════════════════════════════════════════════
 // THÈME ADAPTATIF
 // ════════════════════════════════════════════════════════════════
 
@@ -131,19 +167,48 @@ function navigateTo(screenId) {
   // Hook de sortie de l'écran courant
   screenHooks[currentScreen]?.onLeave?.();
 
-  // Fade-out
-  prev?.classList.remove('active');
+  // Phase 1 — Écran sortant monte + disparaît
+  if (prev) {
+    prev.classList.add('screen--leaving');
+    prev.classList.remove('active');
+  }
 
-  // Fade-in avec léger décalage
+  // Phase 2 — Pause 200ms puis nouvel écran émerge du bas
   setTimeout(() => {
+    if (prev) prev.classList.remove('screen--leaving');
     next.classList.add('active');
     currentScreen = screenId;
     updateNavState(screenId);
     updateSOSVisibility(screenId);
     updateNavVisibility(screenId);
+
+    // Animer les dots de progression du module (si présents)
+    animateModuleDots(next);
+
     // Hook d'entrée du nouvel écran
     screenHooks[screenId]?.onEnter?.();
-  }, 180);
+  }, 220);
+}
+
+/**
+ * Anime les dots de progression des modules (cascade d'apparition).
+ */
+function animateModuleDots(screenEl) {
+  const dots = screenEl.querySelectorAll('.m1-dot');
+  if (!dots.length) return;
+  dots.forEach((dot, i) => {
+    dot.style.opacity = '0';
+    dot.style.transform = 'scale(0.3)';
+    dot.style.transition = 'none';
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        dot.style.transition = 'opacity 0.25s ease, transform 0.25s ease';
+        dot.style.transitionDelay = (i * 60) + 'ms';
+        dot.style.opacity = '1';
+        dot.style.transform = 'scale(1)';
+      });
+    });
+  });
 }
 
 function updateNavState(screenId) {
@@ -276,6 +341,74 @@ function buildMetatronCube() {
   svg.appendChild(gLines);
   svg.appendChild(gCircles);
   svg.appendChild(t333);
+
+  // ── Particules lumineuses voyageant le long des lignes ────────
+  startMetatronParticles(svg, pts);
+
+  // ── Touch interaction — pulse au tap ─────────────────────────
+  svg.addEventListener('click', (e) => {
+    const circles = svg.querySelectorAll('.mcube-circles circle');
+    circles.forEach(c => {
+      c.classList.add('mcube-touch-pulse');
+      setTimeout(() => c.classList.remove('mcube-touch-pulse'), 600);
+    });
+  });
+}
+
+/**
+ * Anime des particules de lumière voyageant le long des lignes du Cube.
+ * Sélectionne aléatoirement des lignes et y fait glisser un point lumineux.
+ */
+let metatronParticleTimer = null;
+function startMetatronParticles(svg, pts) {
+  if (metatronParticleTimer) clearInterval(metatronParticleTimer);
+
+  // Groupe dédié aux particules
+  let gParticles = svg.querySelector('.mcube-light-particles');
+  if (!gParticles) {
+    gParticles = document.createElementNS(NS, 'g');
+    gParticles.setAttribute('class', 'mcube-light-particles');
+    svg.appendChild(gParticles);
+  }
+
+  function spawnLightParticle() {
+    // Choisir 2 points aléatoires
+    const a = pts[Math.floor(Math.random() * pts.length)];
+    const b = pts[Math.floor(Math.random() * pts.length)];
+    if (a === b) return;
+
+    const circle = document.createElementNS(NS, 'circle');
+    circle.setAttribute('r', '1.2');
+    circle.setAttribute('fill', 'var(--gold)');
+    circle.setAttribute('opacity', '0');
+    circle.setAttribute('class', 'mcube-light-dot');
+    gParticles.appendChild(circle);
+
+    const dur = 2000 + Math.random() * 2000;
+    const start = performance.now();
+
+    function animate(now) {
+      const t = Math.min((now - start) / dur, 1);
+      const x = a.x + (b.x - a.x) * t;
+      const y = a.y + (b.y - a.y) * t;
+      // Fade in/out
+      const op = t < 0.15 ? t / 0.15 : t > 0.85 ? (1 - t) / 0.15 : 1;
+      circle.setAttribute('cx', x.toFixed(1));
+      circle.setAttribute('cy', y.toFixed(1));
+      circle.setAttribute('opacity', (op * 0.7).toFixed(2));
+      if (t < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        circle.remove();
+      }
+    }
+    requestAnimationFrame(animate);
+  }
+
+  // Spawn une particule toutes les ~800ms
+  metatronParticleTimer = setInterval(spawnLightParticle, 800);
+  // Spawn immédiatement quelques-unes
+  for (let i = 0; i < 3; i++) setTimeout(spawnLightParticle, i * 200);
 }
 
 // ════════════════════════════════════════════════════════════════
@@ -414,11 +547,60 @@ function hideSplash() {
   const splash = document.getElementById('splash');
   if (!splash) return;
 
+  const digits333 = document.getElementById('splash-333-anim');
+  const seedSvg   = document.getElementById('splash-seed');
+  const nameEl    = document.getElementById('splash-name');
+  const circles   = seedSvg?.querySelectorAll('.splash-circle') || [];
+
+  // Phase 0 — cacher seed et nom
+  if (seedSvg) seedSvg.style.opacity = '0';
+  if (nameEl)  nameEl.style.opacity  = '0';
+
+  // Phase 1 — "3·3·3" digit par digit (0-800ms)
+  if (digits333) {
+    const chars = ['3', ' · ', '3', ' · ', '3'];
+    let idx = 0;
+    const typeDigit = () => {
+      if (idx < chars.length) {
+        digits333.textContent += chars[idx];
+        idx++;
+        setTimeout(typeDigit, 150);
+      }
+    };
+    typeDigit();
+
+    // Dissolve les digits
+    setTimeout(() => {
+      digits333.classList.add('splash-333--dissolve');
+    }, 1000);
+  }
+
+  // Phase 2 — Graine de Vie, cercle par cercle (1200-2000ms)
+  setTimeout(() => {
+    if (seedSvg) {
+      seedSvg.style.transition = 'opacity 0.3s ease';
+      seedSvg.style.opacity = '1';
+    }
+    circles.forEach((c, i) => {
+      c.style.opacity = '0';
+      c.style.transition = 'opacity 0.25s ease';
+      setTimeout(() => { c.style.opacity = '0.9'; }, i * 90);
+    });
+  }, 1200);
+
+  // Phase 3 — Nom MATRICE apparaît (2200ms)
+  setTimeout(() => {
+    if (nameEl) {
+      nameEl.style.transition = 'opacity 0.5s ease';
+      nameEl.style.opacity = '1';
+    }
+  }, 2200);
+
+  // Phase 4 — Fade-out total (3000ms)
   setTimeout(() => {
     splash.classList.add('fade-out');
-    // Suppression du DOM après la transition
     setTimeout(() => splash.remove(), 1000);
-  }, 1600);
+  }, 3000);
 }
 
 // ════════════════════════════════════════════════════════════════
@@ -873,6 +1055,43 @@ const Module1 = (() => {
     }
 
     svg.appendChild(g);
+
+    // ── Firefly particles dorées (6-8 particules flottantes) ──────
+    const gFireflies = document.createElementNS(NS, 'g');
+    gFireflies.setAttribute('class', 'gdv-fireflies');
+    for (let i = 0; i < 7; i++) {
+      const ff = document.createElementNS(NS, 'circle');
+      ff.setAttribute('r', (1 + Math.random() * 1.5).toFixed(1));
+      ff.setAttribute('fill', 'var(--gold)');
+      ff.setAttribute('opacity', '0');
+      ff.setAttribute('class', 'gdv-firefly');
+      ff.dataset.phase = String(Math.random() * Math.PI * 2);
+      ff.dataset.rx = String(30 + Math.random() * 50);
+      ff.dataset.ry = String(30 + Math.random() * 50);
+      ff.dataset.speed = String(0.0005 + Math.random() * 0.001);
+      gFireflies.appendChild(ff);
+    }
+    svg.appendChild(gFireflies);
+  }
+
+  // ── Animation fireflies — appelée depuis updateSeed ────────────
+  function updateFireflies(ts) {
+    const svg = document.getElementById('m1-seed-svg');
+    if (!svg) return;
+    const fireflies = svg.querySelectorAll('.gdv-firefly');
+    fireflies.forEach(ff => {
+      const phase = parseFloat(ff.dataset.phase);
+      const rx    = parseFloat(ff.dataset.rx);
+      const ry    = parseFloat(ff.dataset.ry);
+      const speed = parseFloat(ff.dataset.speed);
+      const t     = ts * speed + phase;
+      const x = GDV_CX + rx * Math.sin(t) * Math.cos(t * 0.7);
+      const y = GDV_CY + ry * Math.cos(t) * Math.sin(t * 0.5);
+      const op = 0.15 + 0.5 * (0.5 + 0.5 * Math.sin(t * 2.3));
+      ff.setAttribute('cx', x.toFixed(1));
+      ff.setAttribute('cy', y.toFixed(1));
+      ff.setAttribute('opacity', op.toFixed(2));
+    });
   }
 
   // ── Animation — easing ─────────────────────────────────────────
@@ -890,23 +1109,41 @@ const Module1 = (() => {
       if (i === 0) {
         const micro = Math.sin(ts / 900) * 1.2 * breathAmt;
         c.setAttribute('r', (r + micro).toFixed(3));
+        // Halo lumineux sur inspire
+        const centerOp = phaseId === 'inspire'
+          ? (0.85 + 0.15 * breathAmt).toFixed(2)
+          : (0.7 + 0.1 * Math.sin(ts / 2000)).toFixed(2);
+        c.setAttribute('opacity', centerOp);
       } else {
         const angle = parseFloat(c.dataset.angle);
         const ripple = Math.sin(ts / 1400 + i * 1.047) * 1.8 * breathAmt;
         c.setAttribute('cx', (GDV_CX + (d + ripple) * Math.cos(angle)).toFixed(3));
         c.setAttribute('cy', (GDV_CY + (d + ripple) * Math.sin(angle)).toFixed(3));
         c.setAttribute('r', (r + ripple * 0.3).toFixed(3));
+        // Opacité variable par cercle — ondulation organique
+        const baseOp = 0.55 + 0.15 * i / 6;
+        const wave = Math.sin(ts / (1800 + i * 300) + i * 0.8) * 0.2;
+        c.setAttribute('opacity', (baseOp + wave * breathAmt).toFixed(2));
       }
     });
 
     const sw = (0.7 + breathAmt * 0.8).toFixed(2);
     seedCircles.forEach(c => c.setAttribute('stroke-width', sw));
 
+    // Trace résiduelle sur expire — léger afterglow
+    if (phaseId === 'expire') {
+      seedCircles.forEach(c => {
+        c.setAttribute('filter', 'url(#seed-glow-f)');
+      });
+    }
+
     const svg = document.getElementById('m1-seed-svg');
     if (svg) svg.style.setProperty('--gdv-stroke', col.stroke);
 
     const blurEl = document.getElementById('seed-blur-el');
     if (blurEl) blurEl.setAttribute('stdDeviation', (col.blur * breathAmt + 1.5).toFixed(1));
+
+    updateFireflies(ts);
 
     const halo = document.getElementById('m1-halo');
     if (halo) halo.style.background =

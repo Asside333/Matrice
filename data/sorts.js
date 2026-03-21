@@ -42,6 +42,16 @@ const SORTS = {
       texte: "Il y a un soleil au centre de ta poitrine. Pas métaphoriquement — une source de chaleur réelle, une vitalité qui ne demande qu'à rayonner. Aujourd'hui, tu ne te caches pas. Tu brilles là où tu te trouves.",
       geste: "Pose les deux mains sur ton sternum. Imagine une chaleur dorée s'étendant de là vers tout ton corps. Reste 3 respirations dans cette sensation.",
     },
+    {
+      titre: "La Danse du Feu",
+      texte: "Le feu danse. Il ne reste jamais immobile. Aujourd'hui, mets du mouvement dans tes actions. Pas la frénésie — la fluidité du feu qui cherche toujours vers le haut.",
+      geste: "Secoue tes mains vigoureusement pendant 10 secondes, comme si tu les séchais. Sens l'énergie circuler. Tu viens de réveiller ton feu.",
+    },
+    {
+      titre: "Forger l'Impossible",
+      texte: "Le forgeron ne craint pas le métal brûlant. Il sait que ce qui résiste au marteau prend la meilleure forme. Ce qui te résiste aujourd'hui te forge.",
+      geste: "Frappe doucement un poing dans l'autre paume, trois fois. Chaque frappe est une décision. La dernière est un engagement.",
+    },
   ],
 
   terre: [
@@ -79,6 +89,16 @@ const SORTS = {
       titre: "Le Chêne et la Tempête",
       texte: "Le chêne ne plie pas parce qu'il est rigide. Il plie parce qu'il est vivant — et ses racines sont si profondes qu'elles lui permettent tout. Aujourd'hui, tu peux te laisser affecter sans te perdre.",
       geste: "Debout, pieds écartés. Laisse ton haut du corps se balancer légèrement à droite, à gauche. Observe que tes pieds restent stables. C'est ça, l'enracinement.",
+    },
+    {
+      titre: "Le Sillon",
+      texte: "Chaque sillon tracé dans la terre est un acte de foi — tu plantes sans savoir ce qui poussera. Aujourd'hui, fais confiance au processus. La récolte viendra.",
+      geste: "Trace une ligne invisible devant toi avec le pied, lentement, comme si tu ouvrais un sillon. C'est ton chemin. Il commence ici.",
+    },
+    {
+      titre: "Sel de la Terre",
+      texte: "Le sel préserve, purifie, donne saveur. Tu es le sel de ton environnement — ta présence change la composition de chaque pièce où tu entres.",
+      geste: "Frotte tes paumes ensemble puis passe-les sur tes bras, de l'épaule au poignet. Tu te nettoies. Tu te prépares.",
     },
   ],
 
@@ -118,6 +138,16 @@ const SORTS = {
       texte: "Mercure gouverne les communications, les voyages, les connexions. Aujourd'hui, chaque échange est une opportunité. Reste alerte aux messages inattendus — dans une conversation, dans une coïncidence, dans un silence.",
       geste: "Touche tes tempes du bout des doigts. Prends conscience de ton cerveau actif. Remercie-le pour tout ce qu'il traite en ce moment sans que tu le demandes.",
     },
+    {
+      titre: "Le Souffle du Vent",
+      texte: "Le vent porte les graines là où elles doivent tomber. Tes idées cherchent à se poser quelque part. Laisse-les voyager aujourd'hui — la bonne terre les accueillera.",
+      geste: "Souffle doucement dans tes mains en coupe. Puis ouvre-les vers le ciel. Tu viens de libérer quelque chose.",
+    },
+    {
+      titre: "L'Aigle et la Vue",
+      texte: "L'aigle vole si haut qu'il voit le paysage entier. Aujourd'hui, prends de la hauteur. Ce qui semble un obstacle vu de près est un détail vu d'en haut.",
+      geste: "Lève les yeux vers le point le plus haut que tu peux voir. Reste 10 secondes. Ton champ de vision s'élargit. Ta perspective aussi.",
+    },
   ],
 
   eau: [
@@ -156,6 +186,16 @@ const SORTS = {
       texte: "Le mercure liquide — argent vif — suit toujours la pente naturelle des choses. Aujourd'hui, ne force rien. Repère le chemin de moindre résistance et suis-le. Non pas par lâcheté — par intelligence.",
       geste: "Ferme les paumes. Imagine tenir de l'eau entre tes mains. Laisse-la couler à travers tes doigts. Sens la fluidité. Emporte-la dans ta journée.",
     },
+    {
+      titre: "Les Larmes de la Terre",
+      texte: "La pluie n'est pas de la tristesse — c'est la terre qui se renouvelle. Ce que tu ressens de lourd aujourd'hui est peut-être ton âme qui se nettoie pour faire de la place au neuf.",
+      geste: "Passe tes doigts sur ton visage, de haut en bas, comme de l'eau qui coule. Trois fois. Tu laisses partir ce qui doit partir.",
+    },
+    {
+      titre: "Le Courant Souterrain",
+      texte: "Sous la surface de ta journée ordinaire coule un courant plus profond. L'intuition, le pressentiment, la sagesse du corps. Aujourd'hui, écoute ce courant.",
+      geste: "Pose ta main sur ton ventre. Ferme les yeux. Demande : 'Qu'est-ce que mon corps sait que ma tête ignore ?' Attends la réponse.",
+    },
   ],
 
   ether: [
@@ -193,6 +233,16 @@ const SORTS = {
       titre: "Kether — La Couronne",
       texte: "Au sommet de l'arbre de vie, Kether est la couronne — la source de tout. Quelque chose de pur et d'originel est en toi. En dessous de tous les conditionnements, il y a une lumière intacte. Souviens-t'en aujourd'hui.",
       geste: "Touche le sommet de ta tête du bout des doigts. Imagine une lumière blanche entrer par là. Laisse-la descendre lentement jusqu'au bas de ton dos.",
+    },
+    {
+      titre: "Le Miroir Cosmique",
+      texte: "Ce que tu vois dans le monde est le reflet de ce que tu portes en toi. Quand le monde te semble hostile, vérifie d'abord ton état intérieur. Quand il te semble beau, remercie ta lumière.",
+      geste: "Regarde-toi dans un reflet — vitre, écran éteint, miroir. Regarde-toi dans les yeux pendant 10 secondes. Vois celui qui a traversé tout ça.",
+    },
+    {
+      titre: "L'Infini dans l'Instant",
+      texte: "Ce moment précis — maintenant — contient tout ce dont tu as besoin. Le passé est un souvenir, le futur une projection. Le seul point de pouvoir est ici, maintenant, dans ce souffle.",
+      geste: "Arrête tout pendant 5 secondes. Ne bouge pas. Ne pense pas. Juste... être. Ces 5 secondes sont l'éternité compressée.",
     },
   ],
 };

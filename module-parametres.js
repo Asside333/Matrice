@@ -160,9 +160,8 @@ const ModuleParametres = (() => {
       const item = document.createElement('div');
       item.className = 'pm-fav-item';
 
-      const short = text.length > 70 ? text.slice(0, 70) + '…' : text;
       item.innerHTML = `
-        <span class="pm-fav-text">"${escapeHtml(short)}"</span>
+        <span class="pm-fav-text">"${escapeHtml(text)}"</span>
         <button class="pm-fav-remove" aria-label="Retirer des favoris">×</button>
       `;
 

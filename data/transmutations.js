@@ -15,6 +15,8 @@ const TRANSMUTATIONS = {
     "La friction au travail aiguise quelque chose en toi. Tu ne le vois pas encore, mais tu es en train de forger exactement ce dont tu as besoin.",
     "L'incompétence autour de toi n'est pas un obstacle — c'est une donnée. Tu l'intègres sans te perdre dedans. Tu continues à faire du bon travail indépendamment du contexte.",
     "Certains matins, le simple fait de s'habiller et de partir est un acte de courage. C'est en être un aujourd'hui. Et c'est suffisant.",
+    "Ce que tu construis au travail n'est pas juste un salaire. C'est une preuve vivante de ta capacité à créer dans l'adversité.",
+    "Tu n'es pas prisonnier de cet environnement. Tu es un visiteur conscient qui en extrait ce dont il a besoin pour la suite.",
   ],
 
   corps: [
@@ -24,6 +26,7 @@ const TRANSMUTATIONS = {
     "Ce que tu ressens dans ton corps est un signal, pas une condamnation. Écoute-le sans le juger.",
     "Le corps qui te porte ce matin est le même qui escalade, qui crée, qui tient debout. Il mérite ton respect.",
     "Chaque inspiration est la preuve que ton corps te choisit. Chaque jour. Malgré tout.",
+    "Ton corps porte la mémoire de tout ce que tu as surmonté. Chaque muscle, chaque souffle est un testament de résilience.",
   ],
 
   deuil: [
@@ -33,6 +36,7 @@ const TRANSMUTATIONS = {
     "Le deuil n'a pas de calendrier. Ce matin il pèse. Demain il portera. Les deux sont vrais.",
     "Tu as bâti la vie qu'elle aurait voulu vivre. C'est la preuve : tu mérites d'être ici.",
     "La douleur de la perte prouve la profondeur du lien. Ce lien ne s'est pas brisé — il a changé de forme.",
+    "Ceux qui sont partis ne demandent pas ta tristesse. Ils demandent ta lumière. Brille pour eux.",
   ],
 
   mental: [
@@ -42,6 +46,8 @@ const TRANSMUTATIONS = {
     "L'angoisse est de l'énergie sans direction. Tu viens de lui donner un nom. Maintenant donne-lui une sortie.",
     "La peur dit 'danger'. Vérifie : y a-t-il un danger réel, maintenant, ici ? Non. Alors c'est un souvenir, pas une réalité.",
     "Le mental qui s'emballe cherche à te protéger. Remercie-le. Puis reprends le volant.",
+    "Les pensées ne sont pas des faits. Elles sont des nuages. Tu es le ciel.",
+    "Le doute est un gardien dépassé. Tu n'as plus besoin de sa protection.",
   ],
 
   general: [
@@ -60,6 +66,8 @@ const TRANSMUTATIONS = {
     "Même les jours gris font partie du cycle. Tu n'es pas bloqué — tu es en transit.",
     "Le fait que tu sois ici, à chercher de la lumière dans le sombre, dit tout sur qui tu es vraiment.",
     "Ce poids n'est pas une faiblesse. C'est la gravité qui accompagne ceux qui portent quelque chose de vrai.",
+    "Tu n'as pas besoin d'être réparé. Tu es en train de te révéler.",
+    "Le chaos que tu ressens est la matière première de ta prochaine transformation.",
   ],
 };
 

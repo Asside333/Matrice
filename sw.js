@@ -3,7 +3,7 @@
    Cache offline, stratégie Cache-First
    ================================================================ */
 
-const CACHE_NAME = 'matrice-v22';
+const CACHE_NAME = 'matrice-v23';
 
 // Fichiers à mettre en cache à l'installation
 const ASSETS_TO_CACHE = [

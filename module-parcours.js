@@ -431,10 +431,7 @@ const ModuleParcours = (() => {
 
       const humeurColor = HUMEUR_COLORS[entry.humeur] || '#333';
       const dateLabel   = formatDateShort(entry.date);
-      const mantraWords = (entry.mantra || '—').split(' ').slice(0, 5).join(' ');
-      const mantraShort = entry.mantra && entry.mantra.split(' ').length > 5
-        ? mantraWords + '…'
-        : (entry.mantra || '—');
+      const mantraShort = entry.mantra || '—';
       const elemIcon = entry.elementKey ? elementIconSVG(entry.elementKey, 13) : '';
 
       row.innerHTML = `

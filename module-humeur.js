@@ -40,6 +40,9 @@ const ModuleHumeur = (() => {
     // Réinitialiser l'humeur dans RITUAL_STATE pour forcer un nouveau choix
     if (typeof RITUAL_STATE !== 'undefined') RITUAL_STATE.humeur = null;
 
+    // Cloche 528Hz — début du rituel
+    if (typeof playBell === 'function') playBell();
+
     // Phase lunaire subtile sous la question
     const moonEl = document.getElementById('hm-moon-phase');
     if (moonEl && typeof MoonSystem !== 'undefined') {
