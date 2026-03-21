@@ -809,8 +809,8 @@ const Module1 = (() => {
   // ── Géométrie Graine de Vie ────────────────────────────────────
   const GDV_CX = 120, GDV_CY = 120;
   const GDV_R  = 54;
-  const SPREAD = 22;
-  const R_GROW = 11;
+  const SPREAD = 38;
+  const R_GROW = 14;
 
   // ── Config (écran préparation) ─────────────────────────────────
   let cfgFreq     = 'theta';
@@ -1105,30 +1105,35 @@ const Module1 = (() => {
     const r = GDV_R + R_GROW * breathAmt;
     const d = GDV_R + SPREAD * breathAmt;
 
+    // Opacité globale : 0.6 au repos → 1.0 sur inspire
+    const globalOp = phaseId === 'inspire'
+      ? (0.6 + 0.4 * breathAmt)
+      : phaseId === 'hold-in'
+        ? (0.85 + 0.15 * Math.sin(ts / 1500))
+        : (0.6 + 0.2 * (1 - breathAmt));
+
     seedCircles.forEach((c, i) => {
       if (i === 0) {
-        const micro = Math.sin(ts / 900) * 1.2 * breathAmt;
+        const micro = Math.sin(ts / 900) * 1.5 * breathAmt;
         c.setAttribute('r', (r + micro).toFixed(3));
-        // Halo lumineux sur inspire
-        const centerOp = phaseId === 'inspire'
-          ? (0.85 + 0.15 * breathAmt).toFixed(2)
-          : (0.7 + 0.1 * Math.sin(ts / 2000)).toFixed(2);
-        c.setAttribute('opacity', centerOp);
+        c.setAttribute('opacity', Math.min(1, globalOp + 0.1).toFixed(2));
       } else {
         const angle = parseFloat(c.dataset.angle);
-        const ripple = Math.sin(ts / 1400 + i * 1.047) * 1.8 * breathAmt;
+        const ripple = Math.sin(ts / 1400 + i * 1.047) * 2.4 * breathAmt;
         c.setAttribute('cx', (GDV_CX + (d + ripple) * Math.cos(angle)).toFixed(3));
         c.setAttribute('cy', (GDV_CY + (d + ripple) * Math.sin(angle)).toFixed(3));
         c.setAttribute('r', (r + ripple * 0.3).toFixed(3));
-        // Opacité variable par cercle — ondulation organique
-        const baseOp = 0.55 + 0.15 * i / 6;
-        const wave = Math.sin(ts / (1800 + i * 300) + i * 0.8) * 0.2;
-        c.setAttribute('opacity', (baseOp + wave * breathAmt).toFixed(2));
+        const wave = Math.sin(ts / (1800 + i * 300) + i * 0.8) * 0.15;
+        c.setAttribute('opacity', Math.min(1, globalOp + wave).toFixed(2));
       }
     });
 
-    const sw = (0.7 + breathAmt * 0.8).toFixed(2);
-    seedCircles.forEach(c => c.setAttribute('stroke-width', sw));
+    // Stroke-width : centre 2px, extérieurs 1.2px
+    seedCircles.forEach((c, i) => {
+      const baseSw = i === 0 ? 2 : 1.2;
+      const breathSw = baseSw + breathAmt * 0.5;
+      c.setAttribute('stroke-width', breathSw.toFixed(2));
+    });
 
     // Trace résiduelle sur expire — léger afterglow
     if (phaseId === 'expire') {
@@ -1146,8 +1151,16 @@ const Module1 = (() => {
     updateFireflies(ts);
 
     const halo = document.getElementById('m1-halo');
-    if (halo) halo.style.background =
-      `radial-gradient(ellipse at center, ${col.halo} 0%, transparent 68%)`;
+    if (halo) {
+      const haloOp = (0.15 + 0.35 * breathAmt).toFixed(2);
+      const haloCol = col.stroke;
+      halo.style.background =
+        `radial-gradient(ellipse at center, ${haloCol.replace(')', `, ${haloOp})`).replace('rgb', 'rgba').replace('#', '')} 0%, transparent 68%)`;
+      // Simplified: use col.halo which already has alpha
+      halo.style.background =
+        `radial-gradient(ellipse at center, ${col.halo} 0%, transparent 65%)`;
+      halo.style.opacity = (0.4 + 0.6 * breathAmt).toFixed(2);
+    }
 
     document.documentElement.style.setProperty('--breath-text', col.text);
   }

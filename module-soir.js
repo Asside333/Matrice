@@ -87,7 +87,7 @@ const ModuleSoir = (() => {
     setTimeout(() => el.classList.remove('sv-shake'), 400);
   }
 
-  // ── Zone scellée ──────────────────────────────────────────────
+  // ── Zone scellée — animation sacrée ──────────────────────────
   function showSealedZone(phrase) {
     // Masquer les formulaires
     document.getElementById('sv-form-rapide')?.classList.add('sv-form--off');
@@ -95,9 +95,19 @@ const ModuleSoir = (() => {
 
     const zone    = document.getElementById('sv-sealed');
     const closing = document.getElementById('sv-closing');
+    const screen  = document.getElementById('screen-soir');
     if (!zone || !closing) return;
 
-    closing.textContent = phrase;
+    // Pulse Graine de Vie + halo
+    screen?.classList.add('sv-sealing');
+
+    // Éclairer les étoiles
+    document.querySelectorAll('.sv-star-pt').forEach(s => {
+      s.style.opacity = '1';
+      s.style.transform = 'scale(1.4)';
+    });
+
+    closing.textContent = '';
     zone.classList.remove('sv-sealed--off');
 
     // Animation d'entrée : opacity
@@ -106,11 +116,34 @@ const ModuleSoir = (() => {
     void zone.offsetWidth;
     zone.style.transition = 'opacity 1.2s ease';
     zone.style.opacity    = '1';
+
+    // Phrase lettre par lettre (typewriter sacré)
+    setTimeout(() => {
+      typewritePhrase(closing, phrase);
+    }, 800);
+  }
+
+  function typewritePhrase(el, text) {
+    el.textContent = '';
+    let i = 0;
+    const interval = setInterval(() => {
+      if (i < text.length) {
+        el.textContent += text[i];
+        i++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 45);
   }
 
   function hideSealedZone() {
     const zone = document.getElementById('sv-sealed');
     if (zone) { zone.classList.add('sv-sealed--off'); zone.style.opacity = '0'; }
+    document.getElementById('screen-soir')?.classList.remove('sv-sealing');
+    document.querySelectorAll('.sv-star-pt').forEach(s => {
+      s.style.opacity = '';
+      s.style.transform = '';
+    });
   }
 
   function resetForm() {
@@ -241,15 +274,58 @@ const ModuleSoir = (() => {
   }
 
   // ── Lifecycle ─────────────────────────────────────────────────
+  function createStars() {
+    const container = document.getElementById('sv-stars');
+    if (!container || container.children.length > 0) return;
+    for (let i = 0; i < 10; i++) {
+      const star = document.createElement('div');
+      star.className = 'sv-star-pt';
+      star.style.left = (5 + Math.random() * 90) + '%';
+      star.style.top  = (3 + Math.random() * 50) + '%';
+      star.style.animationDelay = (Math.random() * 4).toFixed(1) + 's';
+      star.style.animationDuration = (2.5 + Math.random() * 2).toFixed(1) + 's';
+      const size = 1.5 + Math.random() * 1.5;
+      star.style.width = size + 'px';
+      star.style.height = size + 'px';
+      container.appendChild(star);
+    }
+  }
+
+  function typewritePrompt() {
+    const el = document.getElementById('sv-prompt-rapide');
+    if (!el) return;
+    const text = el.textContent;
+    el.textContent = '';
+    el.style.visibility = 'visible';
+    let i = 0;
+    const interval = setInterval(() => {
+      if (i < text.length) {
+        el.textContent += text[i];
+        i++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 40);
+  }
+
   function onEnter() {
     resetForm();
     setFormat('rapide');
 
-    // Phase lunaire dans le header du soir
+    // Retirer l'état sealing
+    document.getElementById('screen-soir')?.classList.remove('sv-sealing');
+
+    // Créer les étoiles
+    createStars();
+
+    // Prompt lettre par lettre
+    setTimeout(typewritePrompt, 400);
+
+    // Phase lunaire en grand (48px) dans le header
     const moonEl = document.getElementById('sv-moon-phase');
     if (moonEl && typeof MoonSystem !== 'undefined') {
       const phase = MoonSystem.getMoonPhase(new Date());
-      moonEl.innerHTML = MoonSystem.drawMoonIcon(phase.key, 16) +
+      moonEl.innerHTML = MoonSystem.drawMoonIcon(phase.key, 48) +
         `<span class="sv-moon-name">${phase.name}</span>`;
     }
   }

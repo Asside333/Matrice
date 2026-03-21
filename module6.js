@@ -11,6 +11,7 @@ const Module6 = (() => {
   let throws   = [];   // résultats des 6 lancers (0=yin, 1=yang)
   let hexagram = null; // objet hexagramme courant
   let overlayOpen = false;
+  let throwLocked = false;
 
   // ── Simulation 3 pièces ───────────────────────────────────────
   function throwCoins() {
@@ -38,30 +39,38 @@ const Module6 = (() => {
 
   // ── Ajouter un lancer ─────────────────────────────────────────
   function addThrow() {
-    if (throws.length >= 6) return;
+    if (throws.length >= 6 || throwLocked) return;
+    throwLocked = true;
+
     const result = throwCoins();
     throws.push(result);
-    updateThrowUI();
 
     // Haptic feedback
     if (typeof haptic === 'function') haptic(50);
 
-    // Mettre à jour le compteur
-    const cntEl = document.getElementById('m6-throw-count');
-    if (cntEl) cntEl.textContent = `${throws.length} / 6`;
-
     const btn = document.getElementById('m6-throw-btn');
+    const cntEl = document.getElementById('m6-throw-count');
 
-    if (throws.length === 6) {
-      // Hexagramme complet
-      btn?.classList.add('m6-throw-btn--done');
-      if (btn) btn.textContent = 'Révèle l\'hexagramme ✦';
-      setTimeout(revealHexagram, 600);
-    } else {
-      // Animation de flash sur le bouton
-      btn?.classList.add('m6-throw-btn--flash');
-      setTimeout(() => btn?.classList.remove('m6-throw-btn--flash'), 450);
-    }
+    // 1) Animation lente des pièces (1.5s)
+    btn?.classList.add('m6-throw-btn--flash');
+
+    // 2) Après 800ms de pause, le trait apparaît (600ms d'animation CSS)
+    setTimeout(() => {
+      updateThrowUI();
+      if (cntEl) cntEl.textContent = `${throws.length} / 6`;
+
+      // 3) 500ms après l'apparition du trait, réactiver le bouton
+      setTimeout(() => {
+        btn?.classList.remove('m6-throw-btn--flash');
+
+        if (throws.length === 6) {
+          btn?.classList.add('m6-throw-btn--done');
+          if (btn) btn.textContent = 'Révèle l\'hexagramme ✦';
+          setTimeout(revealHexagram, 600);
+        }
+        throwLocked = false;
+      }, 1100); // 600ms trait + 500ms pause
+    }, 2300); // 1500ms coin anim + 800ms pause
   }
 
   // ── SVG de l'hexagramme ───────────────────────────────────────
@@ -159,6 +168,7 @@ const Module6 = (() => {
     throws   = [];
     hexagram = null;
     overlayOpen = false;
+    throwLocked = false;
 
     const throwZone  = document.getElementById('m6-throw-zone');
     const resultZone = document.getElementById('m6-result-zone');

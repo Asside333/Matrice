@@ -557,6 +557,9 @@
   ═══════════════════════════════════════════ -->
   <section id="screen-soir" class="screen" aria-label="Mode Soir — Gratitude">
 
+    <!-- Halo de scellement -->
+    <div class="sv-seal-halo" aria-hidden="true"></div>
+
     <!-- Graine de Vie en filigrane -->
     <div class="sv-bg-wrap" aria-hidden="true">
       <svg class="sv-bg-svg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
@@ -572,10 +575,15 @@
       </svg>
     </div>
 
-    <!-- En-tête -->
+    <!-- Étoiles scintillantes -->
+    <div class="sv-stars" id="sv-stars" aria-hidden="true"></div>
+
+    <!-- En-tête : Lune grande + titre + historique -->
+    <div class="sv-header-top">
+      <div class="sv-moon-big" id="sv-moon-phase" aria-live="polite"></div>
+    </div>
     <div class="sv-header">
       <span class="sv-title">Soir</span>
-      <div class="sv-moon" id="sv-moon-phase" aria-live="polite"></div>
       <button class="sv-history-btn" id="sv-history-btn" aria-label="Voir l'historique">
         <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <path d="M10 6v4l3 2" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/>
@@ -596,7 +604,7 @@
 
       <!-- ── Format Rapide ───────────────────────── -->
       <div class="sv-form" id="sv-form-rapide">
-        <p class="sv-prompt">Une chose pour laquelle<br>tu es reconnaissant aujourd'hui.</p>
+        <p class="sv-prompt" id="sv-prompt-rapide">Qu'est-ce que tu retiens de cette journée ?</p>
         <textarea class="sv-textarea" id="sv-ta-rapide"
                   placeholder="Écris librement…"
                   rows="4" autocomplete="off" spellcheck="false"></textarea>

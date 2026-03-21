@@ -10,7 +10,8 @@
       "Bash(\"D:\\\\matrice\\\\Matrice\\\\style.css\":*)",
       "Bash(\"/d/matrice/Matrice/style.css\":*)",
       "Bash(winget upgrade:*)",
-      "Skill(update-config)"
+      "Skill(update-config)",
+      "Bash(where.exe node:*)"
     ]
   }
 }

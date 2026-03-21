@@ -1145,14 +1145,14 @@ body.easter-333 .mcube-333 {
 /* Halo coloré */
 .m1-breath-halo {
   position: absolute;
-  width: min(72vmin, 310px);
-  height: min(72vmin, 310px);
+  width: min(80vmin, 360px);
+  height: min(80vmin, 360px);
   border-radius: 50%;
   background: radial-gradient(ellipse at center,
     rgba(175, 169, 236, 0.14) 0%, transparent 68%);
   pointer-events: none;
   z-index: 0;
-  transition: background 1.8s ease;
+  transition: background 1s ease, opacity 1s ease;
 }
 
 /* Graine de Vie */
@@ -2605,13 +2605,18 @@ body.light-mode .m1-toast {
 /* ── Phase visualisation ─────────────────────────────────────── */
 .m4-viz-phase {
   width: 100%;
+  max-width: 85vw;
+  margin: 0 auto;
   display: flex;
   flex-direction: column;
+  justify-content: center;
   align-items: center;
   gap: 20px;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.42s;
+  flex: 1;
+  padding: 24px;
 }
 
 #screen-m4.active .m4-viz-phase {
@@ -2637,9 +2642,10 @@ body.light-mode .m1-toast {
   line-height: 1.75;
   text-align: center;
   width: 100%;
-  max-width: min(600px, 90vw);
+  max-width: 85vw;
+  margin: 0 auto;
   box-sizing: border-box;
-  padding: 0 20px;
+  padding: 0 24px;
   white-space: normal;
   overflow-wrap: break-word;
   word-break: break-word;
@@ -2918,12 +2924,12 @@ body.light-mode .m1-toast {
 
 @keyframes m6-trait-appear {
   0%   { transform: scaleX(0); opacity: 0; }
-  40%  { opacity: 1; }
+  30%  { opacity: 1; }
   100% { transform: scaleX(1); opacity: 1; }
 }
 .m6-trait--appear {
   transform-origin: left center;
-  animation: m6-trait-appear 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  animation: m6-trait-appear 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
 .m6-throw-count {
@@ -2952,18 +2958,18 @@ body.light-mode .m1-toast {
 }
 
 .m6-throw-btn--flash {
-  animation: m6-coin-shake 0.4s ease;
+  animation: m6-coin-fall 1.5s cubic-bezier(0.22, 0.61, 0.36, 1) forwards;
 }
 
-@keyframes m6-coin-shake {
-  0%   { transform: translateX(0) rotate(0); }
-  15%  { transform: translateX(-6px) rotate(-3deg); }
-  30%  { transform: translateX(5px) rotate(2deg); }
-  45%  { transform: translateX(-4px) rotate(-1deg); }
-  60%  { transform: translateX(3px) rotate(1deg); }
-  75%  { transform: translateX(-1px); }
-  100% { transform: translateX(0); }
+@keyframes m6-coin-fall {
+  0%   { transform: translateY(0) rotate(0); opacity: 1; }
+  30%  { transform: translateY(8px) rotate(180deg); opacity: 0.85; }
+  60%  { transform: translateY(3px) rotate(360deg); opacity: 0.9; }
+  80%  { transform: translateY(6px) rotate(540deg); opacity: 0.95; }
+  90%  { transform: translateY(2px) rotate(690deg); }
+  100% { transform: translateY(0) rotate(720deg); opacity: 1; }
 }
+
 
 .m6-throw-btn--done {
   border-color: var(--teal-hi);
@@ -4350,14 +4356,15 @@ body.light-mode .m1-toast {
    ════════════════════════════════════════════════════════════════ */
 
 :root {
-  --sv-bg:         #08091a;
-  --sv-accent:     #8B83C4;
-  --sv-accent-hi:  #B0A8DC;
-  --sv-accent-dim: rgba(139, 131, 196, 0.18);
+  --sv-bg:         #0D1B3E;
+  --sv-accent:     #B8860B;
+  --sv-accent-hi:  #D4A843;
+  --sv-accent-dim: rgba(184, 134, 11, 0.18);
   --sv-text:       #E4DCF0;
   --sv-text-dim:   rgba(228, 220, 240, 0.55);
-  --sv-field-bg:   rgba(139, 131, 196, 0.07);
-  --sv-field-border: rgba(139, 131, 196, 0.28);
+  --sv-field-bg:   rgba(13, 27, 62, 0.85);
+  --sv-field-border: rgba(184, 134, 11, 0.35);
+  --sv-star:       rgba(228, 220, 240, 0.7);
 }
 
 #screen-soir {
@@ -4366,6 +4373,29 @@ body.light-mode .m1-toast {
   flex-direction: column;
   overflow: hidden;
   position: relative;
+}
+
+/* ── Étoiles scintillantes ────────────────────────────────────── */
+.sv-stars {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.sv-star-pt {
+  position: absolute;
+  width: 2px; height: 2px;
+  border-radius: 50%;
+  background: var(--sv-star);
+  animation: sv-twinkle 3s ease-in-out infinite alternate;
+}
+
+@keyframes sv-twinkle {
+  0%   { opacity: 0.2; transform: scale(0.8); }
+  50%  { opacity: 1;   transform: scale(1.2); }
+  100% { opacity: 0.3; transform: scale(0.9); }
 }
 
 /* ── Graine de Vie filigrane ─────────────────────────────────── */
@@ -4384,17 +4414,50 @@ body.light-mode .m1-toast {
   width: 100%;
   height: 100%;
   color: var(--sv-accent);
-  opacity: 0.06;
+  opacity: 0.05;
+  transition: opacity 1.2s ease;
 }
 
-/* ── En-tête ─────────────────────────────────────────────────── */
+/* ── Lune grande en haut ─────────────────────────────────────── */
+.sv-header-top {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 16px 18px 4px;
+  flex-shrink: 0;
+}
+
+.sv-moon-big {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  color: var(--sv-accent-hi);
+}
+
+.sv-moon-big .moon-icon {
+  opacity: 1;
+}
+
+.sv-moon-big .sv-moon-name {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 0.78rem;
+  font-style: italic;
+  letter-spacing: 0.06em;
+  color: var(--sv-accent-hi);
+  opacity: 0.8;
+}
+
+/* ── En-tête titre + historique ───────────────────────────────── */
 .sv-header {
   position: relative;
   z-index: 1;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 14px 18px 8px;
+  padding: 4px 18px 8px;
   flex-shrink: 0;
 }
 
@@ -4422,6 +4485,7 @@ body.light-mode .m1-toast {
   cursor: pointer;
   transition: border-color 0.2s, color 0.2s;
   white-space: nowrap;
+  z-index: 2;
 }
 
 .sv-history-btn svg { width: 13px; height: 13px; flex-shrink: 0; }
@@ -4531,8 +4595,8 @@ body.light-mode .m1-toast {
 .sv-textarea {
   width: 100%;
   box-sizing: border-box;
-  background: var(--sv-field-bg);
-  border: 1px solid var(--sv-field-border);
+  background: rgba(10, 20, 50, 0.7);
+  border: 1px solid rgba(184, 134, 11, 0.3);
   border-radius: 12px;
   color: var(--sv-text);
   font-family: 'Cormorant Garamond', Georgia, serif;
@@ -4541,11 +4605,14 @@ body.light-mode .m1-toast {
   padding: 12px 16px;
   resize: none;
   outline: none;
-  transition: border-color 0.2s;
+  transition: border-color 0.3s, box-shadow 0.3s;
   white-space: pre-wrap;
 }
 
-.sv-textarea:focus { border-color: var(--sv-accent-hi); }
+.sv-textarea:focus {
+  border-color: var(--sv-accent-hi);
+  box-shadow: 0 0 12px rgba(184, 134, 11, 0.15);
+}
 
 .sv-textarea::placeholder { color: var(--sv-text-dim); opacity: 1; }
 
@@ -4559,21 +4626,22 @@ body.light-mode .m1-toast {
 
 /* ── Bouton Sceller ──────────────────────────────────────────── */
 .sv-seal-btn {
-  background: var(--sv-accent);
+  background: linear-gradient(135deg, #B8860B, #D4A843);
   border: none;
   border-radius: 24px;
   color: #fff;
-  font-family: 'DM Sans', sans-serif;
-  font-size: 0.92rem;
-  font-weight: 500;
-  letter-spacing: 0.03em;
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
   padding: 13px 32px;
   min-height: 48px;
   width: 100%;
   max-width: 280px;
   cursor: pointer;
-  transition: background 0.2s, transform 0.15s;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.3s;
   margin-top: 4px;
+  box-shadow: 0 0 18px rgba(184, 134, 11, 0.2);
 }
 
 .sv-seal-btn:active { transform: scale(0.96); }
@@ -4592,15 +4660,39 @@ body.light-mode .m1-toast {
 .sv-sealed--off { display: none; }
 
 .sv-seal-star {
-  font-size: 1.6rem;
+  font-size: 2rem;
   color: var(--sv-accent-hi);
   opacity: 0.7;
   animation: sv-star-pulse 3s ease infinite;
 }
 
 @keyframes sv-star-pulse {
-  0%, 100% { opacity: 0.7; transform: scale(1); }
-  50%       { opacity: 1;   transform: scale(1.12); }
+  0%, 100% { opacity: 0.5; transform: scale(1); }
+  50%       { opacity: 1;   transform: scale(1.2); }
+}
+
+/* ── Animation Sceller — pulse et halo ──────────────────────── */
+.sv-sealing .sv-bg-svg {
+  opacity: 0.15;
+  transition: opacity 1.5s ease;
+}
+
+.sv-seal-halo {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 300px; height: 300px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center,
+    rgba(184, 134, 11, 0.18) 0%, transparent 70%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 0;
+  transition: opacity 1.5s ease;
+}
+
+.sv-sealing .sv-seal-halo {
+  opacity: 1;
 }
 
 .sv-closing {
@@ -4616,6 +4708,7 @@ body.light-mode .m1-toast {
   max-width: min(400px, 88vw);
   box-sizing: border-box;
   padding: 0 4px;
+  text-shadow: 0 0 20px rgba(184, 134, 11, 0.2);
 }
 
 .sv-new-btn {
@@ -4762,15 +4855,15 @@ body.light-mode .m1-toast {
 }
 
 /* ── Light mode ──────────────────────────────────────────────── */
-.light-mode #screen-soir { background: #f0eef8; }
+.light-mode #screen-soir { background: #1a2340; }
 
 .light-mode .sv-prompt,
 .light-mode .sv-closing,
-.light-mode .sv-hist-text { color: #1a1630; }
+.light-mode .sv-hist-text { color: #E4DCF0; }
 
 .light-mode .sv-textarea {
-  color: #1a1630;
-  background: rgba(139, 131, 196, 0.05);
+  color: #E4DCF0;
+  background: rgba(10, 20, 50, 0.6);
 }
 
 .light-mode .sv-overlay { background: rgba(230, 225, 248, 0.88); }
