@@ -83,7 +83,7 @@ const MoonOverlay = (() => {
   function bindAll() {
     // Éléments lune cliquables dans toute l'app
     const ids = [
-      'moon-block',     // accueil header
+      // 'moon-block' → navigation directe sur accueil (géré dans app.js)
       'hm-moon-phase',  // check-in humeur
       'sv-moon-phase',  // soir
       'm5-moon',        // module 5

@@ -27,6 +27,8 @@ const VISUALISATIONS = {
     "Imagine une personne avec qui tu veux tisser un lien plus profond. Tu la regardes sans projection, sans attente — juste avec curiosité. Tu vois quelque chose de toi en elle. Elle voit quelque chose d'elle en toi. C'est ça, la vraie connexion : la reconnaissance. Laisse-la exister.",
     "Place ta conscience dans ton cœur. Sens-le battre. Chaque battement est une transmission — vers les gens proches, vers la ville, vers la planète. Tu n'es pas un individu isolé. Tu es un nœud dans un réseau vivant. Ce que tu rayonnes compte. Ce que tu reçois aussi.",
     "Visualise le moment de ta prochaine vraie conversation — pas une transaction, pas un échange d'informations, mais un moment où deux personnes se rencontrent vraiment. Tu arrives à cette conversation ouvert, curieux, sans agenda. Tu poses des questions que tu veux vraiment entendre. Quelque chose de réel peut se passer.",
+    "Imagine que tu es assis en cercle avec les gens qui comptent pour toi. Personne ne parle. Vous êtes simplement là, ensemble, dans un silence confortable. Ce silence n'est pas vide — il est plein de tout ce qui n'a pas besoin d'être dit. La connexion la plus profonde existe au-delà des mots.",
+    "Vois-toi tendre la main à quelqu'un qui lutte en silence. Tu ne cherches pas à réparer. Tu dis simplement : je te vois. Ce geste minuscule — reconnaître la présence de l'autre — est l'acte le plus puissant de connexion humaine.",
   ],
 
   Créativité: [

@@ -329,8 +329,21 @@ function buildAccueilSpiral() {
   spiralPath.setAttribute('stroke-linecap', 'round');
   svg.appendChild(spiralPath);
 
+  // Animation dessin progressif de la spirale
+  try {
+    const len = spiralPath.getTotalLength();
+    spiralPath.style.strokeDasharray  = len;
+    spiralPath.style.strokeDashoffset = len;
+    spiralPath.style.transition = 'stroke-dashoffset 1.6s ease-in-out';
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      spiralPath.style.strokeDashoffset = '0';
+    }));
+  } catch (_) {}
+
   // ── Points des jours complétés ──
   const todayIdx = seasonDays.indexOf(today);
+  const dotDelay = 1200 / Math.max(n, 1);
+  let dotIdx = 0;
   seasonDays.forEach((dateStr, i) => {
     if (dateStr > today) return;
     const entry = cal[dateStr];
@@ -341,6 +354,10 @@ function buildAccueilSpiral() {
     dot.setAttribute('cy', y.toFixed(2));
     dot.setAttribute('r', i === todayIdx ? '2.8' : '2.0');
     dot.setAttribute('fill', MOOD_COLS[entry.mood] || MOOD_COLS[3]);
+    dot.style.opacity = '0';
+    dot.style.transition = 'opacity 0.2s ease';
+    setTimeout(() => { dot.style.opacity = '1'; }, 1600 + dotIdx * dotDelay);
+    dotIdx++;
     svg.appendChild(dot);
   });
 
@@ -379,13 +396,14 @@ function buildAccueilSpiral() {
 
 function displayPhaseLunaire() {
   const phase   = MoonSystem.getMoonPhase(new Date());
-  const iconSvg = MoonSystem.drawMoonIcon(phase.key, 22);
-
-  const iconEl  = document.getElementById('moon-icon');
+  const iconSvg = MoonSystem.drawMoonIcon(phase.key, 26);
   const blockEl = document.getElementById('moon-block');
-
-  if (iconEl)  iconEl.innerHTML = iconSvg;
-  if (blockEl) blockEl.setAttribute('title', phase.name);
+  if (blockEl) {
+    blockEl.innerHTML =
+      `<span class="moon-icon">${iconSvg}</span>` +
+      `<span class="moon-block-name">${phase.name}</span>`;
+    blockEl.setAttribute('title', phase.name);
+  }
 }
 
 // ════════════════════════════════════════════════════════════════
@@ -419,6 +437,10 @@ function bindEvents() {
 
   // Bouton "Commencer le rituel" → check-in humeur d'abord
   document.getElementById('btn-rituel')
+    ?.addEventListener('click', () => navigateTo('humeur'));
+
+  // Lune accueil → check-in humeur (navigation directe)
+  document.getElementById('moon-block')
     ?.addEventListener('click', () => navigateTo('humeur'));
 
   // Toggle thème rapide sur l'accueil (soleil/lune)
@@ -708,6 +730,22 @@ const Module1 = (() => {
       setTimeout(() => { try { snap.oscL.stop(); snap.oscR.stop(); } catch {} }, 700);
     } catch {}
     binNodes = null;
+  }
+
+  function fadeOutBinaural(secs) {
+    if (!binNodes) return;
+    try {
+      const ac = ctx();
+      const now = ac.currentTime;
+      binNodes.gainNode.gain.cancelScheduledValues(now);
+      binNodes.gainNode.gain.setValueAtTime(binNodes.gainNode.gain.value, now);
+      binNodes.gainNode.gain.linearRampToValueAtTime(0, now + secs);
+      const snap = binNodes;
+      binNodes = null;
+      setTimeout(() => { try { snap.oscL.stop(); snap.oscR.stop(); } catch {} }, (secs + 0.3) * 1000);
+    } catch {
+      binNodes = null;
+    }
   }
 
   function toggleBinMute() {
@@ -1152,7 +1190,7 @@ const Module1 = (() => {
     bindSessionEvents();
   });
 
-  return { startBinaural, stopBinaural, toggleBinMute, releaseWakeLock };
+  return { startBinaural, stopBinaural, fadeOutBinaural, toggleBinMute, releaseWakeLock };
 
 })();
 

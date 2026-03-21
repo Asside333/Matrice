@@ -24,6 +24,14 @@ const MANTRAS = {
     "Ce que je construis est réel. Ce que je ressens est légitime.",
     "Mon corps m'appartient. Mon souffle est libre.",
     "Je mérite ce que j'ai bâti de mes mains.",
+    "Je ne suis pas en retard. Je suis exactement où je dois être.",
+    "Ma valeur ne dépend pas du regard des autres.",
+    "Je refuse de me réduire pour que les autres soient à l'aise.",
+    "Je suis le terrain. Pas la tempête.",
+    "Mon histoire ne me définit pas. Mes choix, oui.",
+    "La culpabilité n'a plus de place ici. La responsabilité, oui.",
+    "Je transforme le doute en carburant.",
+    "Ce qui est cassé en moi est en train de se reconstruire autrement.",
   ],
 
   ÉLAN: [
@@ -37,6 +45,14 @@ const MANTRAS = {
     "Je suis en avance sur ce que je croyais possible.",
     "La trajectoire est exponentielle. Le meilleur accélère.",
     "Ce que j'ai traversé a construit ce que je deviens.",
+    "Je ne négocie plus avec la médiocrité. J'avance.",
+    "Le confort tue plus de rêves que l'échec.",
+    "Je choisis la discipline quand la motivation dort.",
+    "Aujourd'hui je fais un pas que la version d'hier n'aurait pas fait.",
+    "Je construis en silence. Les résultats parleront.",
+    "Mon élan ne dépend de personne d'autre que moi.",
+    "L'impossible d'hier est le possible d'aujourd'hui.",
+    "Je suis la preuve vivante que ça peut changer.",
   ],
 
   ANCRAGE: [
@@ -48,6 +64,12 @@ const MANTRAS = {
     "Ce qui pèse aujourd'hui ne définit pas demain.",
     "Mon corps tient. Ma respiration tient. Je tiens.",
     "Le sombre fait partie du chemin. Il ne l'arrête pas.",
+    "Je n'ai pas à tout comprendre pour continuer.",
+    "Le sol sous mes pieds est stable. C'est suffisant.",
+    "La tempête passe. Moi, je reste.",
+    "Je choisis de ne pas fuir ce que je ressens.",
+    "Ce matin est difficile. Ce matin n'est pas éternel.",
+    "Je plie sans rompre. C'est ma force.",
   ],
 };
 

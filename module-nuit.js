@@ -26,10 +26,37 @@ const ModuleNuit = (() => {
   let droneNodes    = null;
 
   const PATTERN_478 = [
-    { label: 'Inspire…',  secs: 4 },
-    { label: 'Retiens…',  secs: 7 },
-    { label: 'Expire…',   secs: 8 },
+    { label: 'INSPIRE',  secs: 4 },
+    { label: 'RETIENS',  secs: 7 },
+    { label: 'EXPIRE',   secs: 8 },
   ];
+
+  // ── Wake Lock ─────────────────────────────────────────────────
+  let wakeLock = null;
+
+  async function requestWakeLock() {
+    try {
+      wakeLock = await navigator.wakeLock.request('screen');
+    } catch (_) {
+      try {
+        const vid = document.createElement('video');
+        vid.setAttribute('loop', ''); vid.setAttribute('muted', ''); vid.setAttribute('playsinline', '');
+        vid.style.cssText = 'position:fixed;top:-100px;opacity:0;pointer-events:none;';
+        const src = document.createElement('source');
+        src.src = 'data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAAIZnJlZQAAA=';
+        src.type = 'video/mp4';
+        vid.appendChild(src);
+        document.body.appendChild(vid);
+        vid.play().catch(() => {});
+        wakeLock = { _vid: vid, release: () => { vid.pause(); vid.remove(); } };
+      } catch (_) {}
+    }
+  }
+
+  function releaseWakeLock() {
+    try { wakeLock?.release(); } catch (_) {}
+    wakeLock = null;
+  }
 
   // ── Audio ────────────────────────────────────────────────────
 
@@ -164,7 +191,13 @@ const ModuleNuit = (() => {
       phaseIdx = (phaseIdx + 1) % 3;
       phaseStart = performance.now();
       const lblEl = document.getElementById('nuit-breath-label');
-      if (lblEl) lblEl.textContent = PATTERN_478[phaseIdx].label;
+      if (lblEl) {
+        lblEl.style.opacity = '0';
+        const nextLabel = PATTERN_478[phaseIdx].label;
+        setTimeout(() => {
+          if (running) { lblEl.textContent = nextLabel; lblEl.style.opacity = '0.4'; }
+        }, 400);
+      }
     }
   }
 
@@ -246,8 +279,19 @@ const ModuleNuit = (() => {
       setTimeout(() => phrase.classList.add('nuit-phrase--fade'), 5000);
     }
 
+    // Label de respiration avec fondu initial
     const lblEl = document.getElementById('nuit-breath-label');
-    if (lblEl) lblEl.textContent = PATTERN_478[0].label;
+    if (lblEl) {
+      lblEl.textContent = PATTERN_478[0].label;
+      lblEl.style.opacity = '0';
+      requestAnimationFrame(() => requestAnimationFrame(() => { lblEl.style.opacity = '0.4'; }));
+    }
+
+    // Plein écran + Wake Lock
+    setTimeout(async () => {
+      try { await document.documentElement.requestFullscreen?.(); } catch (_) {}
+      await requestWakeLock();
+    }, 250);
 
     animateSeed();
     startTimer();
@@ -261,6 +305,9 @@ const ModuleNuit = (() => {
 
     const svg = document.getElementById('nuit-seed-svg');
     if (svg) svg.style.transform = 'scale(1)';
+
+    try { if (document.fullscreenElement) document.exitFullscreen?.(); } catch (_) {}
+    releaseWakeLock();
 
     setTimeout(() => {
       if (typeof navigateTo === 'function') navigateTo('accueil');

@@ -1054,57 +1054,45 @@
        ÉCRAN — CLÔTURE
   ═══════════════════════════════════════════ -->
   <section id="screen-cloture" class="screen no-nav" aria-label="Clôture du rituel">
+    <div class="cl-scroll" id="cl-scroll">
 
-    <main class="cl-main">
-      <div class="cl-header-symbol" aria-hidden="true">
-        <!-- Cube de Métatron miniature -->
-        <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-          <g stroke="currentColor" fill="none" stroke-width="0.6" opacity="0.7">
-            <circle cx="40" cy="40" r="20"/>
-            <circle cx="54" cy="40" r="20" opacity="0.5"/>
-            <circle cx="47" cy="26.5" r="20" opacity="0.5"/>
-            <circle cx="33" cy="26.5" r="20" opacity="0.5"/>
-            <circle cx="26" cy="40" r="20" opacity="0.5"/>
-            <circle cx="33" cy="53.5" r="20" opacity="0.5"/>
-            <circle cx="47" cy="53.5" r="20" opacity="0.5"/>
-          </g>
-        </svg>
-      </div>
+      <h2 class="cl-title">Rituel scellé</h2>
 
-      <h2 class="cl-title">Rituel accompli</h2>
-      <p class="cl-subtitle">Tu repars calibré.</p>
-
-      <!-- Résumé -->
+      <!-- Résumé compact 4 lignes -->
       <div class="cl-summary">
-        <div class="cl-summary-row">
-          <span class="cl-summary-label">Mantra</span>
-          <span class="cl-summary-val" id="cl-mantra-val">—</span>
+        <div class="cl-sum-row">
+          <span class="cl-sum-dot" id="cl-sum-dot"></span>
+          <span class="cl-sum-muted">Humeur</span>
+          <span class="cl-sum-text" id="cl-sum-humeur-text">—</span>
         </div>
-        <div class="cl-summary-row">
-          <span class="cl-summary-label">Élément</span>
-          <span class="cl-summary-val" id="cl-element-val">—</span>
+        <div class="cl-sum-row">
+          <span class="cl-sum-muted">Mantra</span>
+          <span class="cl-sum-text" id="cl-mantra-val">—</span>
         </div>
-        <div class="cl-summary-row">
-          <span class="cl-summary-label">Hexagramme</span>
-          <span class="cl-summary-val" id="cl-hex-val">—</span>
+        <div class="cl-sum-row">
+          <span class="cl-sum-icon" id="cl-elem-icon"></span>
+          <span class="cl-sum-text" id="cl-element-val">—</span>
+        </div>
+        <div class="cl-sum-row">
+          <span class="cl-sum-hexmini" id="cl-hex-mini"></span>
+          <span class="cl-sum-text" id="cl-hex-val">—</span>
         </div>
       </div>
 
-      <!-- Streak -->
-      <div class="cl-streak-block">
-        <span class="cl-streak-num" id="cl-streak">0</span>
-        <span class="cl-streak-label">jours consécutifs</span>
-      </div>
+      <div class="cl-sep" aria-hidden="true"></div>
 
       <!-- Phrase de clôture -->
       <p class="cl-closing" id="cl-closing"></p>
 
+      <div class="cl-sep" aria-hidden="true"></div>
+
       <!-- Citation philosophique -->
-      <div class="cl-citation-wrap" id="cl-citation-wrap">
-        <div class="cl-citation-line" aria-hidden="true"></div>
+      <div class="cl-citation-wrap" id="cl-citation-wrap" hidden>
         <blockquote class="cl-citation-text" id="cl-citation-text"></blockquote>
         <cite class="cl-citation-author" id="cl-citation-author"></cite>
       </div>
+
+      <div class="cl-sep" id="cl-sep-moon" aria-hidden="true" hidden></div>
 
       <!-- Insight lunaire -->
       <div class="cl-moon-wrap" id="cl-moon-wrap" hidden>
@@ -1112,11 +1100,18 @@
         <p class="cl-moon-insight" id="cl-moon-insight"></p>
       </div>
 
-      <button class="cl-finish-btn" id="cl-finish-btn">
-        Revenir à l'accueil
-      </button>
-    </main>
+      <!-- Streak -->
+      <div class="cl-streak-block">
+        <svg class="cl-streak-spiral" viewBox="0 0 28 28" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <path d="M14 14 Q14 9.5 17.5 9.5 Q21 9.5 21 14 Q21 20 14 20 Q7 20 7 12.5 Q7 6 14 6" stroke="currentColor" fill="none" stroke-width="1.2" stroke-linecap="round" opacity="0.6"/>
+        </svg>
+        <span class="cl-streak-num" id="cl-streak">0</span>
+        <span class="cl-streak-label">jours</span>
+      </div>
 
+      <button class="cl-finish-btn" id="cl-finish-btn">Retour à l'accueil</button>
+
+    </div>
   </section>
 
   <!-- ═══════════════════════════════════════════

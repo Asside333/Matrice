@@ -60,7 +60,7 @@ const Module6 = (() => {
     } else {
       // Animation de flash sur le bouton
       btn?.classList.add('m6-throw-btn--flash');
-      setTimeout(() => btn?.classList.remove('m6-throw-btn--flash'), 300);
+      setTimeout(() => btn?.classList.remove('m6-throw-btn--flash'), 450);
     }
   }
 
@@ -221,26 +221,95 @@ const Module6 = (() => {
 
 const ScreenCloture = (() => {
 
+  // ── Icônes éléments ───────────────────────────────────────────
+  function buildElemIcon(key, size) {
+    if (key === 'air') {
+      return `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true"><path d="M3 9Q9 6.5 15 9Q19 10.5 21 9"/><path d="M3 13Q9 10.5 15 13Q19 14.5 21 13"/></svg>`;
+    }
+    if (key === 'terre') {
+      return `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 19L9 8L13 14L17 9L21 19"/><line x1="3" y1="19" x2="21" y2="19"/></svg>`;
+    }
+    const P = {
+      feu:   'M12 3C10 7 7 10 7 14.5C7 18 9.2 21 12 21C14.8 21 17 18 17 14.5C17 10 14 7 12 3Z',
+      eau:   'M12 3C12 3 5 11 5 15.5C5 19.1 8.1 22 12 22C15.9 22 19 19.1 19 15.5C19 11 12 3 12 3Z',
+      ether: 'M12 2l2.09 4.26L18.5 7.27l-3.25 3.17.77 4.48L12 12.77l-4.02 2.15.77-4.48L5.5 7.27l4.41-.01z',
+    };
+    const p = P[key];
+    if (!p) return '';
+    return `<svg viewBox="0 0 24 24" width="${size}" height="${size}" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${p}"/></svg>`;
+  }
+
+  // ── Mini hexagramme SVG ───────────────────────────────────────
+  function buildHexMini(traits) {
+    if (!traits || !traits.length) return '';
+    const lines = [];
+    for (let i = 5; i >= 0; i--) {
+      const yang = traits[i] === 1;
+      const y    = 2 + (5 - i) * 8;
+      if (yang) {
+        lines.push(`<rect x="2" y="${y}" width="20" height="5" rx="0.5" fill="currentColor" opacity="0.85"/>`);
+      } else {
+        lines.push(`<rect x="2" y="${y}" width="8" height="5" rx="0.5" fill="currentColor" opacity="0.85"/>`);
+        lines.push(`<rect x="14" y="${y}" width="8" height="5" rx="0.5" fill="currentColor" opacity="0.85"/>`);
+      }
+    }
+    return `<svg viewBox="0 0 24 47" width="13" height="26" xmlns="http://www.w3.org/2000/svg">${lines.join('')}</svg>`;
+  }
+
   function buildSummary() {
     const state = (typeof RITUAL_STATE !== 'undefined') ? RITUAL_STATE : {};
+    const HUMEUR_COLORS = ['','#3a3a42','#5c5c6e','#9A7A2E','#C8952A','#FFD700'];
+    const HUMEUR_LABELS = ['','Difficile','Peu en forme','Neutre','Bien','Excellent'];
 
-    const mantraEl  = document.getElementById('cl-mantra-val');
-    const elementEl = document.getElementById('cl-element-val');
-    const hexEl     = document.getElementById('cl-hex-val');
+    // ── Humeur
+    const dot       = document.getElementById('cl-sum-dot');
+    const humeurTxt = document.getElementById('cl-sum-humeur-text');
+    if (dot) dot.style.background = HUMEUR_COLORS[state.humeur] || 'rgba(255,255,255,0.18)';
+    if (humeurTxt) {
+      humeurTxt.textContent = state.humeur
+        ? `${state.humeur} / 5 — ${HUMEUR_LABELS[state.humeur] || ''}`
+        : '—';
+    }
+
+    // ── Mantra (6 premiers mots)
+    const mantraEl = document.getElementById('cl-mantra-val');
+    if (mantraEl) {
+      const words = (state.mantra || '').split(' ').filter(Boolean);
+      mantraEl.textContent = words.length === 0 ? '—'
+        : words.length > 6 ? words.slice(0, 6).join(' ') + '\u202F…'
+        : words.join(' ');
+    }
+
+    // ── Élément + icône + sort (5 premiers mots)
+    const elemIcon = document.getElementById('cl-elem-icon');
+    const elemText = document.getElementById('cl-element-val');
+    if (elemIcon) elemIcon.innerHTML = state.elementKey ? buildElemIcon(state.elementKey, 16) : '';
+    if (elemText) {
+      const sortSnippet = state.sort
+        ? state.sort.split(' ').slice(0, 5).join(' ') + '\u202F…' : '';
+      elemText.textContent = state.element
+        ? (sortSnippet ? `${state.element} · ${sortSnippet}` : state.element)
+        : '—';
+    }
+
+    // ── Hexagramme mini
+    const hexMiniEl = document.getElementById('cl-hex-mini');
+    const hexText   = document.getElementById('cl-hex-val');
+    if (hexMiniEl && state.hexagram && typeof HEXAGRAMS !== 'undefined') {
+      const hex = HEXAGRAMS.find(h => h.number === state.hexagram);
+      hexMiniEl.innerHTML = hex ? buildHexMini(hex.traits) : '';
+    }
+    if (hexText) {
+      hexText.textContent = state.hexagramName
+        ? `${state.hexagram} — ${state.hexagramName}` : '—';
+    }
+
+    // ── Phrase de clôture
     const closingEl = document.getElementById('cl-closing');
-    const streakEl  = document.getElementById('cl-streak');
-
-    if (mantraEl)  mantraEl.textContent  = state.mantra       || '—';
-    if (elementEl) elementEl.textContent = state.element      || '—';
-    if (hexEl)     hexEl.textContent     = state.hexagramName
-      ? `${state.hexagram} — ${state.hexagramName}`
-      : '—';
-
-    // Phrase de clôture
-    const closing = pickClosing(state.elementKey || null); // uses MatriceStorage.pickUnique internally
+    const closing = (typeof pickClosing === 'function') ? pickClosing(state.elementKey || null) : '';
     if (closingEl) closingEl.textContent = closing;
 
-    // Citation philosophique
+    // ── Citation philosophique
     const citation = (typeof pickCitation === 'function') ? pickCitation() : null;
     const citWrap  = document.getElementById('cl-citation-wrap');
     const citText  = document.getElementById('cl-citation-text');
@@ -253,32 +322,35 @@ const ScreenCloture = (() => {
       citWrap.hidden = true;
     }
 
-    // Insight lunaire
-    const moonWrap    = document.getElementById('cl-moon-wrap');
-    const moonIconEl  = document.getElementById('cl-moon-icon');
-    const moonInsight = document.getElementById('cl-moon-insight');
+    // ── Insight lunaire
+    const moonWrap   = document.getElementById('cl-moon-wrap');
+    const moonIconEl = document.getElementById('cl-moon-icon');
+    const moonInsEl  = document.getElementById('cl-moon-insight');
+    const sepMoon    = document.getElementById('cl-sep-moon');
     if (moonWrap && typeof MoonSystem !== 'undefined') {
       const phase = MoonSystem.getMoonPhase(new Date());
-      if (moonIconEl) moonIconEl.innerHTML = MoonSystem.drawMoonIcon(phase.key, 28);
-      if (moonInsight) moonInsight.textContent = phase.insight;
+      if (moonIconEl) moonIconEl.innerHTML = MoonSystem.drawMoonIcon(phase.key, 22);
+      if (moonInsEl)  moonInsEl.textContent  = phase.insight;
       moonWrap.hidden = false;
+      if (sepMoon) sepMoon.hidden = false;
     }
 
-    // Streak
-    const streak = MatriceStorage.incrementStreak(state.humeur || 3);
+    // ── Streak
+    const streak   = MatriceStorage.incrementStreak(state.humeur || 3);
+    const streakEl = document.getElementById('cl-streak');
     if (streakEl) streakEl.textContent = streak;
 
-    // Sauvegarde du rituel dans le journal
+    // ── Sauvegarde
     MatriceStorage.saveRitualLog({
-      date:          new Date().toISOString().slice(0, 10),
-      humeur:        state.humeur        || null,
-      mantra:        state.mantra        || null,
-      mantraCategory: state.mantraCategory || null,
-      intentions:    state.intentions    || [],
-      element:       state.element       || null,
-      elementKey:    state.elementKey    || null,
-      hexagram:      state.hexagram      || null,
-      hexagramName:  state.hexagramName  || null,
+      date:           new Date().toISOString().slice(0, 10),
+      humeur:         state.humeur         || null,
+      mantra:         state.mantra         || null,
+      mantraCategory: state.mantraCategory  || null,
+      intentions:     state.intentions     || [],
+      element:        state.element        || null,
+      elementKey:     state.elementKey     || null,
+      hexagram:       state.hexagram       || null,
+      hexagramName:   state.hexagramName   || null,
     });
   }
 
@@ -289,8 +361,9 @@ const ScreenCloture = (() => {
 
   function onEnter() {
     buildSummary();
-    // Animation d'entrée sur la clôture
+    document.getElementById('cl-scroll')?.scrollTo(0, 0);
     document.getElementById('screen-cloture')?.classList.add('cloture-reveal');
+    if (typeof Module1 !== 'undefined') Module1.fadeOutBinaural(3);
   }
 
   function onLeave() {}

@@ -58,6 +58,8 @@ const TRANSMUTATIONS = {
     "Tu n'as pas à tout résoudre. Tu as juste à traverser cette journée un pas à la fois. C'est déjà beaucoup.",
     "Ce qui t'a amené ici ce matin, malgré tout, c'est quelque chose de fort. Honore-le.",
     "Même les jours gris font partie du cycle. Tu n'es pas bloqué — tu es en transit.",
+    "Le fait que tu sois ici, à chercher de la lumière dans le sombre, dit tout sur qui tu es vraiment.",
+    "Ce poids n'est pas une faiblesse. C'est la gravité qui accompagne ceux qui portent quelque chose de vrai.",
   ],
 };
 
