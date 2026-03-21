@@ -3857,6 +3857,162 @@ body.light-mode .m1-toast {
 .light-mode .sl-yk-hex-advice { color: rgba(28, 22, 60, 0.65); }
 .light-mode .sl-yk-hex-name { color: #4a3da8; }
 
+/* ── Studio config — nouveaux éléments ───────────────────────── */
+
+.sl-title {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1.1rem;
+  font-weight: 300;
+  letter-spacing: 0.18em;
+  color: var(--text);
+}
+
+.sl-yiking-btn-head {
+  background: none;
+  border: 1px solid var(--sl-accent-dim);
+  border-radius: 20px;
+  color: var(--text-dim);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.06em;
+  padding: 6px 12px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+}
+
+.sl-dur-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.sl-dur-btn {
+  padding: 7px 12px;
+  background: transparent;
+  border: 1px solid var(--stroke-dim);
+  color: var(--text-dim);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.76rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  border-radius: 0;
+  transition: border-color 0.25s, color 0.25s, background 0.25s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.sl-dur-btn--active {
+  border-color: var(--gold);
+  color: var(--gold);
+  background: var(--gold-glow);
+}
+
+/* ── Studio session plein écran ───────────────────────────────── */
+
+.sl-session-screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 !important;
+  padding-bottom: 0 !important;
+  background: var(--bg);
+}
+
+.sl-session-phase {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2rem, 9vw, 3rem);
+  font-weight: 300;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--sl-breath-text, #AFA9EC);
+  transition: opacity 0.25s ease, color 1.4s ease;
+  padding-top: max(44px, env(safe-area-inset-top, 44px));
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.sl-session-seed-wrap {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  flex: 1;
+  width: 100%;
+}
+
+.sl-session-seed-wrap .m1-breath-halo {
+  position: absolute;
+  width: min(80vmin, 380px);
+  height: min(80vmin, 380px);
+  border-radius: 50%;
+  pointer-events: none;
+  transition: background 1.8s ease;
+}
+
+.sl-session-seed-wrap .sl-seed-svg {
+  width: min(70vmin, 320px);
+  height: min(70vmin, 320px);
+  overflow: visible;
+  animation: seed-spin 100s linear infinite;
+  transform-origin: 50% 50%;
+}
+
+.sl-session-seed-wrap .sl-seed-svg .sl-seed-circles circle {
+  fill: none;
+  stroke: var(--gdv-stroke, #AFA9EC);
+  stroke-width: 1;
+  transition: stroke 1.4s ease;
+}
+
+.sl-session-count {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: clamp(2.2rem, 8vw, 3.4rem);
+  font-weight: 300;
+  line-height: 1;
+  color: var(--sl-breath-text, #AFA9EC);
+  transition: color 1.4s ease;
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+.sl-session-footer {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px 16px max(24px, env(safe-area-inset-bottom, 24px));
+}
+
+.sl-stop-btn {
+  padding: 6px 16px;
+  background: transparent;
+  border: 1px solid rgba(255,255,255,0.15);
+  color: var(--text-dim);
+  font-family: 'DM Sans', sans-serif;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 0;
+  margin-left: 12px;
+  -webkit-tap-highlight-color: transparent;
+  transition: border-color 0.25s, color 0.25s;
+}
+
+.sl-stop-btn:active {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sl-session-seed-wrap .sl-seed-svg { animation: none; }
+  .sl-session-phase { transition: none; }
+}
+
 /* ════════════════════════════════════════════════════════════════
    MODE SOIR — Gratitude nocturne
    ════════════════════════════════════════════════════════════════ */

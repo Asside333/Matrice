@@ -161,6 +161,7 @@ function updateSOSVisibility(screenId) {
   const sos = document.getElementById('btn-sos');
   if (!sos) return;
   const ritualScreens = ['rituel', 'rituel-session', 'm2', 'm3', 'm4', 'm5', 'm6'];
+  // Bouton binaural flottant : pas affiché en mode Studio (Studio gère son propre stop)
   sos.classList.toggle('hidden', !ritualScreens.includes(screenId));
 
   // Bouton binaural persistant : visible pendant la session et les modules suivants
@@ -174,7 +175,7 @@ function updateSOSVisibility(screenId) {
 function updateNavVisibility(screenId) {
   const nav = document.getElementById('main-nav');
   if (!nav) return;
-  const hideNav = ['humeur', 'rituel', 'rituel-session', 'm2', 'm3', 'm4', 'm5', 'm6', 'cloture', 'parametres', 'nuit'].includes(screenId);
+  const hideNav = ['humeur', 'rituel', 'rituel-session', 'libre-session', 'm2', 'm3', 'm4', 'm5', 'm6', 'cloture', 'parametres', 'nuit'].includes(screenId);
   nav.style.opacity = hideNav ? '0' : '1';
   nav.style.pointerEvents = hideNav ? 'none' : 'auto';
 }
