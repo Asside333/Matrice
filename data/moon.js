@@ -170,16 +170,8 @@ const MoonSystem = (() => {
     const idx      = Math.floor(fraction * 8) % 8;
     const phase    = MOON_PHASES[idx];
 
-    // Insight anti-répétition par phase
-    const storageKey = 'matrice_moon_insight_' + phase.key;
-    let used = [];
-    try { used = JSON.parse(localStorage.getItem(storageKey) || '[]'); } catch {}
-    const total = phase.insights.length;
-    let pool = Array.from({length: total}, (_, i) => i).filter(i => !used.includes(i));
-    if (pool.length === 0) { used = []; pool = Array.from({length: total}, (_, i) => i); }
-    const pick = pool[Math.floor(Math.random() * pool.length)];
-    used.push(pick);
-    try { localStorage.setItem(storageKey, JSON.stringify(used)); } catch {}
+    // Insight anti-répétition via pickUnique centralisé
+    const insight = MatriceStorage.pickUnique(phase.insights, 'moon_insights.' + phase.key);
 
     return {
       key:        phase.key,
@@ -187,7 +179,7 @@ const MoonSystem = (() => {
       idx,
       elementKey: phase.elementKey,
       fraction,
-      insight:    phase.insights[pick],
+      insight,
     };
   }
 

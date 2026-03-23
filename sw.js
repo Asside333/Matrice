@@ -3,7 +3,7 @@
    Cache offline, stratégie Cache-First
    ================================================================ */
 
-const CACHE_NAME = 'matrice-v29';
+const CACHE_NAME = 'matrice-v30';
 
 // Fichiers à mettre en cache à l'installation
 const ASSETS_TO_CACHE = [
@@ -35,6 +35,8 @@ const ASSETS_TO_CACHE = [
   './module-lune-overlay.js',
   './data/citations.js',
   './data/moon.js',
+  './icons/icon-192.svg',
+  './icons/icon-512.svg',
   // Google Fonts sont mis en cache dynamiquement (voir fetch handler)
 ];
 

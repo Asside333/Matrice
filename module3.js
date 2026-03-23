@@ -297,6 +297,7 @@ const Module3 = (() => {
     // Texte émerge mot par mot avec glow
     at(2700, () => {
       if (!tText) return;
+      tText.style.cssText = "text-align:center; max-width:85vw; margin:0 auto; padding:20px; word-break:normal; hyphens:none;";
       const words = transmText.split(' ');
       words.forEach((w, i) => {
         const span = document.createElement('span');

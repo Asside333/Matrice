@@ -315,7 +315,8 @@ const ScreenCloture = (() => {
     // ── Phrase de clôture
     const closingEl = document.getElementById('cl-closing');
     const closing = (typeof pickClosing === 'function') ? pickClosing(state.elementKey || null) : '';
-    if (closingEl) closingEl.textContent = closing;
+    const centerStyle = "text-align:center; max-width:85vw; margin:0 auto; padding:20px; word-break:normal; hyphens:none;";
+    if (closingEl) { closingEl.textContent = closing; closingEl.style.cssText = centerStyle; }
 
     // ── Citation philosophique
     const citation = (typeof pickCitation === 'function') ? pickCitation() : null;
@@ -323,8 +324,8 @@ const ScreenCloture = (() => {
     const citText  = document.getElementById('cl-citation-text');
     const citAuth  = document.getElementById('cl-citation-author');
     if (citation && citWrap) {
-      if (citText) citText.textContent = '« ' + citation.texte + ' »';
-      if (citAuth) citAuth.textContent = '— ' + citation.auteur;
+      if (citText) { citText.textContent = '« ' + citation.texte + ' »'; citText.style.cssText = centerStyle; }
+      if (citAuth) { citAuth.textContent = '— ' + citation.auteur; citAuth.style.cssText = centerStyle; }
       citWrap.hidden = false;
     } else if (citWrap) {
       citWrap.hidden = true;

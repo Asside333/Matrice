@@ -57,7 +57,8 @@ const Module4 = (() => {
     wordTimeouts.forEach(clearTimeout);
     wordTimeouts = [];
     container.innerHTML = '';
-    container.style.opacity = '0';
+    container.style.cssText = "text-align:center; max-width:85vw; margin:0 auto; padding:20px; word-break:normal; hyphens:none; opacity:0;";
+
 
     const words = text.split(' ');
     words.forEach((w, i) => {

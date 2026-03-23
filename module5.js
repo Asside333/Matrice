@@ -322,10 +322,11 @@ const Module5 = (() => {
     }
 
     clearTimeout(sortRevealTimeout);
+    const centerStyle = "text-align:center; max-width:85vw; margin:0 auto; padding:20px; word-break:normal; hyphens:none;";
     sortRevealTimeout = setTimeout(() => {
-      if (titreEl) titreEl.textContent = sort.titre;
-      if (texteEl) texteEl.textContent = sort.texte;
-      if (gesteEl) gesteEl.textContent = `✦ ${sort.geste}`;
+      if (titreEl) { titreEl.textContent = sort.titre; titreEl.style.cssText = centerStyle; }
+      if (texteEl) { texteEl.textContent = sort.texte; texteEl.style.cssText = centerStyle; }
+      if (gesteEl) { gesteEl.textContent = `✦ ${sort.geste}`; gesteEl.style.cssText = centerStyle; }
       if (sortBox) {
         sortBox.style.transition = 'opacity 0.5s, transform 0.5s';
         sortBox.style.opacity    = '1';

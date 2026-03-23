@@ -78,6 +78,7 @@ const ModuleSoir = (() => {
     }
 
     saveEntry(entry);
+    if (typeof haptic === 'function') haptic(80);
     showSealedZone(phrase);
   }
 
@@ -279,7 +280,7 @@ const ModuleSoir = (() => {
   function createStars() {
     const container = document.getElementById('sv-stars');
     if (!container || container.children.length > 0) return;
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 35; i++) {
       const star = document.createElement('div');
       star.className = 'sv-star-pt';
       star.style.left = (5 + Math.random() * 90) + '%';
@@ -328,7 +329,7 @@ const ModuleSoir = (() => {
     const moonEl = document.getElementById('sv-moon-phase');
     if (moonEl && typeof MoonSystem !== 'undefined') {
       const phase = MoonSystem.getMoonPhase(new Date());
-      moonEl.innerHTML = MoonSystem.drawMoonIcon(phase.key, 48) +
+      moonEl.innerHTML = MoonSystem.drawMoonIcon(phase.key, 80) +
         `<span class="sv-moon-name">${phase.name}</span>`;
     }
   }
