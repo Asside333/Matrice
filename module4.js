@@ -19,7 +19,7 @@ const Module4 = (() => {
     const chips = document.getElementById('m4-chips-phase');
     const viz   = document.getElementById('m4-viz-phase');
     const footer = document.getElementById('m4-footer');
-    if (chips) { chips.style.opacity = '1'; chips.style.pointerEvents = 'auto'; chips.style.transform = 'translateY(0)'; }
+    if (chips) { chips.style.display = ''; chips.style.opacity = '1'; chips.style.pointerEvents = 'auto'; chips.style.transform = 'translateY(0)'; }
     if (viz)   { viz.style.opacity   = '0'; viz.style.pointerEvents   = 'none'; }
     if (footer) footer.classList.remove('m4-footer--visible');
 
@@ -41,6 +41,7 @@ const Module4 = (() => {
     }
 
     setTimeout(() => {
+      if (chips) chips.style.display = 'none';
       if (viz) {
         viz.style.opacity      = '1';
         viz.style.pointerEvents = 'auto';

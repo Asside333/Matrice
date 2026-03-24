@@ -571,24 +571,27 @@ function buildAccueilSpiral() {
     }));
   } catch (_) {}
 
-  // ── Points des jours complétés ──
-  const todayIdx = seasonDays.indexOf(today);
-  const dotDelay = 1200 / Math.max(n, 1);
-  let dotIdx = 0;
-  seasonDays.forEach((dateStr, i) => {
+  // ── Points des jours complétés — distribués sur toute la spirale ──
+  const completed = [];
+  seasonDays.forEach(dateStr => {
     if (dateStr > today) return;
     const entry = cal[dateStr];
-    if (!entry?.completed) return;
-    const [x, y] = SpiralGold.dayPos(cx, cy, a, tStart, tEnd, i, n);
+    if (entry?.completed) completed.push({ dateStr, entry });
+  });
+  const totalDots = completed.length;
+  const dotDelay  = 1200 / Math.max(totalDots, 1);
+
+  completed.forEach(({ dateStr, entry }, idx) => {
+    const isToday = dateStr === today;
+    const [x, y] = SpiralGold.dayPos(cx, cy, a, tStart, tEnd, idx, totalDots);
     const dot = document.createElementNS(NS, 'circle');
     dot.setAttribute('cx', x.toFixed(2));
     dot.setAttribute('cy', y.toFixed(2));
-    dot.setAttribute('r', i === todayIdx ? '2.8' : '2.0');
+    dot.setAttribute('r', isToday ? '2.8' : '2.0');
     dot.setAttribute('fill', MOOD_COLS[entry.mood] || MOOD_COLS[3]);
     dot.style.opacity = '0';
     dot.style.transition = 'opacity 0.2s ease';
-    setTimeout(() => { dot.style.opacity = '1'; }, 1600 + dotIdx * dotDelay);
-    dotIdx++;
+    setTimeout(() => { dot.style.opacity = '1'; }, 1600 + idx * dotDelay);
     svg.appendChild(dot);
   });
 
@@ -765,6 +768,10 @@ function bindEvents() {
         navigateTo('parcours');
       }, { once: true });
     };
+    spiralMini.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      goToParcours();
+    }, { passive: false });
     spiralMini.addEventListener('click', goToParcours);
     spiralMini.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); goToParcours(); }

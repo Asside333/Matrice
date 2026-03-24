@@ -5045,8 +5045,8 @@ body.light-mode .m1-toast {
 
 .accueil-header-right {
   position: absolute;
-  right: 28px;
-  top: 56px;
+  right: 12px;
+  top: 8px;
   display: flex;
   flex-direction: row;
   align-items: center;
