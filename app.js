@@ -544,82 +544,122 @@ function buildAccueilSpiral() {
   const { streakConsecutif, streakSaison, season, seasonDays } = MatriceStorage.getStreakData();
   const cal   = MatriceStorage.getCalendar();
   const today = new Date().toISOString().slice(0, 10);
-  const { cx, cy, a, tStart, tEnd } = SP_MINI; // viewBox 120×120, affiché 110px
-  const n = seasonDays.length;
-  // scale ≈ 110/120 = 0.917 → font-size SVG × 0.917 = px rendus
+  const n     = seasonDays.length; // total jours de la saison
 
-  // ── Tracé de la spirale ──
-  const pathPts = SpiralGold.path(cx, cy, a, tStart, tEnd, 280);
-  const d = 'M' + pathPts.map(([x, y]) => `${x.toFixed(2)},${y.toFixed(2)}`).join(' L');
+  // ══════════════════════════════════════════════════════════════
+  // SPIRALE DE FIBONACCI — série d'arcs de quart de cercle
+  // Rayons : 1, 1, 2, 3, 5, 8, 13, 21  (suite de Fibonacci)
+  // Chaque arc sweeps 90° dans le sens horaire (CW)
+  // Coordonnées normalisées : x droite, y haut. Début en (0,0).
+  // Arc data : [rayon, cx_norm, cy_norm, angle_départ_deg]
+  // ══════════════════════════════════════════════════════════════
+  const FIB_ARCS = [
+    [ 1,   0,   1,  270],  // (0,0)  → (-1, 1)
+    [ 1,  -2,   1,    0],  // (-1,1) → (-2, 0)
+    [ 2,  -2,  -2,   90],  // (-2,0) → ( 0,-2)
+    [ 3,   3,  -2,  180],  // (0,-2) → ( 3, 1)
+    [ 5,   3,   6,  270],  // (3, 1) → (-2, 6)
+    [ 8, -10,   6,    0],  // (-2,6) → (-10,-2)
+    [13, -10, -15,   90],  // (-10,-2)→(3,-15)
+    [21,  24, -15,  180],  // (3,-15) → (24, 6)
+  ];
+
+  // Début de la spirale ancré au centre du SVG (60,60)
+  // Scale 2.5 → la spirale s'étend de x=[35,120] y=[45,97] dans le SVG
+  const OX = 60, OY = 60, SCALE = 2.5;
+  const toSVG = (nx, ny) => [OX + nx * SCALE, OY - ny * SCALE];
+
+  // ── Générer tous les points de la spirale ──────────────────────
+  const pts = [];
+  for (const [r, nx, ny, deg0] of FIB_ARCS) {
+    const segs = Math.max(16, r * 12); // plus de segments pour les grands arcs
+    for (let j = 0; j <= segs; j++) {
+      const a = (deg0 - (j / segs) * 90) * Math.PI / 180;
+      pts.push(toSVG(nx + r * Math.cos(a), ny + r * Math.sin(a)));
+    }
+  }
+
+  // ── Tracé SVG ─────────────────────────────────────────────────
+  const d = 'M' + pts.map(([x, y]) => `${x.toFixed(2)},${y.toFixed(2)}`).join(' L');
   const spiralPath = document.createElementNS(NS, 'path');
   spiralPath.setAttribute('d', d);
   spiralPath.setAttribute('stroke', season.colorTrace);
-  spiralPath.setAttribute('stroke-width', '1.1');
+  spiralPath.setAttribute('stroke-width', '1.2');
   spiralPath.setAttribute('fill', 'none');
-  spiralPath.setAttribute('opacity', '0.55');
+  spiralPath.setAttribute('opacity', '0.65');
   spiralPath.setAttribute('stroke-linecap', 'round');
   svg.appendChild(spiralPath);
 
-  // Animation dessin progressif de la spirale
+  // ── Déploiement progressif jusqu'au dernier jour complété ──────
+  // Chaque jour de la saison a SA place fixe sur la spirale :
+  // jour 0 = centre (début), jour N-1 = extrémité (fin)
+  // La spirale se révèle seulement jusqu'où on en est dans la saison.
+  let lastCompletedIdx = -1;
+  const done = [];
+  seasonDays.forEach((dateStr, i) => {
+    if (dateStr > today) return;
+    const entry = cal[dateStr];
+    if (entry?.completed) { done.push({ dateStr, entry, i }); lastCompletedIdx = i; }
+  });
+
+  // fraction de la spirale à révéler (minimum 1% pour montrer l'amorce)
+  const revealFrac = lastCompletedIdx < 0
+    ? 0.01
+    : Math.max(0.01, (lastCompletedIdx + 1) / Math.max(n, 1));
+
   try {
     const len = spiralPath.getTotalLength();
     spiralPath.style.strokeDasharray  = len;
-    spiralPath.style.strokeDashoffset = len;
-    spiralPath.style.transition = 'stroke-dashoffset 1.6s ease-in-out';
+    spiralPath.style.strokeDashoffset = len; // caché au départ
+    spiralPath.style.transition = 'stroke-dashoffset 1.8s cubic-bezier(0.4, 0, 0.2, 1)';
     requestAnimationFrame(() => requestAnimationFrame(() => {
-      spiralPath.style.strokeDashoffset = '0';
+      spiralPath.style.strokeDashoffset = len * (1 - revealFrac);
     }));
   } catch (_) {}
 
-  // ── Points des jours complétés — distribués sur toute la spirale ──
-  const completed = [];
-  seasonDays.forEach(dateStr => {
-    if (dateStr > today) return;
-    const entry = cal[dateStr];
-    if (entry?.completed) completed.push({ dateStr, entry });
-  });
-  const totalDots = completed.length;
-  const dotDelay  = 1200 / Math.max(totalDots, 1);
+  // ── Points : chaque jour a sa position fixe sur la spirale ────
+  // La position est proportionnelle à l'index du jour dans la saison.
+  // Jour 1 = centre, jour N = extrémité — la suite se déploie.
+  const T = pts.length - 1;
+  const dotDelay = 1200 / Math.max(done.length, 1);
 
-  completed.forEach(({ dateStr, entry }, idx) => {
-    const isToday = dateStr === today;
-    const [x, y] = SpiralGold.dayPos(cx, cy, a, tStart, tEnd, idx, totalDots);
+  done.forEach(({ dateStr, entry, i }, idx) => {
+    const frac     = n > 1 ? i / (n - 1) : 0;
+    const [px, py] = pts[Math.round(frac * T)];
     const dot = document.createElementNS(NS, 'circle');
-    dot.setAttribute('cx', x.toFixed(2));
-    dot.setAttribute('cy', y.toFixed(2));
-    dot.setAttribute('r', isToday ? '2.8' : '2.0');
+    dot.setAttribute('cx', px.toFixed(2));
+    dot.setAttribute('cy', py.toFixed(2));
+    dot.setAttribute('r', dateStr === today ? '3.0' : '2.2');
     dot.setAttribute('fill', MOOD_COLS[entry.mood] || MOOD_COLS[3]);
     dot.style.opacity = '0';
-    dot.style.transition = 'opacity 0.2s ease';
-    setTimeout(() => { dot.style.opacity = '1'; }, 1600 + idx * dotDelay);
+    dot.style.transition = 'opacity 0.25s ease';
+    setTimeout(() => { dot.style.opacity = '1'; }, 1800 + idx * dotDelay);
     svg.appendChild(dot);
   });
 
-  // ── Streak au centre ──
-  // font-size 28 × 0.917 ≈ 25.7px rendu → bien lisible
+  // ── Streak — affiché au cœur de la spirale (origine) ──────────
   const tCount = document.createElementNS(NS, 'text');
-  tCount.setAttribute('x', cx); tCount.setAttribute('y', cy + 1);
+  tCount.setAttribute('x', OX); tCount.setAttribute('y', OY + 1);
   tCount.setAttribute('text-anchor', 'middle');
   tCount.setAttribute('dominant-baseline', 'middle');
   tCount.setAttribute('fill', '#B8860B');
   tCount.setAttribute('font-family', "'Cormorant Garamond', Georgia, serif");
-  tCount.setAttribute('font-size', '28');
+  tCount.setAttribute('font-size', '26');
   tCount.setAttribute('font-weight', '300');
   tCount.textContent = streakConsecutif;
   svg.appendChild(tCount);
 
-  // font-size 8 × 0.917 ≈ 7.3px → lisible
   const tLabel = document.createElementNS(NS, 'text');
-  tLabel.setAttribute('x', cx); tLabel.setAttribute('y', cy + 15);
+  tLabel.setAttribute('x', OX); tLabel.setAttribute('y', OY + 14);
   tLabel.setAttribute('text-anchor', 'middle');
   tLabel.setAttribute('fill', 'rgba(184,134,11,0.60)');
   tLabel.setAttribute('font-family', "'DM Sans', sans-serif");
-  tLabel.setAttribute('font-size', '8');
+  tLabel.setAttribute('font-size', '7');
   tLabel.setAttribute('letter-spacing', '1.8');
   tLabel.textContent = 'JOURS';
   svg.appendChild(tLabel);
 
-  // ── Texte saison (HTML span en dessous du SVG) ──
+  // ── Label saison ───────────────────────────────────────────────
   const saison = document.getElementById('accueil-spiral-saison');
   if (saison) saison.textContent = `${season.name} : ${streakSaison}/${n}`;
 }
@@ -761,12 +801,12 @@ function bindEvents() {
   if (spiralMini) {
     const goToParcours = () => {
       spiralMini.classList.remove('spiral-pulsing');
-      void spiralMini.offsetWidth; // reflow pour relancer l'anim si déjà active
+      void spiralMini.offsetWidth; // reflow pour relancer l'anim
       spiralMini.classList.add('spiral-pulsing');
-      spiralMini.addEventListener('animationend', () => {
+      setTimeout(() => {
         spiralMini.classList.remove('spiral-pulsing');
         navigateTo('parcours');
-      }, { once: true });
+      }, 450);
     };
     spiralMini.addEventListener('touchstart', (e) => {
       e.preventDefault();
