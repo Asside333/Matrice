@@ -818,10 +818,6 @@ function bindEvents() {
     });
   }
 
-  // Bouton SOS dans la nav
-  document.getElementById('nav-sos-btn')
-    ?.addEventListener('click', () => navigateTo('sos'));
-
   // Bouton SOS flottant (rituel)
   document.getElementById('btn-sos')
     ?.addEventListener('click', () => navigateTo('sos'));

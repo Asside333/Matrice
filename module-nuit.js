@@ -164,8 +164,8 @@ const ModuleNuit = (() => {
     centers.forEach(([x, y]) => {
       const c = document.createElementNS(NS, 'circle');
       c.setAttribute('cx', x); c.setAttribute('cy', y); c.setAttribute('r', r);
-      c.setAttribute('fill', 'none'); c.setAttribute('stroke', '#B8860B');
-      c.setAttribute('stroke-width', '0.5'); c.setAttribute('opacity', '0.4');
+      c.setAttribute('fill', 'none'); c.setAttribute('stroke', '#334477');
+      c.setAttribute('stroke-width', '0.8'); c.setAttribute('opacity', '0.9');
       g.appendChild(c);
     });
     svg.appendChild(g);

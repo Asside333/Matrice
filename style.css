@@ -345,8 +345,8 @@ body::before {
 }
 
 #accueil-spiral-svg {
-  width: 120px;
-  height: 120px;
+  width: 80px;
+  height: 80px;
   overflow: visible;
   display: block;
 }
@@ -644,6 +644,13 @@ body::before {
   flex-direction: column;
   align-items: center;
   gap: 26px;
+}
+
+.accueil-subtitle-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
 }
 
 .accueil-subtitle {
@@ -5347,7 +5354,7 @@ body.light-mode .m1-toast {
    ================================================================ */
 
 #screen-nuit {
-  background: #060608;
+  background: #0A0A15;
   overflow: hidden;
 }
 
@@ -5363,7 +5370,7 @@ body.light-mode .m1-toast {
 .nuit-seed-svg {
   width: min(320px, 90vw);
   height: min(320px, 90vw);
-  opacity: 0.12;
+  opacity: 0.5;
   transition: opacity 2s ease;
 }
 
@@ -5429,10 +5436,10 @@ body.light-mode .m1-toast {
   font-weight: 400;
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.9);
+  color: #ffffff;
   text-align: center;
   min-height: 1.5em;
-  opacity: 0.4;
+  opacity: 1;
   transition: opacity 0.5s ease;
 }
 
@@ -5659,7 +5666,7 @@ body.easter-333::after {
 .nuit-config {
   position: absolute;
   inset: 0;
-  background: #060608;
+  background: #0A0A15;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -5812,7 +5819,7 @@ body.easter-333::after {
 .nuit-session {
   position: absolute;
   inset: 0;
-  background: #060608;
+  background: #0A0A15;
   display: flex;
   flex-direction: column;
   align-items: center;

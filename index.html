@@ -72,9 +72,6 @@
       <h1 class="app-name">MATRICE</h1>
 
       <div class="accueil-header-right">
-        <div class="moon-block" id="moon-block" title="">
-          <span class="moon-icon" id="moon-icon"></span>
-        </div>
         <button class="accueil-theme-btn" id="btn-theme-toggle" aria-label="Passer en mode clair">
           <!-- icône mise à jour dynamiquement par app.js -->
         </button>
@@ -104,7 +101,12 @@
 
       <!-- Call to action -->
       <div class="accueil-cta">
-        <p class="accueil-subtitle" id="accueil-subtitle">Calibre ton champ</p>
+        <div class="accueil-subtitle-group">
+          <p class="accueil-subtitle" id="accueil-subtitle">Calibre ton champ</p>
+          <div class="moon-block" id="moon-block" title="">
+            <span class="moon-icon" id="moon-icon"></span>
+          </div>
+        </div>
 
         <button class="btn-rituel" id="btn-rituel" aria-label="Commencer le rituel du matin">
           <span class="btn-rituel-text">Commencer le rituel</span>
@@ -1342,7 +1344,7 @@
       </svg>
       <span class="nav-label">Rituel</span>
     </button>
-    <button class="nav-btn nav-sos" id="nav-sos-btn" aria-label="SOS — Ancrage d'urgence">
+    <button class="nav-btn nav-sos" id="nav-sos-btn" data-screen="sos" aria-label="SOS — Ancrage d'urgence">
       <div class="nav-sos-circle" aria-hidden="true">
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2z" stroke-opacity="0"/>
