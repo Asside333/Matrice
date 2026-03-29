@@ -3404,7 +3404,6 @@ body.light-mode .m1-toast {
   background: var(--sos-bg);
   overflow: hidden;
   padding-bottom: 0;
-  position: relative;
 }
 
 /* Flash blanc "crack" entre phases SOS */
