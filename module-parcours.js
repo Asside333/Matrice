@@ -98,7 +98,7 @@ const ModuleParcours = (() => {
     const spiralPath = svgEl('path', {
       d,
       stroke: season.colorTrace,
-      'stroke-width': '1.5',
+      'stroke-width': '2.8',
       fill: 'none',
       opacity: '0.5',
       'stroke-linecap': 'round',
@@ -134,7 +134,7 @@ const ModuleParcours = (() => {
       const dot = svgEl('circle', {
         cx: x.toFixed(2),
         cy: y.toFixed(2),
-        r:  isToday ? '4.5' : '3.2',
+        r:  isToday ? '6.7' : '5.6',
         fill: MOOD_COLS_PA[entry.mood] || MOOD_COLS_PA[3],
         stroke: isToday ? 'rgba(255,255,255,0.3)' : 'rgba(255,255,255,0.08)',
         'stroke-width': '0.8',
@@ -155,7 +155,7 @@ const ModuleParcours = (() => {
       'dominant-baseline': 'middle',
       fill: '#B8860B',
       'font-family': "'Cormorant Garamond', Georgia, serif",
-      'font-size': '42',
+      'font-size': '36',
       'font-weight': '300',
     });
     tCount.textContent = streakConsecutif;

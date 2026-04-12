@@ -298,7 +298,7 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 56px 28px 0;
+  padding: 56px 72px 0 142px;
   height: var(--header-height);
   flex-shrink: 0;
 }
@@ -345,8 +345,8 @@ body::before {
 }
 
 #accueil-spiral-svg {
-  width: 80px;
-  height: 80px;
+  width: 130px;
+  height: 130px;
   overflow: visible;
   display: block;
 }
@@ -5056,7 +5056,7 @@ body.light-mode .m1-toast {
   display: flex;
   flex-direction: row;
   align-items: center;
-  gap: 4px;
+  gap: 12px;
 }
 
 .accueil-theme-btn,
@@ -5835,8 +5835,8 @@ body.easter-333::after {
 }
 
 .pa-spiral-svg {
-  width: min(260px, 88vw);
-  height: min(260px, 88vw);
+  width: min(250px, 88vw);
+  height: min(250px, 88vw);
   overflow: visible;
   display: block;
 }
